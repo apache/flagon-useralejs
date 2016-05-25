@@ -1,0 +1,40 @@
+{
+  "name": "useralejs",
+  "version": "0.1.0",
+  "description": "Javascript Client for UserAle",
+  "main": "build/userale.js",
+  "scripts": {
+    "pretest": "rm -rf build && mkdir build && rollup -f umd -n userale -o build/userale.js -- src/main.js",
+    "test": "mocha 'test/**/*_spec.js' && eslint src",
+    "test:watch": "mocha -w 'test/**/*_spec.js'",
+    "build": "npm run pretest && uglifyjs build/userale.js -c -m -o build/userale.min.js",
+    "example:watch": "nodemon -w ./example example/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/draperlaboratory/useralejs.git"
+  },
+  "keywords": [
+    "UserAle",
+    "Logging"
+  ],
+  "author": "Draper",
+  "contributors": [
+    "Clay Gimenez"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/draperlaboratory/useralejs/issues"
+  },
+  "homepage": "https://github.com/draperlaboratory/useralejs#readme",
+  "devDependencies": {
+    "body-parser": "^1.15.0",
+    "chai": "^3.5.0",
+    "eslint": "^2.8.0",
+    "express": "^4.13.4",
+    "jsdom": "^8.4.0",
+    "mocha": "^2.4.5",
+    "rollup": "^0.26.0",
+    "uglify-js": "^2.6.2"
+  }
+}
