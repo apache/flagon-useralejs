@@ -7,9 +7,9 @@
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
   <!-- Semantic UI -->
-  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ "/semantic/dist/semantic.min.css" | prepend: site.baseurl | prepend: site.url }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
-  <script src="semantic/dist/semantic.min.js"></script>
+  <script src="{{ "/semantic/dist/semantic.min.js" | prepend: site.baseurl | prepend: site.url }}""></script>
 
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
