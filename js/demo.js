@@ -16,4 +16,17 @@ $(document).ready(function () {
   L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
   }).addTo(map);
+
+  function clearLogs () {
+    setTimeout(function () {
+
+      if ($('#log-feed .event').length > 20) {
+        $('#log-feed .event').slice(19).remove();
+      }
+
+      clearLogs();
+    }, 1000);
+  }
+
+  clearLogs();
 });

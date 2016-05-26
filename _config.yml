@@ -9,8 +9,8 @@
 title: UserAle.js
 email:
 description: UserAle.js -- The Official JavaScript Client for UserAle
-baseurl: "/useralejs" # the subpath of your site, e.g. /blog
-url: "http://draperlaboratory.github.io" # the base hostname & protocol for your site
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://draperlaboratory.github.io/useralejs" # the base hostname & protocol for your site
 github_username:  draperlaboratory
 footer_text: Copyright Draper 2016
 

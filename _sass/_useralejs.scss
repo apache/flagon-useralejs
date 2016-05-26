@@ -52,10 +52,11 @@ $black: #271900;
   height: calc(100vh - 78px);
   margin-bottom: 14px;
   z-index: 0;
+  overflow-y: hidden;
 }
 
 #log-feed {
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 #map-example {
