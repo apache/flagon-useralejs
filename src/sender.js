@@ -15,20 +15,26 @@
 import {logs, emptyLogs} from './packager.js';
 
 
-function transmitLogs (url) {
+function transmitLogs (url, resendData) {
 
   var req = new XMLHttpRequest();
+  if (resendData) {
+    var data = resendData;
+  } else {
+    var data = JSON.stringify(logs);
+    emptyLogs();
+  }
 
   req.open('POST', url);
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
   req.onreadystatechange = function () {
-    if (req.readyState == 4 && req.status == 200) {
-      emptyLogs();
+    if (!(req.readyState == 4 && req.status == 200)) {
+      transmitLogs(url, data);
     }
   }
 
-  req.send(JSON.stringify(logs));
+  req.send(data);
 }
 
 
