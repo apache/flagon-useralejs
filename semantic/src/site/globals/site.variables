@@ -1,0 +1,18 @@
+/*******************************
+     User Global Variables
+*******************************/
+
+// colors
+
+@primaryColor   : @brown;
+@brown          : #A76B00;
+@red            : #A7003C;
+@green          : #00A76B;
+@purple         : #6B00A7;
+@blue           : #003DA7;
+@teal           : #0090A7;
+@black          : #271900;
+@white          : #FFF5E3;
+@grey           : #FFE7BC;
+
+@pageBackground : @white;

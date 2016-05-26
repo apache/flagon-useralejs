@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <body>
+
+    <div id="main-wrapper">
+      <div id="content-wrapper">
+
+        {% include header.html %}
+
+        <div id="main-masthead" class="ui masthead center aligned brown inverted vertical segment">
+
+          <h1 class="ui header">UserAle.js</h1>
+          <h2 class="ui header">The Official JavaScript Client for UserAle</h2>
+
+        </div>
+
+        <div class="page-content">
+            {{ content }}
+        </div>
+
+      </div>
+
+      {% include footer.html %}
+
+    </div>
+
+  </body>
+
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>UserAle.JS</title>
+  <meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+  <!-- Semantic UI -->
+  <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+  <script src="semantic/dist/semantic.min.js"></script>
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://yourdomain.com/docs.html">
+  <link rel="alternate" type="application/rss+xml" title="UserAle.JS" href="http://yourdomain.com/feed.xml">
+</head>
+
+
+  <body>
+
+    <div id="main-wrapper">
+      <div id="content-wrapper">
+
+        <header class="site-header">
+
+  <div class="ui brown inverted padded top fixed borderless menu">
+
+    <div class="ui container">
+
+      <a class="site-title" href="/">
+        <h3 class="ui inverted header item">UserAle.js</h3>
+      </a>
+
+      <div class="right menu">
+        <a class="item" href="/docs">Docs</a>
+        <a class="item" href="/about">About</a>
+        <a class="item" href="/demo">Demo</a>
+        <a class="item" href="http://github.com/draperlaboratory/useralejs">Github</a>
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+
+        <div id="page-wrapper" class="page-content">
+            <script src="/js/useraleConfigBuilder.js"></script>
+
+<div class="ui text container">
+
+  <div class="ui vertical very padded basic page segment">
+
+    <div class="ui large header">Getting Started</div>
+
+    <div class="ui medium header">Include UserAle.js in your project</div>
+
+    <p>
+      To include UserAle.js in your project with default configuration, simply include the script tag below:
+    </p>
+
+    <div class="ui tertiary brown inverted segment right-code-snippet">
+      <code>
+        &lt;script src="https://draperlaboratory.github.io/<br>useralejs/useralejs.min.js"&gt;&lt;/script&gt;
+      </code>
+    </div>
+
+    <p>
+      To configure UserAle.js for your application, see <a href="#configuration">Configuration</a> below.  Or use the <a href="#builder">Configuration Builder</a>.
+    </p>
+
+    <div class="ui medium header">Build UserAle.js</div>
+
+    <p>
+      To modify and build your own version of UserAle.js, first clone the repo, install dependencies, and make any desired changes.  Then build and minify into the <code>build/</code> folder:
+    </p>
+
+    <div class="ui tertiary brown inverted segment right-code-snippet">
+      <code>
+        git clone https://github.com/draperlaboratory/useralejs.git
+        <br>
+        npm install
+        <br>
+        npm run build
+      </code>
+    </div>
+
+    <p>
+      To run tests and linting:
+    </p>
+
+    <div class="ui tertiary brown inverted segment right-code-snippet">
+      <code>
+        npm test
+        <br>
+        npm run test:watch
+      </code>
+    </div>
+
+    <p>
+      See <code>package.json</code> for full script options.
+    </p>
+
+  </div>
+
+  <div id="configuration" class="ui divider"></div>
+
+  <div class="ui vertical very padded basic page segment">
+
+    <div class="ui large header">Configuration</div>
+
+    <p>
+      UserAle.js is configured with HTML5 Data Parameters included in the script tag.  For example, to set the URL to send logs to:
+    </p>
+
+    <div class="ui tertiary brown inverted segment code-snippet">
+      <code>
+        &lt;script src="/userale.min.js"<br> data-url="http://localhost:8000/logs"&gt;&lt;/script&gt;
+      </code>
+    </div>
+
+    <p>
+      The full list of options is below:
+    </p>
+
+    <table class="ui basic celled table">
+      <thead>
+        <tr class="center aligned">
+          <th>Data Parameter</th>
+          <th>Default</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tr class="center aligned">
+        <td><code>data-url</code></td>
+        <td>http://localhost:8000/logs</td>
+        <td>The URL to which logs will be sent</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-autostart</code></td>
+        <td>true</td>
+        <td>Should UserAle.js start automatically on page load</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-interval</code></td>
+        <td>5000</td>
+        <td>The minimum time interval in ms between batch transmission of logs</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-threshold</code></td>
+        <td>5</td>
+        <td>The minimum number of logs to be sent in a batch</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-user</code></td>
+        <td>null</td>
+        <td>Identifier for the particular user of the application</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-version</code></td>
+        <td>null</td>
+        <td>The application version</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-log-details</code></td>
+        <td>false</td>
+        <td>Should detailed logs (key strokes, input/change values) be recorded</td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-resolution</code></td>
+        <td>500</td>
+        <td>Delay in ms between instances of high frequency logs like mouseovers, scrolls, etc. </td>
+      </tr>
+      <tr class="center aligned">
+        <td><code>data-user-from-params</code></td>
+        <td>false</td>
+        <td>Should the user field (as in <code>data-user</code>), be fetched from an "aleuser" URL query parameter if available</td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div id="builder" class="ui divider"></div>
+
+  <div class="ui vertical very padded basic page segment">
+
+    <div class="ui large header">Build Your Custom Configuration</div>
+
+    <p>
+      Enter your desired configuration options in the fields below to have your custom script tag generated for you.
+    </p>
+
+    <form class="ui form" id="script-tag-builder">
+      <div class="field">
+        <label>script src</label>
+        <input type="text" name="src" placeholder="http://draperlaboratory.github.io/useralejs/userale.min.js">
+      </div>
+      <div class="field">
+        <label>data-url</label>
+        <input type="text" name="data-url" placeholder="http://localhost:8000/logs">
+      </div>
+      <div class="field">
+        <label>data-user</label>
+        <input type="text" name="data-user" placeholder="null">
+      </div>
+      <div class="field">
+        <label>data-version</label>
+        <input type="text" name="data-version" placeholder="null">
+      </div>
+      <div class="three fields">
+        <div class="field">
+          <label>data-interval</label>
+          <input type="text" name="data-interval" placeholder="5000">
+        </div>
+        <div class="field">
+          <label>data-threshold</label>
+          <input type="text" name="data-threshold" placeholder="5">
+        </div>
+        <div class="field">
+          <label>data-resolution</label>
+          <input type="text" name="data-resolution" placeholder="500">
+        </div>
+      </div>
+      <div class="three fields">
+        <div class="field">
+          <div id="autostart-checkbox" class="ui toggle checkbox">
+            <label>data-autostart</label>
+            <input type="checkbox" name="data-autostart" tabindex="0" class="hidden">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui toggle checkbox">
+            <label>data-log-details</label>
+            <input type="checkbox" name="data-log-details" tabindex="0" class="hidden">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui toggle checkbox">
+            <label>data-user-from-params</label>
+            <input type="checkbox" name="data-user-from-params" tabindex="0" class="hidden">
+          </div>
+        </div>
+      </div>
+      <button class="ui brown button" type="submit">Build Tag</button>
+    </form>
+
+    <div class="ui tertiary brown inverted segment right-code-snippet">
+      <pre id="script-builder-result">
+&lt;script src="http://draperlaboratory.github.io/userale/userale.min.js"&gt;&lt;/script&gt;
+      </pre>
+    </div>
+
+  </div>
+
+</div>
+
+        </div>
+
+      </div>
+
+      <footer class="site-footer">
+  <div class="ui container">
+    <div class="ui footer page brown inverted segment">
+      <div class="ui center aligned container">
+        <div class="footer-text">Copyright Draper 2016</div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    </div>
+
+  </body>
+
+</html>

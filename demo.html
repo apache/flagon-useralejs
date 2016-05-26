@@ -1,0 +1,176 @@
+---
+layout: page
+---
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
+<script src="/js/demo.js"></script>
+
+<div class="ui container">
+
+  <div class="ui large header">UserAle.js Demo!  Click around and see the logs you produce.</div>
+
+  <div class="ui padded grid">
+
+    <div class="six wide column">
+      <div class="ui row segment">
+        <div class="ui two column grid">
+          <div class="column">
+            <button class="ui brown fluid button">Button</button>
+          </div>
+          <div class="column">
+            <button class="ui brown fluid button">Button</button>
+          </div>
+          <div class="column">
+            <div class="ui checkbox">
+              <input type="checkbox">
+              <label>Checkbox</label>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui fluid selection dropdown">
+              <input type="hidden">
+              <i class="dropdown icon"></i>
+              <div class="default text">Dropdown</div>
+              <div class="menu">
+                <div class="item" data-value="1">Option 1</div>
+                <div class="item" data-value="2">Option 2</div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui radio checkbox">
+              <input type="radio" name="demo-checkbox">
+              <label>Yes</label>
+            </div>
+          </div>
+          <div class="column">
+            <div class="ui radio checkbox">
+              <input type="radio" name="demo-checkbox">
+              <label>No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui row segment">
+        <div class="ui fluid input">
+          <input type="text" placeholder="Text Input">
+        </div>
+        <div class="ui divider"></div>
+        <div class="ui large star rating"></div>
+      </div>
+
+      <div class="ui row segment">
+        <div class="ui fluid vertical secondary accordion menu">
+          <div class="item">
+            <a class="active title">
+              <i class="dropdown icon"></i>
+              Size
+            </a>
+            <div class="active content">
+              <div class="ui form">
+                <div class="grouped fields">
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="small">
+                      <label>Small</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="medium">
+                      <label>Medium</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="large">
+                      <label>Large</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="size" value="x-large">
+                      <label>X-Large</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <a class="title">
+              <i class="dropdown icon"></i>
+              Colors
+            </a>
+            <div class="content">
+              <div class="ui form">
+                <div class="grouped fields">
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="small">
+                      <label>Red</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="medium">
+                      <label>Orange</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="large">
+                      <label>Green</label>
+                    </div>
+                  </div>
+                  <div class="field">
+                    <div class="ui checkbox">
+                      <input type="checkbox" name="x-large">
+                      <label>Blue</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ui row segment">
+        <div id="map-example"></div>
+      </div>
+
+    </div>
+
+    <div id="logs-context" class="ten wide column">
+      <div id="logs" class="ui sticky segment">
+        <div class="ui header">Logs</div>
+        <div id="log-feed" class="ui feed basic segment">
+
+          <div class="event">
+            <div class="label">
+              <i class="checkmark icon"></i>
+            </div>
+            <div class="content">
+              a log
+            </div>
+          </div>
+
+          <div class="event">
+            <div class="label">
+              <i class="checkmark icon"></i>
+            </div>
+            <div class="content">
+              a log
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
