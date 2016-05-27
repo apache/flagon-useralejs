@@ -2,6 +2,8 @@
 
 The official JavaScript client for UserAle.  
 
+Additional documentation can be found at http://draperlaboratory.github.io/useralejs/
+
 ## Use and Configure
 
 To include Userale.js in your project:
