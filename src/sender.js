@@ -18,6 +18,9 @@ import {logs, emptyLogs} from './packager.js';
 function transmitLogs (url, resendData) {
 
   var req = new XMLHttpRequest();
+
+  // improve this to stack onto the old request, not make a bunch of new ones?
+  // alternatively limit number of resends allowed
   if (resendData) {
     var data = resendData;
   } else {
@@ -29,9 +32,16 @@ function transmitLogs (url, resendData) {
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
   req.onreadystatechange = function () {
-    if (!(req.readyState == 4 && req.status == 200)) {
-      transmitLogs(url, data);
+    if (req.readyState === 4) {
+      if (req.status !== 200) {
+        transmitLogs(url, data);
+      }
     }
+
+    // if (!(req.readyState == 4 && req.status == 200)) {
+    //   // console.log('resending');
+    //   transmitLogs(url, data);
+    // }
   }
 
   req.send(data);

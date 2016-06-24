@@ -1,5 +1,6 @@
 /node_modules/*
 /build/*
+/logs/*
 /.git/*
 npm-debug.log
 DS_store

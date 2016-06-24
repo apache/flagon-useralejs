@@ -56,7 +56,7 @@ export default function logger (config) {
   Object.keys(bufferedEvents).forEach(function (ev) {
     bufferBools[ev] = true;
 
-    document.addEventListener(ev, function (e) {
+    window.addEventListener(ev, function (e) {
       if (bufferBools[ev]) {
         bufferBools[ev] = false;
         packager(e, bufferedEvents[ev]);

@@ -14,6 +14,15 @@
 
 var express = require('express');
 var bodyParser = require('body-parser');
+var fs = require('fs');
+var path = require('path');
+
+var startTime = new Date;
+var logPath = path.resolve(__dirname, '../logs', 'logs_' + startTime.toISOString() + '.json');
+var wStream = fs.createWriteStream(logPath);
+var firstLog = true;
+
+wStream.write('[');
 
 var app = express();
 
@@ -27,9 +36,35 @@ app.get('/', function (req, res) {
 
 app.post('/logs', function (req, res) {
   console.log(req.body);
+
+  var delimiter = ',\n\t';
+
+  if (firstLog) {
+    wStream.write('\n\t');
+  } else {
+    wStream.write(delimiter);
+  }
+  
+  var logLength = req.body.length - 1;
+  req.body.forEach(function (log, i) {
+    if (i === logLength) {
+      delimiter = '';
+    }
+
+    wStream.write(JSON.stringify(log) + delimiter);
+  });
+
   res.sendStatus(200);
 });
 
 app.listen(app.get('port'), function () {
   console.log('UserAle Local running on port', app.get('port'));
 });
+
+function closeLogServer () {
+  wStream.end('\n]');
+  process.exit();
+}
+
+process.on('SIGTERM', function () { closeLogServer(); });
+process.on('SIGINT', function () { closeLogServer(); });

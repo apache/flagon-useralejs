@@ -34,17 +34,19 @@ function _init () {
   config.logCountThreshold = options.threshold || 5;
   config.userId = options.user || null;
   config.version = options.version || null;
-  config.logDetails = options['log-details'] || false;
+  config.logDetails = options.logDetails || false;
   config.resolution = options.resolution || 500;
 
-  if (options['user-from-params'] === 'true') {
-    var regex = /[?&]aleuser(=([^&#]*)|&|#|$)/;
+  if (options.userFromParams) {
+    var userField = options.userFromParams;
+    var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
     var results = window.location.href.match(regex);
+    console.log(results);
 
-    if (!results || !results[2]) {
-      config.userId = null;
-    } else {
+    if (results && results[2]) {
       config.userId = decodeURIComponent(results[2].replace(/\+/g, ' '));
+    } else {
+      config.userId = null;
     }
   }
 
