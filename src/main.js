@@ -36,7 +36,8 @@ function _init () {
   config.version = options.version || null;
   config.logDetails = options.logDetails || false;
   config.resolution = options.resolution || 500;
-
+  config.useraleVersion = '4.0.0'
+  
   if (options.userFromParams) {
     var userField = options.userFromParams;
     var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');

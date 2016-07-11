@@ -80,7 +80,8 @@ export function packager (e, detailAccessor) {
     'userAction' : true,
     'details' : details,
     'userId' : config.userId,
-    'toolVersion' : config.version
+    'toolVersion' : config.version,
+    'useraleVersion': config.useraleVersion
   };
 
   logs.push(log);
