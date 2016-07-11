@@ -4,7 +4,7 @@
   "description": "Javascript Client for UserAle",
   "main": "build/userale.js",
   "scripts": {
-    "pretest": "rm -rf build && mkdir build && rollup -f umd -n userale -o build/userale.js -- src/main.js",
+    "pretest": "rimraf build && rollup -f umd -n userale -o build/userale.js -- src/main.js",
     "test": "mocha 'test/**/*_spec.js' && eslint src",
     "test:watch": "mocha -w 'test/**/*_spec.js'",
     "build": "npm run pretest && uglifyjs build/userale.js -c -m -o build/userale.min.js",
@@ -34,6 +34,7 @@
     "express": "^4.13.4",
     "jsdom": "^8.4.0",
     "mocha": "^2.4.5",
+    "rimraf": "^2.5.3",
     "rollup": "^0.26.0",
     "uglify-js": "^2.6.2"
   }
