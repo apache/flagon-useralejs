@@ -18,11 +18,13 @@ var fs = require('fs');
 var path = require('path');
 
 var startTime = new Date;
-var logPath = path.resolve(__dirname, '../logs', 'logs_' + startTime.toISOString() + '.json');
+var logPath = path.resolve(__dirname, '../logs', 'logs_' + startTime.getTime() + '.json');
 var wStream = fs.createWriteStream(logPath);
+wStream.on('open', function () {
+  wStream.write('[');
+});
 var firstLog = true;
 
-wStream.write('[');
 
 var app = express();
 
@@ -41,6 +43,7 @@ app.post('/logs', function (req, res) {
 
   if (firstLog) {
     wStream.write('\n\t');
+    firstLog = false;
   } else {
     wStream.write(delimiter);
   }
