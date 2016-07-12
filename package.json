@@ -34,6 +34,7 @@
     "express": "^4.13.4",
     "jsdom": "^8.4.0",
     "mocha": "^2.4.5",
+    "nodemon": "^1.9.2",
     "rimraf": "^2.5.3",
     "rollup": "^0.26.0",
     "uglify-js": "^2.6.2"
