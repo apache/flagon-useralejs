@@ -17,15 +17,21 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
 
-var startTime = new Date;
-var logPath = path.resolve(__dirname, '../logs', 'logs_' + startTime.getTime() + '.json');
+var logDirectory = path.resolve(__dirname, '../logs');
+var logPath = path.resolve(logDirectory, 'logs_' + (new Date()).getTime() + '.json');
+
+try {
+  fs.lstatSync(logDirectory);
+} catch (e) {
+  fs.mkdirSync(logDirectory); // Create directory if it doesn't exist
+}
+
 var wStream = fs.createWriteStream(logPath);
 wStream.on('open', function () {
   wStream.write('[');
 });
+
 var firstLog = true;
-
-
 var app = express();
 
 app.set('port', process.env.PORT || 8000);
