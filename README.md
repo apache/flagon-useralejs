@@ -30,13 +30,13 @@ The complete list of configurable options is:
 | data-version | Application version identifier | null |
 | data-log-details | Toggle detailed logs (keys pressed and input/change values) | false |
 | data-resolution | Delay between instances of high frequency logs (mouseover, scroll, etc.) | 500 (ms) |
-| data-user-from-params | Toggle to attempt to fetch user id from an "aleuser" query param in the page URL | false |
+| data-user-from-params | Query param in the page URL to fetch userId from | null |
+| data-tool | Name of tool being logged | null |
 
 ## Next Up
 
-Our top priority is to improve the testing system and to expand test coverage beyond smoke tests.  Limitations in our test environment and its dependencies currently prevent testing of certain components.  After that is complete:
+Our top priority is to improve the testing system and to complete test coverage.  After that is complete:
 
-- Use navigation.beacon on page exit if available
 - Use web workers to remove load from main thread if available
 - Update the example server to present a simple test app/interface
 - Release Userale.js through channels like NPM, Bower, etc.  

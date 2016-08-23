@@ -1,13 +1,13 @@
 {
   "name": "useralejs",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Javascript Client for UserAle",
   "main": "build/userale.js",
   "scripts": {
-    "pretest": "rimraf build && rollup -f umd -n userale -o build/userale.js -- src/main.js",
-    "test": "mocha 'test/**/*_spec.js' && eslint src",
-    "test:watch": "mocha -w 'test/**/*_spec.js'",
-    "build": "npm run pretest && uglifyjs build/userale.js -c -m -o build/userale.min.js",
+    "pretest": "gulp lint",
+    "test": "gulp test",
+    "build": "gulp build",
+    "dev": "gulp dev",
     "example:watch": "nodemon -w ./example example/server.js"
   },
   "repository": {
@@ -20,7 +20,8 @@
   ],
   "author": "Draper",
   "contributors": [
-    "Clay Gimenez"
+    "Clay Gimenez",
+    "Robert Foley"
   ],
   "license": "Apache-2.0",
   "bugs": {
@@ -28,15 +29,21 @@
   },
   "homepage": "https://github.com/draperlaboratory/useralejs#readme",
   "devDependencies": {
+    "babel-preset-es2015": "^6.13.2",
+    "babel-register": "^6.11.6",
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
-    "eslint": "^2.8.0",
+    "del": "^2.2.2",
     "express": "^4.13.4",
+    "gulp": "^3.9.1",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
     "jsdom": "^8.4.0",
-    "mocha": "^2.4.5",
     "nodemon": "^1.9.2",
-    "rimraf": "^2.5.3",
     "rollup": "^0.26.0",
-    "uglify-js": "^2.6.2"
+    "rollup-plugin-json": "^2.0.1"
   }
 }

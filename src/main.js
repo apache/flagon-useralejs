@@ -12,112 +12,74 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {default as logger} from './logger.js';
-import {sender, sendEnd} from './sender.js';
-import {currentLogCount} from './packager.js';
+import { version as userAleVersion } from '../package.json';
+import { getInitialSettings } from './getInitialSettings.js';
+import { configure } from './configure.js';
+import { attachHandlers } from './attachHandlers.js';
+import { initPackager } from './packageLogs.js';
+import { initSender } from './sendLogs.js';
 
 var config = {};
+var logs = [];
 export var started = false;
 
 
-function _init () {
-  var script = document.currentScript || (function () {
-    var scripts = document.getElementsByTagName('script');
-    return scripts[scripts.length - 1];
-  })();
+// Start up Userale
+config.on = false;
+config.useraleVersion = userAleVersion;
 
-  var options = script ? (script.dataset || {}) : {};
+configure(config, getInitialSettings());
+initPackager(logs, config);
 
-  config.autostart = options.autostart || true;
-  config.url = options.url || 'http://localhost:8000/logs';
-  config.transmitInterval = options.interval || 5000;
-  config.logCountThreshold = options.threshold || 5;
-  config.userId = options.user || null;
-  config.version = options.version || null;
-  config.logDetails = options.logDetails || false;
-  config.resolution = options.resolution || 500;
-  config.useraleVersion = '4.0.0'
-  
-  if (options.userFromParams) {
-    var userField = options.userFromParams;
-    var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
-    var results = window.location.href.match(regex);
-    console.log(results);
-
-    if (results && results[2]) {
-      config.userId = decodeURIComponent(results[2].replace(/\+/g, ' '));
-    } else {
-      config.userId = null;
-    }
-  }
-
-  config.time = _timeStampScaler();
+if (config.autostart) {
+  setup(config);
 }
 
-
-function _timeStampScaler () {
-  var e = document.createEvent('CustomEvent');
-
-  if (e.timeStamp && e.timeStamp > 0) {
-
-    var delta = Date.now() - e.timeStamp;
-    var tsScaler;
-
-    if (delta < 0) {
-      tsScaler = function () {
-        return e.timeStamp / 1000;
-      };
-    } else if (delta > e.timeStamp) {
-      var navStart = performance.timing.navigationStart;
-      tsScaler = function (ts) {
-        return ts + navStart;
-      }
-    } else {
-      tsScaler = function (ts) {
-        return ts;
-      }
-    }
-
-  } else {
-
-    tsScaler = function () { return Date.now(); };
-
-  }
-
-  return tsScaler;
-}
-
-// Initialize Userale
-export function start () {
+function setup(config) {
   if (!started) {
-    setTimeout(function () {
+    setTimeout(function() {
       var state = document.readyState;
+
       if (state === 'interactive' || state === 'complete') {
-        logger(config);
-        sender(config);
-        sendEnd(config);
-        started = true;
-        return true;
+        attachHandlers(config);
+        initSender(logs, config);
+        started = config.on = true;
       } else {
-        start();
+        setup(config);
       }
     }, 100);
   }
 }
 
 
-export function currentConfigs () {
+// Export the Userale API
+export var version = userAleVersion;
+
+export function start() {
+  if (!started) {
+    setup(config);
+  }
+
+  config.on = true;
+}
+
+export function stop() {
+  config.on = false;
+}
+
+export function options(newConfig) {
+  if (newConfig !== undefined) {
+    configure(config, newConfig);
+  }
+
   return config;
 }
 
-export function logCount () {
-  return currentLogCount();
-}
-
-// Automatically initialize and start up Userale
-(function () {
-  _init();
-  if (config.autostart) {
-    start();
+export function log(customLog) {
+  if (typeof customLog === 'object') {
+    logs.push(customLog);
+    return true;
+  } else {
+    return false;
   }
-})();
+}
