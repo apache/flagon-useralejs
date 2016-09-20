@@ -3,17 +3,16 @@ import jsdom from 'jsdom';
 import fs from 'fs';
 
 describe('Userale API', () => {
-  var file = 'file://' + __dirname + '/main.html';
-  var html = fs.readFileSync(__dirname + '/main.html');
+  const url = 'file://' + __dirname + '/main.html';
+  const html = fs.readFileSync(__dirname + '/main.html');
+  const features = {
+    FetchExternalResources : ['script'],
+    ProcessExternalResources : ['script']
+  };
 
   it('provides configs', (done) => {
     jsdom.env({
-      html : html,
-      url : file,
-      features : {
-        FetchExternalResources : ['script'],
-        ProcessExternalResources : ['script']
-      },
+      html, url, features,
       done : (err, window) => {
         const config = window.userale.options();
         expect(config).to.be.an('object');
@@ -40,12 +39,7 @@ describe('Userale API', () => {
 
   it('edits configs', (done) => {
     jsdom.env({
-      html : html,
-      url : file,
-      features : {
-        FetchExternalResources : ['script'],
-        ProcessExternalResources : ['script']
-      },
+      html, url, features,
       done : (err, window) => {
         const config = window.userale.options();
         const interval = config.transmitInterval;
@@ -63,12 +57,7 @@ describe('Userale API', () => {
 
   it('starts + stops', (done) => {
     jsdom.env({
-      html : html,
-      url : file,
-      features : {
-        FetchExternalResources : ['script'],
-        ProcessExternalResources : ['script']
-      },
+      html, url, features,
       done : (err, window) => {
         setTimeout(() => {
           const { userale } = window;
@@ -89,12 +78,7 @@ describe('Userale API', () => {
 
   it('sends custom logs', (done) => {
     jsdom.env({
-      html: html,
-      url: file,
-      features : {
-        FetchExternalResources : ['script'],
-        ProcessExternalResources : ['script']
-      },
+      html, url, features,
       done: (err, window) => {
         const { userale } = window;
 
