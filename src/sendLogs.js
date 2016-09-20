@@ -22,7 +22,7 @@ export function sendOnInterval(logs, config) {
     if (logs.length >= config.logCountThreshold) {
       var data = logs;
       logs = [];
-      console.log(data);
+      // console.log(data);
       sendLogs(data, config.url, 5);
     }
   }, config.transmitInterval);
