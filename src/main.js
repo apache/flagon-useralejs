@@ -76,7 +76,7 @@ export function options(newConfig) {
 }
 
 export function log(customLog) {
-  if (typeof customLog === 'object') {
+  if (customLog !== null && typeof customLog === 'object') {
     logs.push(customLog);
     return true;
   } else {
