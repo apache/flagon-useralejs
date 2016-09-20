@@ -6,7 +6,7 @@ describe('Userale API', () => {
   var file = 'file://' + __dirname + '/main.html';
   var html = fs.readFileSync(__dirname + '/main.html');
 
-  it('provides configs', function(done) {
+  it('provides configs', (done) => {
     jsdom.env({
       html : html,
       url : file,
@@ -14,8 +14,8 @@ describe('Userale API', () => {
         FetchExternalResources : ['script'],
         ProcessExternalResources : ['script']
       },
-      done : function(err, window) {
-        var config = window.userale.options();
+      done : (err, window) => {
+        const config = window.userale.options();
         expect(config).to.be.an('object');
         expect(config).to.have.all.keys([
           'on',
@@ -38,7 +38,7 @@ describe('Userale API', () => {
     });
   });
 
-  it('edits configs', function(done) {
+  it('edits configs', (done) => {
     jsdom.env({
       html : html,
       url : file,
@@ -46,13 +46,13 @@ describe('Userale API', () => {
         FetchExternalResources : ['script'],
         ProcessExternalResources : ['script']
       },
-      done : function(err, window) {
-        var config = window.userale.options();
-        var interval = config.transmitInterval;
+      done : (err, window) => {
+        const config = window.userale.options();
+        const interval = config.transmitInterval;
         window.userale.options({
           transmitInterval : interval + 10
         });
-        var newConfig = window.userale.options();
+        const newConfig = window.userale.options();
 
         expect(newConfig.transmitInterval).to.equal(interval + 10);
         window.close();
@@ -61,7 +61,7 @@ describe('Userale API', () => {
     });
   });
 
-  it('starts + stops', function(done) {
+  it('starts + stops', (done) => {
     jsdom.env({
       html : html,
       url : file,
@@ -69,9 +69,9 @@ describe('Userale API', () => {
         FetchExternalResources : ['script'],
         ProcessExternalResources : ['script']
       },
-      done : function(err, window) {
-        setTimeout(function() {
-          var userale = window.userale;
+      done : (err, window) => {
+        setTimeout(() => {
+          const { userale } = window;
           expect(userale.options().on).to.equal(true);
 
           userale.stop();
@@ -87,5 +87,24 @@ describe('Userale API', () => {
     });
   });
 
-  it('sends custom logs');
+  it('sends custom logs', (done) => {
+    jsdom.env({
+      html: html,
+      url: file,
+      features : {
+        FetchExternalResources : ['script'],
+        ProcessExternalResources : ['script']
+      },
+      done: (err, window) => {
+        const { userale } = window;
+
+        expect(userale.log({})).to.equal(true);
+        expect(userale.log()).to.equal(false);
+        expect(userale.log(null)).to.equal(false);
+
+        window.close();
+        done();
+      }
+    });
+  });
 });
