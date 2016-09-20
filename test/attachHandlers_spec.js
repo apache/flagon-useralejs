@@ -1,6 +1,4 @@
 import { expect } from 'chai';
-import jsdom from 'jsdom';
-import fs from 'fs';
 import { attachHandlers } from '../src/attachHandlers';
 import * as packager from '../src/packageLogs';
 
@@ -26,12 +24,14 @@ describe('attachHandlers', () => {
         duplicateEvents++;
       }
     };
+    // MOCK
     global.document = { addEventListener: listenerHook(missingDocumentEvents) };
     global.window = { addEventListener: listenerHook(missingWindowEvents) };
     attachHandlers({ logDetails: true });
     expect(duplicateEvents).to.equal(0);
     expect(missingDocumentEvents.length).to.equal(0);
     expect(missingWindowEvents.length).to.equal(0);
+    // UNMOCK
     global.document = initialDocument;
     global.window = initialWindow;
     done();
