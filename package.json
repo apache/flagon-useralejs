@@ -1,6 +1,6 @@
 {
   "name": "useralejs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Javascript Client for UserAle",
   "main": "build/userale.js",
   "scripts": {
