@@ -22,10 +22,9 @@ export function initSender(logs, config) {
 
 export function sendOnInterval(logs, config) {
   setInterval(function() {
-    var logCount = logs.length;
-    if (logCount >= config.logCountThreshold) {
+    if (logs.length >= config.logCountThreshold) {
       sendLogs(logs.slice(0), config.url, 0); // Send a copy
-      logs.splice(0, logCount); // Clear array reference (no reassignment)
+      logs.splice(0); // Clear array reference (no reassignment)
     }
   }, config.transmitInterval);
 }
