@@ -44,6 +44,7 @@
     "jsdom": "^8.4.0",
     "nodemon": "^1.9.2",
     "rollup": "^0.26.0",
-    "rollup-plugin-json": "^2.0.1"
+    "rollup-plugin-json": "^2.0.1",
+    "sinon": "^1.17.6"
   }
 }
