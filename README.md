@@ -22,7 +22,7 @@ The complete list of configurable options is:
 
 | Param | Description | Default |
 |---|---|---|
-| data-url | Logging URL | http://localhost:8000/logs |
+| data-url | Logging URL | http://localhost:8000 |
 | data-autostart | Should Userale.js start on page load | true |
 | data-interval | Delay between transmit checks | 5000 (ms) |
 | data-threshold | Minimum number of logs to send | 5 |

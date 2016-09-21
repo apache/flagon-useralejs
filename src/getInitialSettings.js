@@ -26,7 +26,7 @@ export function getInitialSettings() {
   var get = script ? script.getAttribute.bind(script) : function() { return null; };
 
   settings.autostart = get('data-autostart') === 'false' ? false : true;
-  settings.url = get('data-url') || 'http://localhost:8000/logs';
+  settings.url = get('data-url') || 'http://localhost:8000';
   settings.transmitInterval = +get('data-interval') || 5000;
   settings.logCountThreshold = +get('data-threshold') || 5;
   settings.userId = get('data-user') || null;
