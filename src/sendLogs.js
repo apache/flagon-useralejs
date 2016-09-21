@@ -18,11 +18,11 @@ export function initSender(logs, config) {
 }
 
 export function sendOnInterval(logs, config) {
-  setTimeout(function() {
-    if (logs.length >= config.logCountThreshold) {
-      var data = logs;
-      logs = [];
-      sendLogs(data, config.url, 5);
+  setInterval(function() {
+    var logCount = logs.length;
+    if (logCount >= config.logCountThreshold) {
+      sendLogs(logs.slice(0), config.url, 0); // Send a copy
+      logs.splice(0, logCount); // Clear array reference (no reassignment)
     }
   }, config.transmitInterval);
 }
