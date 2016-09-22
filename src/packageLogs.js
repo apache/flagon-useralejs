@@ -90,7 +90,12 @@ export function buildPath(e) {
 }
 
 export function selectorizePath(path) {
-  return path.map(function(pathEle) {
-    return getSelector(pathEle);
-  });
+  var i = 0;
+  var pathEle;
+  var pathSelectors = [];
+  while (pathEle = path[i]) {
+    pathSelectors.push(getSelector(pathEle));
+    ++i;
+  }
+  return pathSelectors;
 }
