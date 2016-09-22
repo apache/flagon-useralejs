@@ -59,7 +59,7 @@ app.get('/', function (req, res) {
   res.send('UserAle Local');
 });
 
-app.post('/logs', function (req, res) {
+app.post('/', function (req, res) {
   console.log(req.body);
 
   var delimiter = ',\n\t';
