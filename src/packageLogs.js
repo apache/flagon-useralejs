@@ -36,7 +36,7 @@ export function packageLog(e, detailFcn) {
   var log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
-    'clientTime' : ~~((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()),
+    'clientTime' : Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()),
     'location' : getLocation(e),
     'type' : e.type,
     'userAction' : true,
