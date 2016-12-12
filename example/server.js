@@ -53,10 +53,12 @@ app.use(function (req, res, next) {
 });
 app.use(bodyParser.urlencoded({extended: true, limit: '100mb'}));
 app.use(bodyParser.json({limit: '100mb'}));
+app.use('/build', express.static(path.join(__dirname, '/../build')));
+app.set('view engine', 'jade');
 
 
 app.get('/', function (req, res) {
-  res.send('UserAle Local');
+  res.sendfile('index.html', { root: __dirname });
 });
 
 app.post('/', function (req, res) {
