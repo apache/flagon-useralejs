@@ -15,27 +15,37 @@
  * limitations under the License.
  */
 
+
 export function initSender(logs, config) {
   sendOnInterval(logs, config);
   sendOnClose(logs, config);
 }
 
 export function sendOnInterval(logs, config) {
-  setInterval(function() {
+  setInterval(function () {
     if (logs.length >= config.logCountThreshold) {
-      sendLogs(logs.slice(0), config.url, 0); // Send a copy
+      if (config.url && config.url !== "") {
+        sendLogs(logs.slice(0), config.url, 0); // Send a copy
+      }
+      var sendEvent = new CustomEvent(config.eventPrefix + ".logs.send", {
+        detail: {
+          logs: logs
+        }
+      });
+      window.dispatchEvent(sendEvent);
       logs.splice(0); // Clear array reference (no reassignment)
+
     }
   }, config.transmitInterval);
 }
 
 export function sendOnClose(logs, config) {
   if (navigator.sendBeacon) {
-    window.addEventListener('unload', function() {
+    window.addEventListener('unload', function () {
       navigator.sendBeacon(config.url, JSON.stringify(logs));
     });
   } else {
-    window.addEventListener('beforeunload', function() {
+    window.addEventListener('beforeunload', function () {
       if (logs.length > 0) {
         sendLogs(logs, config.url, 1);
       }
@@ -51,11 +61,14 @@ export function sendLogs(logs, url, retries) {
   req.open('POST', url);
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
-  req.onreadystatechange = function() {
+  req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status !== 200) {
       if (retries > 0) {
         sendLogs(logs, url, retries--);
       }
+    }
+    else {
+      window.trigger()
     }
   };
 

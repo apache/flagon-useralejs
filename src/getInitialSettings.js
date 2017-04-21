@@ -16,27 +16,40 @@
  */
 
 export function getInitialSettings() {
-  var settings = {};
+  var dataKeyAdapter = {
+    interval: "transmitInterval",
+    threshold: "logCountThreshold",
+    user: "userId",
+    tool: "toolName"
+  };
 
-  var script = document.currentScript || (function () {
-    var scripts = document.getElementsByTagName('script');
-    return scripts[scripts.length - 1];
-  })();
+  var settings = {
+    url: null,
+    autostart: true,
+    transmitInterval: 5000,
+    logCountThreshold: 5,
+    userId: null,
+    version: null,
+    logDetails: false,
+    resolution: 500,
+    toolName: 500,
+    userFromParams: null,
+    time: timeStampScale(document.createEvent('CustomEvent')),
+    eventPrefix: "userale"
+  };
 
-  var get = script ? script.getAttribute.bind(script) : function() { return null; };
-
-  settings.autostart = get('data-autostart') === 'false' ? false : true;
-  settings.url = get('data-url') || 'http://localhost:8000';
-  settings.transmitInterval = +get('data-interval') || 5000;
-  settings.logCountThreshold = +get('data-threshold') || 5;
-  settings.userId = get('data-user') || null;
-  settings.version = get('data-version') || null;
-  settings.logDetails = get('data-log-details') === 'true' ? true : false;
-  settings.resolution = +get('data-resolution') || 500;
-  settings.toolName = get('data-tool') || null;
-  settings.userFromParams = get('data-user-from-params') || null;
-  settings.time = timeStampScale(document.createEvent('CustomEvent'));
-
+  var useraleTag = document.getElementById("userale-plugin");
+  if (useraleTag) {
+    var configurationData = useraleTag.dataset || {};
+    for (var key in configurationData) {
+      if (configurationData.hasOwnProperty(key)) {
+        if (dataKeyAdapter.hasOwnProperty(key)) {
+          settings[dataKeyAdapter[key]] = configurationData[key];
+        }
+        settings[key] = configurationData[key];
+      }
+    }
+  }
   return settings;
 }
 
@@ -60,7 +73,9 @@ export function timeStampScale(e) {
       }
     }
   } else {
-    tsScaler = function () { return Date.now(); };
+    tsScaler = function () {
+      return Date.now();
+    };
   }
 
   return tsScaler;
