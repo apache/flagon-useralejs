@@ -23,46 +23,46 @@ var json = require('rollup-plugin-json');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var mocha = require('gulp-mocha');
-var babel = require('babel-register')
+var babel = require('babel-register');
 
 var version = require('./package.json').version;
 var userale = 'userale-' + version;
 
 // Clean build directory
-gulp.task('clean', function() {
-  return del(['build/*'], { dot : true });
+gulp.task('clean', function () {
+  return del(['build/*'], {dot: true});
 });
 
 // Build the module with Rollup
-gulp.task('rollup', function() {
+gulp.task('rollup', function () {
   return rollup({
-    entry : 'src/main.js',
-    plugins : [
+    entry: 'src/main.js',
+    plugins: [
       json()
     ]
   })
-  .then(function(bundle) {
-    return bundle.write({
-      format : 'umd',
-      moduleName : 'userale',
-      dest : 'build/' + userale + '.js'
+    .then(function (bundle) {
+      return bundle.write({
+        format: 'umd',
+        moduleName: 'userale',
+        dest: 'build/' + userale + '.js'
+      });
     });
-  });
 });
 
 // Minify and output completed build
-gulp.task('build', ['rollup'], function() {
+gulp.task('build', ['rollup'], function () {
   return gulp.src('build/' + userale + '.js')
     .pipe(uglify())
     .on('error', gutil.log)
-    .pipe(rename({ suffix : '.min' }))
+    .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest('build'))
     .pipe(rename('userale-test.min.js'))
     .pipe(gulp.dest('build'));
 });
 
 // Lint
-gulp.task('lint', function() {
+gulp.task('lint', function () {
   return gulp.src('src/**/*.js')
     .pipe(eslint())
     .pipe(eslint.format());
@@ -70,20 +70,20 @@ gulp.task('lint', function() {
 
 // Test
 // TODO: separate out tests that depend on built library for faster tests?
-gulp.task('test', ['build', 'lint'], function() {
-  return gulp.src('test/**/*_spec.js', { read : false })
+gulp.task('test', ['build', 'lint'], function () {
+  return gulp.src('test/**/*_spec.js', {read: false})
     .pipe(mocha({
-      compilers : {
-        js : babel
+      compilers: {
+        js: babel
       }
     }))
-    .on('error', function(err) {
+    .on('error', function (err) {
       gutil.log(err);
       this.emit('end');
     });
 });
 
 // Development mode
-gulp.task('dev', ['clean', 'test'], function() {
+gulp.task('dev', ['clean', 'test'], function () {
   gulp.watch(['src/**/*.js', 'test/**/*.{js,html}'], ['test']);
 });
