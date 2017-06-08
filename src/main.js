@@ -38,6 +38,11 @@ if (config.autostart) {
   setup(config);
 }
 
+/**
+ * Hooks the global event listener, and starts up the
+ * logging interval.
+ * @param  {Object} config Configuration settings for the logger
+ */
 function setup(config) {
   if (!started) {
     setTimeout(function() {
@@ -58,6 +63,10 @@ function setup(config) {
 // Export the Userale API
 export var version = userAleVersion;
 
+/**
+ * Used to start the logging process if the
+ * autostart configuration option is set to false.
+ */
 export function start() {
   if (!started) {
     setup(config);
@@ -66,10 +75,19 @@ export function start() {
   config.on = true;
 }
 
+/**
+ * Halts the logging process. Logs will no longer be sent.
+ */
 export function stop() {
   config.on = false;
 }
 
+/**
+ * Updates the current configuration
+ * object with the provided values.
+ * @param  {Object} newConfig The configuration options to use.
+ * @return {Object}           Returns the updated configuration.
+ */
 export function options(newConfig) {
   if (newConfig !== undefined) {
     configure(config, newConfig);
@@ -78,6 +96,11 @@ export function options(newConfig) {
   return config;
 }
 
+/**
+ * Appends a log to the log queue.
+ * @param  {Object} customLog The log to append.
+ * @return {boolean}          Whether the operation succeeded.
+ */
 export function log(customLog) {
   if (customLog !== null && typeof customLog === 'object') {
     logs.push(customLog);

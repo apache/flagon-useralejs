@@ -18,11 +18,22 @@
 var logs;
 var config;
 
+/**
+ * Assigns the config and log container to be used by the logging functions.
+ * @param  {Array} newLogs   Log container.
+ * @param  {Object} newConfig Configuration to use while logging.
+ */
 export function initPackager(newLogs, newConfig) {
   logs = newLogs;
   config = newConfig;
 }
 
+/**
+ * Transforms the provided event into a log and appends it to the log container.
+ * @param  {Object} e         The event to be logged.
+ * @param  {Function} detailFcn The function to extract additional log parameters from the event.
+ * @return {boolean}           Whether the event was logged.
+ */
 export function packageLog(e, detailFcn) {
   if (!config.on) {
     return false;
@@ -52,6 +63,12 @@ export function packageLog(e, detailFcn) {
   return true;
 }
 
+/**
+ * Extracts coordinate information from the event
+ * depending on a few browser quirks.
+ * @param  {Object} e The event to extract coordinate information from.
+ * @return {Object}   An object containing nullable x and y coordinates for the event.
+ */
 export function getLocation(e) {
   if (e.pageX != null) {
     return { 'x' : e.pageX, 'y' : e.pageY };
@@ -62,6 +79,11 @@ export function getLocation(e) {
   }
 }
 
+/**
+ * Builds a string CSS selector from the provided element
+ * @param  {HTMLElement} ele The element from which the selector is built.
+ * @return {string}     The CSS selector for the element, or Unknown if it can't be determined.
+ */
 export function getSelector(ele) {
   if (ele.localName) {
     return ele.localName + (ele.id ? ('#' + ele.id) : '') + (ele.className ? ('.' + ele.className) : '');
@@ -74,6 +96,11 @@ export function getSelector(ele) {
   }
 }
 
+/**
+ * Builds an array of elements from the provided event target, to the root element.
+ * @param  {Object} e Event from which the path should be built.
+ * @return {HTMLElement[]}   Array of elements, starting at the event target, ending at the root element.
+ */
 export function buildPath(e) {
   var path = [];
   if (e.path) {
@@ -89,6 +116,11 @@ export function buildPath(e) {
   return selectorizePath(path);
 }
 
+/**
+ * Builds a CSS selector path from the provided list of elements.
+ * @param  {HTMLElement[]} path Array of HTMLElements from which the path should be built.
+ * @return {string[]}      Array of string CSS selectors.
+ */
 export function selectorizePath(path) {
   var i = 0;
   var pathEle;

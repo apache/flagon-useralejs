@@ -22,6 +22,11 @@ var bufferBools;
 var bufferedEvents;
 var windowEvents;
 
+/**
+ * Defines the way information is extracted from various events.
+ * Also defines which events we will listen to.
+ * @param  {Object} config Configuration object to read from.
+ */
 export function defineDetails(config) {
   // Events list
   // Keys are event types
@@ -54,6 +59,11 @@ export function defineDetails(config) {
   windowEvents = ['load', 'blur', 'focus'];
 }
 
+/**
+ * Hooks the event handlers for each event type of interest.
+ * @param  {Object} config Configuration object to use.
+ * @return {boolean}        Whether the operation succeeded
+ */
 export function attachHandlers(config) {
   defineDetails(config);
 

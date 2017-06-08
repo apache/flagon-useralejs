@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
+/**
+ * Extracts the initial configuration settings from the
+ * currently executing script tag.
+ * @return {Object} The extracted configuration object
+ */
 export function getInitialSettings() {
   var settings = {};
 
@@ -40,9 +45,19 @@ export function getInitialSettings() {
   return settings;
 }
 
+/**
+ * Creates a function to normalize the timestamp of the provided event.
+ * @param  {Object} e An event containing a timeStamp property.
+ * @return {timeStampScale~tsScaler}   The timestamp normalizing function.
+ */
 export function timeStampScale(e) {
   if (e.timeStamp && e.timeStamp > 0) {
     var delta = Date.now() - e.timeStamp;
+    /**
+     * Returns a timestamp depending on various browser quirks.
+     * @param  {?Number} ts A timestamp to use for normalization.
+     * @return {Number} A normalized timestamp.
+     */
     var tsScaler;
 
     if (delta < 0) {

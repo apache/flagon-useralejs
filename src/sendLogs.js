@@ -15,11 +15,22 @@
  * limitations under the License.
  */
 
+/**
+ * Initializes the log queue processors.
+ * @param  {Array} logs   Array of logs to append to.
+ * @param  {Object} config Configuration object to use when logging.
+ */
 export function initSender(logs, config) {
   sendOnInterval(logs, config);
   sendOnClose(logs, config);
 }
 
+/**
+ * Checks the provided log array on an interval, flushing the logs
+ * if the queue has reached the threshold specified by the provided config.
+ * @param  {Array} logs   Array of logs to read from.
+ * @param  {Object} config Configuration object to be read from.
+ */
 export function sendOnInterval(logs, config) {
   setInterval(function() {
     if (logs.length >= config.logCountThreshold) {
@@ -29,6 +40,11 @@ export function sendOnInterval(logs, config) {
   }, config.transmitInterval);
 }
 
+/**
+ * Attempts to flush the remaining logs when the window is closed.
+ * @param  {Array} logs   Array of logs to be flushed.
+ * @param  {Object} config Configuration object to be read from.
+ */
 export function sendOnClose(logs, config) {
   if (navigator.sendBeacon) {
     window.addEventListener('unload', function() {
@@ -43,6 +59,13 @@ export function sendOnClose(logs, config) {
   }
 }
 
+/**
+ * Sends the provided array of logs to the specified url,
+ * retrying the request up to the specified number of retries.
+ * @param  {Array} logs    Array of logs to send.
+ * @param  {string} url     URL to send the POST request to.
+ * @param  {Number} retries Maximum number of attempts to send the logs.
+ */
 export function sendLogs(logs, url, retries) {
   var req = new XMLHttpRequest();
 

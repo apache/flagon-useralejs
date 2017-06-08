@@ -15,6 +15,12 @@
  * limitations under the License.
  */
 
+/**
+ * Shallow merges the first argument with the second.
+ * Retrieves/updates the userid if userFromParams is provided.
+ * @param  {Object} config    Current configuration object to be merged into.
+ * @param  {Object} newConfig Configuration object to merge into the current config.
+ */
 export function configure(config, newConfig) {
   Object.keys(newConfig).forEach(function(option) {
     if (option === 'userFromParams') {
@@ -27,6 +33,11 @@ export function configure(config, newConfig) {
   });
 }
 
+/**
+ * Attempts to extract the userid from the query parameters of the URL.
+ * @param  {string} param The name of the query parameter containing the userid.
+ * @return {string|null}       The extracted/decoded userid, or null if none is found.
+ */
 export function getUserIdFromParams(param) {
   var userField = param;
   var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
