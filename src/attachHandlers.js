@@ -16,8 +16,10 @@
  */
 
 import { packageLog } from './packageLogs.js';
+import { packageIntervalLog } from './packageLogs';
 
 var events;
+var intervalEvents;
 var bufferBools;
 var bufferedEvents;
 var windowEvents;
@@ -56,6 +58,9 @@ export function defineDetails(config) {
     'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
   };
 
+  //@todo: Investigate drag events and their behavior
+  intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+
   windowEvents = ['load', 'blur', 'focus'];
 }
 
@@ -70,6 +75,12 @@ export function attachHandlers(config) {
   Object.keys(events).forEach(function(ev) {
     document.addEventListener(ev, function(e) {
       packageLog(e, events[ev]);
+    }, true);
+  });
+
+  intervalEvents.forEach(function(ev) {
+    document.addEventListener(ev, function(e) {
+        packageIntervalLog(e);
     }, true);
   });
 

@@ -18,6 +18,15 @@
 var logs;
 var config;
 
+// Interval Logging Globals
+var intervalID;
+var intervalType;
+var intervalPath;
+var intervalTimer;
+var intervalCounter;
+var intervalLog;
+
+
 /**
  * Assigns the config and log container to be used by the logging functions.
  * @param  {Array} newLogs   Log container.
@@ -26,6 +35,12 @@ var config;
 export function initPackager(newLogs, newConfig) {
   logs = newLogs;
   config = newConfig;
+  intervalID = null;
+  intervalType = null;
+  intervalPath = null;
+  intervalTimer = null;
+  intervalCounter = 0;
+  intervalLog = null;
 }
 
 /**
@@ -50,6 +65,7 @@ export function packageLog(e, detailFcn) {
     'clientTime' : Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()),
     'location' : getLocation(e),
     'type' : e.type,
+    'logType': 'raw',
     'userAction' : true,
     'details' : details,
     'userId' : config.userId,
@@ -61,6 +77,62 @@ export function packageLog(e, detailFcn) {
   logs.push(log);
 
   return true;
+}
+
+/**
+ * Track intervals and gather details about it.
+ * @param {Object} e
+ * @return boolean
+ */
+export function packageIntervalLog(e) {
+    var target = getSelector(e.target);
+    var path = buildPath(e);
+    var type = e.type;
+    var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now());
+
+    // Init - this should only happen once on initialization
+    if (intervalID == null) {
+        intervalID = target;
+        intervalType = type;
+        intervalPath = path;
+        intervalTimer = timestamp;
+        intervalCounter = 0;
+    }
+
+    if (intervalID !== target || intervalType !== type) {
+        // When to create log? On transition end
+        // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
+        intervalLog = {
+            'target': intervalID,
+            'path': intervalPath,
+            'count': intervalCounter,
+            'duration': timestamp - intervalTimer,  // microseconds
+            'location': null,
+            'type': intervalType,
+            'logType': 'interval',
+            'userAction': false,
+            'userId': config.userId,
+            'toolVersion': config.version,
+            'toolName': config.toolName,
+            'useraleVersion': config.useraleVersion
+        };
+
+        logs.push(intervalLog);
+
+        // Reset
+        intervalID = target;
+        intervalType = type;
+        intervalPath = path;
+        intervalTimer = timestamp;
+        intervalCounter = 0;
+    }
+
+    // Interval is still occuring, just update counter
+    if (intervalID == target && intervalType == type) {
+        intervalCounter = intervalCounter + 1;
+    }
+
+    return true;
 }
 
 /**
