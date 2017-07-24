@@ -23,7 +23,7 @@ var json = require('rollup-plugin-json');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var mocha = require('gulp-mocha');
-var babel = require('babel-register')
+var babel = require('babel-register');
 
 var version = require('./package.json').version;
 var userale = 'userale-' + version;
@@ -43,7 +43,7 @@ gulp.task('rollup', function() {
   })
   .then(function(bundle) {
     return bundle.write({
-      format : 'umd',
+      format : 'iife',
       moduleName : 'userale',
       dest : 'build/' + userale + '.js'
     });
@@ -57,7 +57,7 @@ gulp.task('build', ['rollup'], function() {
     .on('error', gutil.log)
     .pipe(rename({ suffix : '.min' }))
     .pipe(gulp.dest('build'))
-    .pipe(rename('userale-test.min.js'))
+    .pipe(rename(userale + '.min.js'))
     .pipe(gulp.dest('build'));
 });
 
