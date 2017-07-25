@@ -102,14 +102,16 @@ export function packageIntervalLog(e) {
     if (intervalID !== target || intervalType !== type) {
         // When to create log? On transition end
         // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
+
         intervalLog = {
             'target': intervalID,
             'path': intervalPath,
             'count': intervalCounter,
             'duration': timestamp - intervalTimer,  // microseconds
-            'location': null,
             'type': intervalType,
-            'logType': 'interval',
+            'logType': 'interval',    
+            'targetChange': intervalID !== target,
+            'typeChange': intervalType !== type,
             'userAction': false,
             'userId': config.userId,
             'toolVersion': config.version,
