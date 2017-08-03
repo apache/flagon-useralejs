@@ -1,12 +1,13 @@
 {
   "name": "useralejs",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Javascript Client for UserAle",
   "main": "build/userale.js",
   "scripts": {
     "pretest": "gulp lint",
     "test": "gulp test",
     "build": "gulp build",
+    "clean": "gulp clean",
     "dev": "gulp dev",
     "example:watch": "nodemon -w ./example example/server.js"
   },
@@ -22,7 +23,8 @@
   "contributors": [
     "Clay Gimenez",
     "Robert Foley",
-    "Michelle Beard"
+    "Michelle Beard",
+    "Alex Ford"
   ],
   "license": "Apache-2.0",
   "bugs": {
@@ -42,8 +44,11 @@
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
+    "gulp-filter": "^5.0.0",
+    "gulp-json-modify": "^1.0.2",
     "gulp-mocha": "^3.0.1",
     "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "jsdom": "^8.4.0",
@@ -51,5 +56,8 @@
     "rollup": "^0.26.0",
     "rollup-plugin-json": "^2.0.1",
     "sinon": "^1.17.6"
+  },
+  "dependencies": {
+    "uglify-js-harmony": "^2.7.7"
   }
 }

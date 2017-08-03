@@ -24,9 +24,15 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var mocha = require('gulp-mocha');
 var babel = require('babel-register');
+var jsonModify = require('gulp-json-modify');
+var filter = require('gulp-filter');
+var uglifyHarmony = require('uglify-js-harmony');
+var minifier = require('gulp-uglify/minifier');
+var replace = require('gulp-replace');
 
 var version = require('./package.json').version;
 var userale = 'userale-' + version;
+var userAleWebExtDirName = 'UserAleWebExtension';
 
 // Clean build directory
 gulp.task('clean', function() {
@@ -50,8 +56,39 @@ gulp.task('rollup', function() {
   });
 });
 
+// Copy the rolled-up userale.js script into the webext dir
+gulp.task('copy-userale-script', ['rollup'], function() {
+    return gulp.src('build/' + userale + '.js')
+               .pipe(gulp.dest('build/' + userAleWebExtDirName));
+})
+
+// Build for the browser web extension
+gulp.task('build-web-ext', ['copy-userale-script'], function() {
+    // We setup some filters so that we can work on specific files from the stream
+    const f1 = filter(['**/*.js'], {restore: true});
+    const f2 = filter(['**/manifest.json'], {restore: true});
+    const f3 = filter(['**/globals.js'], {restore: true});
+    
+    return gulp.src(['src/' + userAleWebExtDirName + '/icons/**/*.*',
+              'src/' + userAleWebExtDirName + '/*.*',
+              '!src/' + userAleWebExtDirName + '/README.md'],
+             { base: 'src/' + userAleWebExtDirName + '' })
+            .pipe(f1)
+            .pipe(minifier({}, uglifyHarmony))
+            .on('error', gutil.log)
+            .pipe(f1.restore)
+            .pipe(f2)
+            .pipe(jsonModify({ key: "web_accessible_resources", value: [ userale + '.js' ]}))
+            .pipe(f2.restore)
+            .pipe(f3)
+            .pipe(replace(/userAleScript=\".*?\"/g, 'userAleScript=\'' + userale + '.js\''))
+            .pipe(f3.restore)
+            .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));
+        
+});
+
 // Minify and output completed build
-gulp.task('build', ['rollup'], function() {
+gulp.task('build', ['rollup', 'build-web-ext'], function() {
   return gulp.src('build/' + userale + '.js')
     .pipe(uglify())
     .on('error', gutil.log)
