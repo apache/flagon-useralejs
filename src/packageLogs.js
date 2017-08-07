@@ -71,7 +71,8 @@ export function packageLog(e, detailFcn) {
     'userId' : config.userId,
     'toolVersion' : config.version,
     'toolName' : config.toolName,
-    'useraleVersion': config.useraleVersion
+    'useraleVersion': config.useraleVersion,
+    'sessionID': config.sessionID
   };
 
   logs.push(log);
@@ -118,7 +119,8 @@ export function packageIntervalLog(e) {
             'userId': config.userId,
             'toolVersion': config.version,
             'toolName': config.toolName,
-            'useraleVersion': config.useraleVersion
+            'useraleVersion': config.useraleVersion,
+            'sessionID': config.sessionID
         };
 
         logs.push(intervalLog);

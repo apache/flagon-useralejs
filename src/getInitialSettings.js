@@ -41,6 +41,7 @@ export function getInitialSettings() {
   settings.toolName = get('data-tool') || null;
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
+  settings.sessionID = 'session_' + String(Date.now());
 
   return settings;
 }
