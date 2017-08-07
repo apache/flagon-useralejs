@@ -109,7 +109,7 @@ export function packageIntervalLog(e) {
             'count': intervalCounter,
             'duration': timestamp - intervalTimer,  // microseconds
             'startTime': intervalTimer,
-            'endTime': etimeStamp,
+            'endTime': timestamp,
             'type': intervalType,
             'logType': 'interval',    
             'targetChange': intervalID !== target,
