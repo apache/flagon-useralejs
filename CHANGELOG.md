@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.1.0 (2017-06-09)
-------------------
+UserALE.js - 0.1.0 (2017-08-25)
+-------------------------------
 * Initial release of UserALE.js 0.1.0.
-* Release Notes - SensSoft - Version UserALE.js 0.1.0
+* Release Report - goo.gl/6gjWj1
   * Sub-task
     * [SENSSOFT-91] - Userale.js Jenkins Build
 
