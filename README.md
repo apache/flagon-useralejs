@@ -1,11 +1,27 @@
-# UserALE.js
+# Apache SensSoft UserALE.js (Incubating)
 
 [![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=plastic)](https://builds.apache.org/job/useralejs-ci?)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The official JavaScript client for UserAle.  
+The official JavaScript client for [Apache SensSoft UserALE](https://github.com/apache/incubator-senssoft-userale).  
 
 Additional documentation can be found at http://senssoft.incubator.apache.org/userale/
+
+## Prerequsites
+
+```
+npm install gulp
+npm install del
+npm install gulp-eslint
+npm install rollup
+npm install rollup-plugin-json
+npm install gulp-uglify
+npm install gulp-rename
+npm install gulp-mocha
+npm install babel-register
+npm install express
+npm install body-parser
+```
 
 ## Build
 
@@ -54,7 +70,7 @@ Our top priority is to improve the testing system and to complete test coverage.
 
 ## Contributing
 
-Contributions are welcome!  Simply submit an issue report for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/senssoft) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
 
 ## License
 
