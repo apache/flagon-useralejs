@@ -1,9 +1,6 @@
 # UserALE Web Extension
 
-There are many different ways to create extensions/plugins for Firefox. This project follows the Web Extension way.
-
-For installation and other help, check out the Mozilla Developer Network (MDN) website:
-https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtension
+There are many different ways to create extensions for Chrome/Firefox. This project follows the Web Extension way.
 
 ## Folder/file structure
 
@@ -25,29 +22,17 @@ https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtensio
     * HTML for the options page.
 * user-ale-ext.js
     * The JavaScript code used by the web extension.
-* userale-0.2.1.min.js
-    * The User ALE client script, loaded by the web extension.
 
 ## Quick Start
 
-1. You need to have a UserALE server running; one way is to Git clone the UserALE repository (which if this README is on your filesystem, you've already done so), run the build, and then start the included test server.
+1. You need to have a UserALE server running; one way is to clone the UserALE repository, run the build, and then start the included test server.
     1. git clone https://github.com/apache/incubator-senssoft-useralejs.git
     1. cd incubator-senssoft-useralejs
     1. npm install && npm run build
     1. npm run example:watch
-    1. UserALE should now be running on http://localhost:8000
-1. Start a simple server to serve up the test page.
-    1. cd src/UserAleWebExtension/
-    1. npm install -g http-server
-    1. http-server
-    1. Test page should now be available at http://localhost:8080/index.html
-    1. NOTE: this test page is served up from the source directory and is NOT copied into the build directory because it is not part of the actual distriubtion.
-1. Load the web extension into Firefox.
-    1. Option 1: use npm's web-ext
-        1. cd build/UserAleWebExtension/
-        1. npm install -g web-ext
-        1. web-ext run --browser-console --start-url localhost:8080
-    1. Option 2: manual loading
+    1. A UserALE logging server should now be running on http://localhost:8000
+1. Load the web extension into your browser.
+    1. Firefox
         1. Open Firefox
         1. Enter about:debugging into the URL bar and press enter
         1. Check the box to 'Enable add-on debugging'
@@ -55,21 +40,19 @@ https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Your_first_WebExtensio
         1. Navigate to the root of the web extension directory (e.g. 'build/UserAleWebExtension')
         1. Press Open, and confirm that 'User ALE Extension' appears in the list
         1. You may now navigate to a web page to inject the User ALE script! (e.g. http://localhost:8080)
+    1. Chrome
+        1. Open Chrome
+        1. Enter chrome://extensions into the URL bar and press enter
+        1. Check the 'Developer mode' box
+        1. Press the 'Load unpacked extension' button
+        1. Navigate to the root of the build directory (e.g. 'build/UserAleWebExtension')
+        1. Press Ok, and confirm that 'UserALE Extension' appears in the list
+        1. You may now navigate to a web page to inject the User ALE script! (e.g. http://localhost:8080)
+
         
 ## Options
 
-You can set options for the web extension in Firefox by opening the menu, clicking on "Add-ons", then "Extensions". You should see the User ALE Web Extension listed and then you can click on the "Preferences" button to open up the options.
-
-You can also simply enter "about:addons" in the URL bar, then click on "Extensions" to achieve the same result.
-
-## Google Chrome
-
-You can load the web extension into Google Chrome with the following procedure:
-
-1. Within Chrome, open the menu, expand 'More tools...', and click on 'web extensions.'
-1. Enable developer mode by checking the box at the top of the page.
-1. Select the root of the web extension directory.
-1. Navigate to the test page (e.g. http://localhost:8080/index.html) to inject UserALE into the page.
+You can set options for the web extension in your browser by opening the extensions page, finding the extension, and choosing either "Preferences" for Firefox, or "Options" for Chrome.
     
 ## Updating UserALE client script
 
