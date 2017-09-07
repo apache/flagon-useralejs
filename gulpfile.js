@@ -29,7 +29,6 @@ var filter = require('gulp-filter');
 var uglifyHarmony = require('uglify-js-harmony');
 var minifier = require('gulp-uglify/minifier');
 var replace = require('gulp-replace');
-
 var version = require('./package.json').version;
 var userale = 'userale-' + version;
 var userAleWebExtDirName = 'UserAleWebExtension';
