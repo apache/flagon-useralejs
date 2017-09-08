@@ -23,12 +23,12 @@ To start logging with UserALE.js, you can either include our script in the web a
 
 To instrument a specific project, simply include this script tag on the page:
 
-```
+```html
 <script src="/path/to/userale-1.0.0.min.js"></script>
 ```
 UserALE.js is designed to be easily configured to fit your use case. We use HTML data parameters to pass configuration options to the library. For example, to set the logging URL:
 
-```
+```html
 <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
 ```
 
