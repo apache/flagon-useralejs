@@ -5,6 +5,8 @@
 
 The official JavaScript client for UserAle.  
 
+UserALE.js is a client side instrumentation library written in JavaScript. It is designed to be an easy-to-use, lightweight, and dependency-free way to quickly gather logs from your web applications.
+
 Additional documentation can be found at http://senssoft.incubator.apache.org/userale/
 
 ## Build
@@ -17,13 +19,14 @@ npm run build
 
 ## Use and Configure
 
-To include UserALE.js in your project:
+To start logging with UserALE.js, you can either include our script in the web application to be logged, or use our WebExtension to gather logs across any page a user visits.
+
+To instrument a specific project, simply include this script tag on the page:
 
 ```
 <script src="/path/to/userale-1.0.0.min.js"></script>
 ```
-
-HTML5 Data Parameters are used to configure UserALE.js.  For example, to set the logging URL:
+UserALE.js is designed to be easily configured to fit your use case. We use HTML data parameters to pass configuration options to the library. For example, to set the logging URL:
 
 ```
 <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
@@ -43,6 +46,8 @@ The complete list of configurable options is:
 | data-resolution | Delay between instances of high frequency logs (mouseover, scroll, etc.) | 500 (ms) |
 | data-user-from-params | Query param in the page URL to fetch userId from | null |
 | data-tool | Name of tool being logged | null |
+
+If you're interested in using our WebExtension to log user activity across all pages they visit, check out our browser specific instructions [here](https://github.com/apache/incubator-senssoft-useralejs/blob/SENSSOFT-192/src/UserALEWebExtension/README.md).
 
 ## Next Up
 
