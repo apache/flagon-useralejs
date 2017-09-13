@@ -32,10 +32,6 @@ function storeCallback(item) {
     toolVersion: item.toolVersion
   });
 }
-        
-function onError(error) {
-  console.log(error);
-}
 
 function injectScript(config) {
   options(config);

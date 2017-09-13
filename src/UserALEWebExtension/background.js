@@ -12,15 +12,19 @@ import * as MessageTypes from './messageTypes.js';
 // to have if-conditions all over the place.
 
 var browser = browser || chrome;
-        
-function onError(error) {
-  console.log(error);
+
+function dispatchTabMessage(message) {
+  browser.tabs.query({}, function (tabs) {
+    tabs.forEach(function (tab) {
+      browser.tabs.sendMessage(tab.id, message);
+    });
+  });
 }
 
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     case MessageTypes.CONFIG_CHANGE:
-      console.log('got config ', message.payload);
+      dispatchTabMessage(message);
       break;
     default:
       console.log('got unknown message type ', message);

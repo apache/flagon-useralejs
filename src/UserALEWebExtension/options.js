@@ -47,4 +47,4 @@ document.addEventListener("submit", function() {
   saveOptions();
 });
 
-  /* eslint-enable */
+/* eslint-enable */
