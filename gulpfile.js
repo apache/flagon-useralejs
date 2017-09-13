@@ -56,35 +56,64 @@ gulp.task('rollup', function() {
   });
 });
 
-// Copy the rolled-up userale.js script into the webext dir
-gulp.task('copy-userale-script', ['rollup'], function() {
-    return gulp.src('build/' + userale + '.js')
-               .pipe(gulp.dest('build/' + userAleWebExtDirName));
-})
+
+// Build the module with Rollup
+gulp.task('rollup-web-ext-content', function() {
+  return rollup({
+    entry : 'src/' + userAleWebExtDirName + '/content.js',
+    plugins : [
+      json()
+    ]
+  })
+  .then(function(bundle) {
+    return bundle.write({
+      moduleName : 'user-ale-ext-content',
+      dest : 'build/' + userAleWebExtDirName + '/content.js'
+    });
+  });
+});
+
+// Build the module with Rollup
+gulp.task('rollup-web-ext-background', function() {
+  return rollup({
+    entry : 'src/' + userAleWebExtDirName + '/background.js',
+    plugins : [
+      json()
+    ]
+  })
+  .then(function(bundle) {
+    return bundle.write({
+      moduleName : 'user-ale-ext-background',
+      dest : 'build/' + userAleWebExtDirName + '/background.js'
+    });
+  });
+});
+
+// Build the module with Rollup
+gulp.task('rollup-web-ext-options', function() {
+  return rollup({
+    entry : 'src/' + userAleWebExtDirName + '/options.js',
+    plugins : [
+      json()
+    ]
+  })
+  .then(function(bundle) {
+    return bundle.write({
+      moduleName : 'user-ale-ext-options',
+      dest : 'build/' + userAleWebExtDirName + '/options.js'
+    });
+  });
+});
 
 // Build for the browser web extension
-gulp.task('build-web-ext', ['copy-userale-script'], function() {
-    // We setup some filters so that we can work on specific files from the stream
-    const f1 = filter(['**/*.js'], {restore: true});
-    const f2 = filter(['**/manifest.json'], {restore: true});
-    const f3 = filter(['**/globals.js'], {restore: true});
-    
+gulp.task('build-web-ext', ['rollup-web-ext-options', 'rollup-web-ext-background', 'rollup-web-ext-content'], function() {
     return gulp.src(['src/' + userAleWebExtDirName + '/icons/**/*.*',
-              'src/' + userAleWebExtDirName + '/*.*',
-              '!src/' + userAleWebExtDirName + '/README.md'],
+              'src/' + userAleWebExtDirName + '/manifest.json',
+              'src/' + userAleWebExtDirName + '/optionsPage.html'
+              ],
              { base: 'src/' + userAleWebExtDirName + '' })
-            .pipe(f1)
-            .pipe(minifier({}, uglifyHarmony))
             .on('error', gutil.log)
-            .pipe(f1.restore)
-            .pipe(f2)
-            .pipe(jsonModify({ key: "web_accessible_resources", value: [ userale + '.js' ]}))
-            .pipe(f2.restore)
-            .pipe(f3)
-            .pipe(replace(/userAleScript=\".*?\"/g, 'userAleScript=\'' + userale + '.js\''))
-            .pipe(f3.restore)
-            .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));
-        
+            .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));        
 });
 
 // Minify and output completed build
