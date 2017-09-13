@@ -26,6 +26,39 @@ var intervalTimer;
 var intervalCounter;
 var intervalLog;
 
+var filterHandler = null;
+var mapHandler = null;
+
+/**
+ * Assigns a handler to filter logs out of the queue.
+ * @param  {Function} callback The handler to invoke when logging.
+ * @return {boolean}          Whether the operation succeeded.
+ */
+export function setLogFilter(callback) {
+  if (typeof callback !== 'function') {
+    return false;
+  }
+
+  filterHandler = callback;
+
+  return true;
+}
+
+/**
+ * Assigns a handler to transform logs from their default structure.
+ * @param  {Function} callback The handler to invoke when logging.
+ * @return {boolean}          Whether the operation succeeded.
+ */
+export function setLogMapper(callback) {
+  if (typeof callback !== 'function') {
+    return false;
+  }
+
+  mapHandler = callback;
+
+  return true;
+}
+
 
 /**
  * Assigns the config and log container to be used by the logging functions.
@@ -75,6 +108,14 @@ export function packageLog(e, detailFcn) {
     'sessionID': config.sessionID
   };
 
+  if (typeof filterHandler === 'function' && !filterHandler(log)) {
+    return false;
+  }
+
+  if (typeof mapHandler === 'function') {
+    log = mapHandler(log);
+  }
+
   logs.push(log);
 
   return true;
@@ -122,6 +163,14 @@ export function packageIntervalLog(e) {
             'useraleVersion': config.useraleVersion,
             'sessionID': config.sessionID
         };
+
+        if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
+          return false;
+        }
+
+        if (typeof mapHandler === 'function') {
+          intervalLog = mapHandler(intervalLog);
+        }
 
         logs.push(intervalLog);
 
