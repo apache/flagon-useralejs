@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var logs;
+export var logs;
 var config;
 
 // Interval Logging Globals
@@ -26,8 +26,8 @@ var intervalTimer;
 var intervalCounter;
 var intervalLog;
 
-var filterHandler = null;
-var mapHandler = null;
+export var filterHandler = null;
+export var mapHandler = null;
 
 /**
  * Assigns a handler to filter logs out of the queue.
@@ -54,6 +54,8 @@ export function setLogMapper(callback) {
 export function initPackager(newLogs, newConfig) {
   logs = newLogs;
   config = newConfig;
+  filterHandler = null;
+  mapHandler = null;
   intervalID = null;
   intervalType = null;
   intervalPath = null;
@@ -94,7 +96,7 @@ export function packageLog(e, detailFcn) {
     'sessionID': config.sessionID
   };
 
-  if (typeof filterHandler === 'function' && !filterHandler(log)) {
+  if ((typeof filterHandler === 'function') && !filterHandler(log)) {
     return false;
   }
 
