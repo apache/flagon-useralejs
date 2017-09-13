@@ -19,10 +19,25 @@ import { packageLog } from './packageLogs.js';
 import { packageIntervalLog } from './packageLogs';
 
 var events;
-var intervalEvents;
 var bufferBools;
 var bufferedEvents;
-var windowEvents;
+//@todo: Investigate drag events and their behavior
+var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+var windowEvents = ['load', 'blur', 'focus'];
+
+/**
+ * Maps an event to an object containing useful information.
+ * @param  {Object} e Event to extract data from
+ */
+function extractMouseEvent(e) {
+  return {
+    'clicks' : e.detail,
+    'ctrl' : e.ctrlKey,
+    'alt' : e.altKey,
+    'shift' : e.shiftKey,
+    'meta' : e.metaKey
+  };
+}
 
 /**
  * Defines the way information is extracted from various events.
@@ -34,10 +49,10 @@ export function defineDetails(config) {
   // Keys are event types
   // Values are functions that return details object if applicable
   events = {
-    'click' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
-    'dblclick' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
-    'mousedown' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
-    'mouseup' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
+    'click' : extractMouseEvent,
+    'dblclick' : extractMouseEvent,
+    'mousedown' : extractMouseEvent,
+    'mouseup' : extractMouseEvent,
     'focus' : null,
     'blur' : null,
     'input' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
@@ -57,11 +72,6 @@ export function defineDetails(config) {
     'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
     'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
   };
-
-  //@todo: Investigate drag events and their behavior
-  intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
-
-  windowEvents = ['load', 'blur', 'focus'];
 }
 
 /**
