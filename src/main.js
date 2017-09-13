@@ -25,7 +25,7 @@ import { initSender } from './sendLogs.js';
 var config = {};
 var logs = [];
 export var started = false;
-
+export { setLogMapper as map, setLogFilter as filter } from './packageLogs.js';
 
 // Start up Userale
 config.on = false;
