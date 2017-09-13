@@ -23,7 +23,7 @@ describe('sendLogs', () => {
   it('sends logs on an interval', (done) => {
     let requests = 0;
     const originalXMLHttpRequest = global.XMLHttpRequest;
-    const conf = { transmitInterval: 500, url: 'test', logCountThreshold: 2 };
+    const conf = { on: true, transmitInterval: 500, url: 'test', logCountThreshold: 2 };
     const logs = [];
     const clock = sinon.useFakeTimers();
     const xhr = sinon.useFakeXMLHttpRequest();
@@ -52,6 +52,39 @@ describe('sendLogs', () => {
     global.XMLHttpRequest = originalXMLHttpRequest;
     done();
   });
+
+  it('does not send logs if the config is off', (done) => {
+    let requests = 0;
+    const originalXMLHttpRequest = global.XMLHttpRequest;
+    const conf = { on: true, transmitInterval: 500, url: 'test', logCountThreshold: 1 };
+    const logs = [];
+    const clock = sinon.useFakeTimers();
+    const xhr = sinon.useFakeXMLHttpRequest();
+    global.XMLHttpRequest = xhr;
+    xhr.onCreate = () => { requests++; };
+
+    sendOnInterval(logs, conf);
+
+    // Make sure it respects the logCountThreshold
+    logs.push({ foo: 'bar1' });   
+    clock.tick(conf.transmitInterval);
+
+    expect(logs.length).to.equal(0);
+    expect(requests).to.equal(1);
+
+    conf.on = false;
+
+    logs.push({ foo: 'bar2' });
+    clock.tick(conf.transmitInterval);
+    expect(logs.length).to.equal(1);
+    expect(requests).to.equal(1);
+
+    xhr.restore();
+    clock.restore();
+    global.XMLHttpRequest = originalXMLHttpRequest;
+    done();
+  });
+
   it('sends logs on page exit with navigator', (done) => {
     const html = `<html><head></head><body></body></html>`;
     jsdom.env({
@@ -69,7 +102,7 @@ describe('sendLogs', () => {
 
         const evt = window.document.createEvent('CustomEvent');
         evt.initEvent('unload', true, true);
-        sendOnClose([{ foo: 'bar' }], { url: 'test' });
+        sendOnClose([{ foo: 'bar' }], { on: true, url: 'test' });
 
         window.dispatchEvent(evt);
         window.close();
@@ -99,12 +132,44 @@ describe('sendLogs', () => {
 
         const evt = window.document.createEvent('CustomEvent');
         evt.initEvent('beforeunload', true, true);
-        sendOnClose([{ foo: 'bar' }], { url: 'test' });
+        sendOnClose([{ foo: 'bar' }], { on: true, url: 'test' });
         
         window.dispatchEvent(evt);
         window.close();
 
         expect(requests).to.equal(1);
+        global.window = originalWindow;
+        global.navigator = originalNavigator;
+        global.XMLHttpRequest = originalXMLHttpRequest;
+        done();
+      }
+    });
+  });
+
+  it('does not send logs on page exit if config is off', (done) => {
+    const html = `<html><head></head><body></body></html>`;
+    jsdom.env({
+      html,
+      done: (err, window) => {
+        const originalNavigator = global.navigator;
+        const originalXMLHttpRequest = global.XMLHttpRequest;
+        const originalWindow = global.window;
+        let requests = 0;
+        const xhr = sinon.useFakeXMLHttpRequest();
+        global.XMLHttpRequest = xhr;
+        global.window = window;
+        global.XMLHttpRequest = xhr;
+        global.navigator = { sendBeacon: false, };
+        xhr.onCreate = () => { requests++; };
+
+        const evt = window.document.createEvent('CustomEvent');
+        evt.initEvent('beforeunload', true, true);
+        sendOnClose([{ foo: 'bar' }], { on: false, url: 'test' });
+        
+        window.dispatchEvent(evt);
+        window.close();
+
+        expect(requests).to.equal(0);
         global.window = originalWindow;
         global.navigator = originalNavigator;
         global.XMLHttpRequest = originalXMLHttpRequest;
