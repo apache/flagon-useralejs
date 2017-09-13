@@ -18,12 +18,39 @@ import { expect } from 'chai';
 import jsdom from 'jsdom';
 import fs from 'fs';
 import {
-  packageLog, initPackager, getLocation, getSelector, buildPath, selectorizePath
+  packageLog, initPackager, getLocation, getSelector, buildPath, selectorizePath,
+  filterHandler, mapHandler, setLogFilter, setLogMapper, logs
 } from '../src/packageLogs';
 
 describe('packageLogs', () => {
   const url = 'file://' + __dirname + '/packageLogs.html';
   const html = fs.readFileSync(__dirname + '/packageLogs.html');
+
+  describe('setLogFilter', () => {
+    it('assigns the handler to the provided value', () => {
+      const func = x => true;
+      setLogFilter(func);
+      expect(filterHandler).to.equal(func);
+    });
+    it('allows the handler to be nulled', () => {
+      setLogFilter(x => true);
+      setLogFilter(null);
+      expect(filterHandler).to.equal(null);
+    });
+  });
+
+  describe('setLogMapper', () => {
+    it('assigns the handler to the provided value', () => {
+      const func = x => true;
+      setLogMapper(func);
+      expect(mapHandler).to.equal(func);
+    });
+    it('allows the handler to be nulled', () => {
+      setLogMapper(x => true);
+      setLogMapper(null);
+      expect(mapHandler).to.equal(null);
+    });
+  });
 
   describe('packageLog', () => {
     it('only executes if on', (done) => {
@@ -56,6 +83,107 @@ describe('packageLogs', () => {
       };
       expect(packageLog(evt)).to.equal(true);
       done();
+    });
+
+    it('filters logs when a handler is assigned and returns false', () => {
+      let filterCalled = false;
+      const filter = (log) => {
+        filterCalled = true;
+        return false;
+      };
+
+      const evt = {
+        target: {},
+        type: 'test',
+      };
+
+      initPackager([], { on: true });
+      packageLog(evt);
+
+      expect(logs.length).to.equal(1);
+
+      setLogFilter(filter);
+      packageLog(evt);
+
+      expect(logs.length).to.equal(1);
+    });
+
+    it('assigns logs to the mapper\'s return value if a handler is assigned', () => {
+      let mapperCalled = false;
+
+      const mappedLog = { type: 'foo' };
+      const mapper = (log) => {
+        mapperCalled = true;
+        return mappedLog;
+      };
+
+      const evt = {
+        target: {},
+        type: 'test',
+      };
+
+      initPackager([], { on: true });
+
+      setLogMapper(mapper);
+      packageLog(evt);
+
+      expect(mapperCalled).to.equal(true);
+      expect(logs.indexOf(mappedLog)).to.equal(0);
+    });
+
+    it('does not call the map handler if the log is filtered out', () => {
+      let mapperCalled = false;
+      const filter = () => false;
+      const mapper = (log) => {
+        mapperCalled = true;
+        return log;
+      };
+
+      const evt = {
+        target: {},
+        type: 'test',
+      };
+
+      initPackager([], { on: true });
+      setLogFilter(filter);
+      setLogMapper(mapper);
+
+      packageLog(evt);
+
+      expect(mapperCalled).to.equal(false);
+    });
+
+    it('does not attempt to call a non-function filter/mapper', () => {
+      let filterCalled = false;
+      let mapperCalled = false;
+      const filter = () => {
+        filterCalled = true;
+        return true;
+      };
+      const mapper = (log) => {
+        mapperCalled = true;
+        return log;
+      };
+
+      const evt = {
+        target: {},
+        type: 'test',
+      };
+
+      initPackager([], { on: true });
+      setLogFilter(filter);
+      setLogMapper(mapper);
+
+      packageLog(evt);
+
+      expect(filterCalled).to.equal(true);
+      expect(mapperCalled).to.equal(true);
+
+      setLogFilter('foo');
+      setLogMapper('bar');
+
+      packageLog(evt);
+      expect(logs.length).to.equal(2);
     });
   });
 
