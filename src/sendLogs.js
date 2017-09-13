@@ -50,6 +50,10 @@ export function sendOnInterval(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 export function sendOnClose(logs, config) {
+  if (!config.on) {
+    return;
+  }
+
   if (navigator.sendBeacon) {
     window.addEventListener('unload', function() {
       navigator.sendBeacon(config.url, JSON.stringify(logs));
