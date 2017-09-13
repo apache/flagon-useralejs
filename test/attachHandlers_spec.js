@@ -29,8 +29,13 @@ describe('attachHandlers', () => {
       'input', 'change', 'dragstart', 'dragend', 'drag', 'drop',
       'keydown', 'mouseover', 'submit'
     ];
+
     // List of supported window events
     const missingWindowEvents = ['wheel', 'scroll', 'resize', 'load', 'blur', 'focus'];
+
+    // List of supported interval events
+    const missingIntervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+
     // Acts as a kind of Proxy for addEventListener. Keeps track of added listeners.
     const listenerHook = eventList => (ev) => {
       const evIndex = eventList.indexOf(ev);
@@ -40,13 +45,17 @@ describe('attachHandlers', () => {
         duplicateEvents++;
       }
     };
+
+    const missingDocumentAndIntervalEvents = missingDocumentEvents.concat(missingIntervalEvents);
+
     // MOCK
-    global.document = { addEventListener: listenerHook(missingDocumentEvents) };
+    global.document = { addEventListener: listenerHook(missingDocumentAndIntervalEvents) };
     global.window = { addEventListener: listenerHook(missingWindowEvents) };
     attachHandlers({ logDetails: true });
     expect(duplicateEvents).to.equal(0);
-    expect(missingDocumentEvents.length).to.equal(0);
+    expect(missingDocumentAndIntervalEvents.length).to.equal(0);
     expect(missingWindowEvents.length).to.equal(0);
+
     // UNMOCK
     global.document = initialDocument;
     global.window = initialWindow;
