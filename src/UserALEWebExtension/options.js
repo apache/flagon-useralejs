@@ -1,4 +1,4 @@
-/* eslint-env node */
+/* eslint-disable */
 
 if (chrome) {
     browser = chrome;
@@ -42,3 +42,5 @@ function saveOptions(e) {
 document.addEventListener("submit", function() {
     saveOptions();
 });
+
+/* eslint-enable */
