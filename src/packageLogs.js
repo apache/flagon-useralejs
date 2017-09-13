@@ -32,31 +32,17 @@ var mapHandler = null;
 /**
  * Assigns a handler to filter logs out of the queue.
  * @param  {Function} callback The handler to invoke when logging.
- * @return {boolean}          Whether the operation succeeded.
  */
 export function setLogFilter(callback) {
-  if (typeof callback !== 'function') {
-    return false;
-  }
-
   filterHandler = callback;
-
-  return true;
 }
 
 /**
  * Assigns a handler to transform logs from their default structure.
  * @param  {Function} callback The handler to invoke when logging.
- * @return {boolean}          Whether the operation succeeded.
  */
 export function setLogMapper(callback) {
-  if (typeof callback !== 'function') {
-    return false;
-  }
-
   mapHandler = callback;
-
-  return true;
 }
 
 
