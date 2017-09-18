@@ -80,16 +80,25 @@ function packageBrowserLog(type, logDetail) {
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     case MessageTypes.CONFIG_CHANGE:
-      const updatedConfig = Object.assign({}, config, {
-        url: message.payload.userAleHost,
-        userId: message.payload.toolUser,
-        toolName: message.payload.toolName,
-        toolVersion: message.payload.toolVersion
-      });
-      initPackager(logs, updatedConfig);
-      initSender(logs, updatedConfig);
-      dispatchTabMessage(message);
+      (function () {
+        const updatedConfig = Object.assign({}, config, {
+          url: message.payload.userAleHost,
+          userId: message.payload.toolUser,
+          toolName: message.payload.toolName,
+          toolVersion: message.payload.toolVersion
+        });
+        initPackager(logs, updatedConfig);
+        initSender(logs, updatedConfig);
+        dispatchTabMessage(message);
+      })();
       break;
+
+    case MessageTypes.ADD_LOG:
+      (function () {
+        logs.push(message.payload);
+      })();
+      break;
+
     default:
       console.log('got unknown message type ', message);
   }
