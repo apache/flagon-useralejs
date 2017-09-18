@@ -9,7 +9,8 @@
   "permissions": [
     "activeTab",
     "storage",
-    "tabs"
+    "tabs",
+    "<all_urls>"
   ],
   "background": {
     "scripts": ["background.js"]
