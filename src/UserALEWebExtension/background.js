@@ -69,7 +69,7 @@ function packageBrowserLog(type, logDetail) {
     'logType': 'raw',
     'userAction' : true,
     'details' : logDetail,
-    'userId' : globals.userId,
+    'userId' : globals.toolUser,
     'toolVersion': null,
     'toolName': null,
     'useraleVersion': null,
