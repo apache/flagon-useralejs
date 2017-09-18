@@ -17,7 +17,6 @@ let store = browser.storage.local.get({
 }, storeCallback);
 
 function storeCallback(item) {
-  console.log(item);
   document.getElementById("host").value = item.userAleHost;
   document.getElementById("clientScript").value = item.userAleScript;
   document.getElementById("toolUser").value = item.toolUser;
