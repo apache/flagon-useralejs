@@ -61,11 +61,3 @@ You can set options for the web extension in your browser by opening the extensi
 This version of the web extension has been modified to automatically reflect the correct version of the UserALE core script during the build process. You should not need to change anything for it to "just work".
 
 However, if something appears wrong, you can look at the 'src/UserAleWebExtension/globals.js' and 'src/UserAleWebExtension/manifest.json' to see how the UserALE client script is being set. Also look at the build steps related to the web extension in 'gulpfile.js' to see how the two previously mentioned files are modified to reflect the current version of the UserALE client script.
-
-## Gotchas
-
-There is a known issue when attemping to gather logs from a page running on HTTPS. This occurs due to Mixed Active Content rules in the browser, since the current implementation of the Extension injects the script as HTTP. We are aware of the problem and are actively working towards a fix.
-
-In the meantime, the only workaround is to disable the related security option in the browser:
-* [Chrome](https://superuser.com/questions/487748/how-to-allow-chrome-browser-to-load-insecure-content)
-* [Firefox](https://support.mozilla.org/en-US/kb/mixed-content-blocking-firefox)
