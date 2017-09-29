@@ -80,10 +80,15 @@ export function packageLog(e, detailFcn) {
     details = detailFcn(e);
   }
 
+  var timeFields = extractTimeFields(
+    (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
+  );
+
   var log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
-    'clientTime' : Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()),
+    'clientTime' : timeFields.milli,
+    'microTime' : timeFields.micro,
     'location' : getLocation(e),
     'type' : e.type,
     'logType': 'raw',
@@ -107,6 +112,19 @@ export function packageLog(e, detailFcn) {
   logs.push(log);
 
   return true;
+}
+
+/**
+ * Extract the millisecond and microsecond portions of a timestamp.
+ * @param  {Number} timeStamp The timestamp to split into millisecond and microsecond fields.
+ * @return {Object}           An object containing the millisecond
+ *                            and microsecond portions of the timestamp.
+ */
+export function extractTimeFields(timeStamp) {
+  return {
+    milli: Math.floor(timeStamp),
+    micro: Number((timeStamp % 1).toFixed(3)),
+  };
 }
 
 /**

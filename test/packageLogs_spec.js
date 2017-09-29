@@ -19,7 +19,7 @@ import jsdom from 'jsdom';
 import fs from 'fs';
 import {
   packageLog, initPackager, getLocation, getSelector, buildPath, selectorizePath,
-  filterHandler, mapHandler, setLogFilter, setLogMapper, logs
+  extractTimeFields, filterHandler, mapHandler, setLogFilter, setLogMapper, logs,
 } from '../src/packageLogs';
 
 describe('packageLogs', () => {
@@ -184,6 +184,41 @@ describe('packageLogs', () => {
 
       packageLog(evt);
       expect(logs.length).to.equal(2);
+    });
+  });
+
+  describe('extractTimeFields', () => {
+    it('returns the millisecond and microsecond portions of a timestamp', () => {
+      const timeStamp = 123.456;
+      const fields = { milli: 123, micro: 0.456 };
+      const ret = extractTimeFields(timeStamp);
+
+      expect(ret.milli).to.equal(fields.milli);
+      expect(ret.micro).to.equal(fields.micro);
+    });
+    it('sets micro to 0 when no decimal is present', () => {
+      const timeStamp = 123;
+      const fields = { milli: 123, micro: 0 };
+      const ret = extractTimeFields(timeStamp);
+
+      expect(ret.milli).to.equal(fields.milli);
+      expect(ret.micro).to.equal(fields.micro);
+    });
+    it('always returns an object', () => {
+      const stampVariants = [
+        null,
+        'foobar',
+        { foo: 'bar' },
+        undefined,
+        ['foo', 'bar'],
+        123,
+      ];
+
+      stampVariants.forEach((variant) => {
+        const ret = extractTimeFields(variant);
+        expect(!!ret).to.equal(true);
+        expect(typeof ret).to.equal('object');
+      });
     });
   });
 
