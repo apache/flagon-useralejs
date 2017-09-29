@@ -5,7 +5,7 @@
 import * as globals from './globals';
 import * as MessageTypes from './messageTypes.js';
 import { timeStampScale } from '../getInitialSettings.js';
-import { initPackager, packageLog } from '../packageLogs.js';
+import { extractTimeFields, initPackager, packageLog } from '../packageLogs.js';
 import { initSender } from '../sendLogs.js';
 
 // inherent dependency on globals.js, loaded by the webext
@@ -28,9 +28,14 @@ var config = {
   on: true,
 };
 var sessionId = 'session_' + Date.now();
+
+var getTimestamp = ((typeof performance !== 'undefined') && (typeof performance.now !== 'undefined'))
+  ? function () { return performance.now() + performance.timing.navigationStart; }
+  : Date.now;
+
 browser.storage.local.set({ sessionId: sessionId });
 
-let store = browser.storage.local.get({
+var store = browser.storage.local.get({
   userAleHost: globals.userAleHost,
   userAleScript: globals.userAleScript,
   toolUser: globals.toolUser,
@@ -60,10 +65,13 @@ function dispatchTabMessage(message) {
 }
 
 function packageBrowserLog(type, logDetail) {
+  var timeFields = extractTimeFields(getTimestamp());
+
   logs.push({
     'target' : null,
     'path' : null,
-    'clientTime' : Date.now(),
+    'clientTime' : timeFields.milli,
+    'microTime' : timeFields.micro,
     'location' : null,
     'type' : 'browser.' + type,
     'logType': 'raw',
@@ -81,7 +89,7 @@ browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     case MessageTypes.CONFIG_CHANGE:
       (function () {
-        const updatedConfig = Object.assign({}, config, {
+        var updatedConfig = Object.assign({}, config, {
           url: message.payload.userAleHost,
           userId: message.payload.toolUser,
           toolName: message.payload.toolName,
