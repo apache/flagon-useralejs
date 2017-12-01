@@ -58,4 +58,4 @@ Contributions are welcome!  Simply submit an issue report for problems you encou
 
 ## License
 
-Copyright © 2017 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. Software as a Sensor is a trademark of the Charles Stark Draper Laboratory, Inc.
+© Copyright 2016 The Charles Stark Draper Laboratory, Inc. All rights reserved., Licensed under the Apache License, Version 2.0. Software as a Sensor is a trademark of the Charles Stark Draper Laboratory, Inc.
