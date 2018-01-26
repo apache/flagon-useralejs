@@ -49,6 +49,76 @@ The complete list of configurable options is:
 
 If you're interested in using our WebExtension to log user activity across all pages they visit, check out our browser specific instructions [here](https://github.com/apache/incubator-senssoft-useralejs/blob/SENSSOFT-192/src/UserALEWebExtension/README.md).
 
+## Customizing your logs
+
+For some applications, it may be desirable to filter logs based on some runtime parameters or to enhance the logs with information available to the app. To support this use-case, there is an API exposed against the global UserALE object.
+
+The two functions exposed are the `setLogFilter` and `setLogMapper` functions. These allow dynamic modifications to the logs at runtime, but before they are shipped to the server.
+
+Here is an example of a filter that only keeps every second log (odd-even):
+```html
+<html>
+  <head>
+    <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+
+    <script type="text/javascript">
+      var logCounter = 0;
+      window.userale.filter(function (log) {
+        return (logCounter++ % 2);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <!-- application goes here -->
+    </div>
+  </body>
+</html>
+```
+
+Here is an example of a mapping function that adds runtime information about the current "score":
+```html
+<html>
+  <head>
+    <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button id="increment">+</button>
+      <button id="decrement">-</button>
+      <div id="scoreboard"></div>
+    </div>
+
+    <script type="text/javascript">
+      var score = 0;
+      var scoreBoard = document.getElementById('scoreboard');
+      scoreBoard.innerText = '0';
+
+      function setScore(nextScore) {
+        score = nextScore;
+        scoreBoard.innerText = String(score);
+      }
+
+      document.getElementById('increment').addEventListener('click', function () {
+        setScore(score + 1);
+      });
+
+      document.getElementById('decrement').addEventListener('click', function () {
+        if (score) {
+          setScore(score - 1);
+        }
+      });
+
+      window.userale.map(function (log) {
+        return Object.assign({}, log, { score: score }); // Add the "score" property to the log
+      });
+    </script>
+  </body>
+</html>
+```
+
+Even with this small API, it is possible to compose very powerful logging capabilities and progressively append additionally app-specific logic to your logs.
+
 ## Next Up
 
 Our top priority is to improve the testing system and to complete test coverage.  After that is complete:
