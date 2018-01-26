@@ -21,6 +21,7 @@ npm install gulp-mocha
 npm install babel-register
 npm install express
 npm install body-parser
+npm install nodemon
 ```
 
 ## Build

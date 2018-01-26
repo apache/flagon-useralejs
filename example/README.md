@@ -14,7 +14,7 @@ Please see the [Prerequsites](https://github.com/apache/incubator-senssoft-usera
 Assuming you have [node.js](https://nodejs.org/) installed, simply run
 
 ```
-node server.js
+npm run example:watch
 ```
 
 ## Running the Example
