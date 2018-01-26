@@ -9,19 +9,9 @@ Additional documentation can be found at http://senssoft.incubator.apache.org/us
 
 ## Prerequsites
 
+Several dependencies are required, simply execute the following and you are good to go.
 ```
-npm install gulp
-npm install del
-npm install gulp-eslint
-npm install rollup
-npm install rollup-plugin-json
-npm install gulp-uglify
-npm install gulp-rename
-npm install gulp-mocha
-npm install babel-register
-npm install express
-npm install body-parser
-npm install nodemon
+npm install
 ```
 
 ## Build
