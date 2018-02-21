@@ -65,4 +65,4 @@ Contributions are welcome!  Simply [submit an issue report](https://issues.apach
 
 ## License
 
-Copyright © 2017 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. Software as a Sensor is a trademark of the Charles Stark Draper Laboratory, Inc.
+Apache SensSoft UserALE.js is provided under Apache License version 2.0. See LICENSE file for more details. Software as a Sensor is a trademark of the Charles Stark Draper Laboratory, Inc.
