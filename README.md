@@ -22,6 +22,20 @@ To build UserALE.js:
 npm run build
 ```
 
+## Test
+
+To test UserALE.js:
+```
+npm run test
+```
+... you should eventually see something as follows
+```
+...
+  26 passing (837ms)
+  1 pending
+```
+Any failing tests will also be logged in the terminal. If there are failing tests, please consider [logging an issue in JIRA](https://issues.apache.org/jira/projects/SENSSOFT).
+
 ## Use and Configure
 
 To include UserALE.js in your project:
