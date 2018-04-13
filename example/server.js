@@ -45,7 +45,7 @@ app.use(function (req, res, next) {
 
   // intercept OPTIONS method
   if ('OPTIONS' == req.method) {
-    res.send(200);
+    res.sendStatus(200);
   }
   else {
     next();
@@ -58,7 +58,7 @@ app.set('view engine', 'jade');
 
 
 app.get('/', function (req, res) {
-  res.sendfile('index.html', { root: __dirname });
+  res.sendFile('index.html', { root: __dirname });
 });
 
 app.post('/', function (req, res) {

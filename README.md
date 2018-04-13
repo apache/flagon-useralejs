@@ -1,13 +1,20 @@
-# UserALE.js
+# Apache SensSoft UserALE.js (Incubating)
 
 [![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=plastic)](https://builds.apache.org/job/useralejs-ci?)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The official JavaScript client for UserAle.  
+The official JavaScript client for [Apache SensSoft UserALE](https://github.com/apache/incubator-senssoft-userale).  
 
 UserALE.js is a client side instrumentation library written in JavaScript. It is designed to be an easy-to-use, lightweight, and dependency-free way to quickly gather logs from your web applications.
 
 Additional documentation can be found at http://senssoft.incubator.apache.org/userale/
+
+## Prerequsites
+
+Several dependencies are required, simply execute the following and you are good to go.
+```
+npm install
+```
 
 ## Build
 
@@ -16,6 +23,20 @@ To build UserALE.js:
 ```
 npm run build
 ```
+
+## Test
+
+To test UserALE.js:
+```
+npm run test
+```
+... you should eventually see something as follows
+```
+...
+  26 passing (837ms)
+  1 pending
+```
+Any failing tests will also be logged in the terminal. If there are failing tests, please consider [logging an issue in JIRA](https://issues.apache.org/jira/projects/SENSSOFT).
 
 ## Use and Configure
 
@@ -129,8 +150,8 @@ Our top priority is to improve the testing system and to complete test coverage.
 
 ## Contributing
 
-Contributions are welcome!  Simply submit an issue report for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/senssoft) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
 
 ## License
 
-Copyright © 2017 The Apache Software Foundation, Licensed under the Apache License, Version 2.0. Software as a Sensor is a trademark of the Charles Stark Draper Laboratory, Inc.
+Apache SensSoft UserALE.js is provided under Apache License version 2.0. See LICENSE file for more details. Software as a Sensor is a trademark of the Charles Stark Draper Laboratory, Inc.
