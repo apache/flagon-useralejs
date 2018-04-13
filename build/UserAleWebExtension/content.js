@@ -14,7 +14,7 @@ var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
-var version$1 = "1.0.0";
+var version$1 = "1.1.0";
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
