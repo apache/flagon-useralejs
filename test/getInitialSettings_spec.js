@@ -18,6 +18,7 @@ import { expect } from 'chai';
 import jsdom from 'jsdom';
 import fs from 'fs';
 
+import { createEnv } from './testUtils';
 import { timeStampScale } from '../src/getInitialSettings.js';
 import { version } from '../package.json';
 
@@ -67,47 +68,31 @@ describe('getInitialSettings', () => {
     it('fetches all settings from a script tag', (done) => {
       const html = fs.readFileSync(__dirname + '/getInitialSettings_fetchAll.html');
 
-      jsdom.env({
-        html : html,
-        url : 'file://' + __dirname + '/getInitialSettings_fetchAll.html',
-        features : {
-          FetchExternalResources : ['script'],
-          ProcessExternalResources : ['script']
-        },
-        done : (err, window) => {
-          const config = window.userale.options();
-          expect(config).to.have.property('autostart', true);
-          expect(config).to.have.property('url', 'http://test.com');
-          expect(config).to.have.property('transmitInterval', 100);
-          expect(config).to.have.property('logCountThreshold', 10);
-          expect(config).to.have.property('userId', 'testuser');
-          expect(config).to.have.property('version', '1.0.0');
-          expect(config).to.have.property('logDetails', false);
-          expect(config).to.have.property('resolution', 100);
-          expect(config).to.have.property('toolName', 'testtool');
-          window.close();
-          done();
-        }
+      createEnv(html, (err, window) => {
+        const config = window.userale.options();
+        expect(config).to.have.property('autostart', true);
+        expect(config).to.have.property('url', 'http://test.com');
+        expect(config).to.have.property('transmitInterval', 100);
+        expect(config).to.have.property('logCountThreshold', 10);
+        expect(config).to.have.property('userId', 'testuser');
+        expect(config).to.have.property('version', '1.0.0');
+        expect(config).to.have.property('logDetails', false);
+        expect(config).to.have.property('resolution', 100);
+        expect(config).to.have.property('toolName', 'testtool');
+        window.close();
+        done();
       });
     });
 
     it('grabs user id from params', (done) => {
       const html = fs.readFileSync(__dirname + '/getInitialSettings_userParam.html');
 
-      jsdom.env({
-        html : html,
-        url : 'file://' + __dirname + '/getInitialSettings_userParam.html?user=testuser',
-        features : {
-          FetchExternalResources : ['script'],
-          ProcessExternalResources : ['script']
-        },
-        done : (err, window) => {
-          const config = window.userale.options();
-          expect(config.userId).to.equal('testuser');
-          window.close();
-          done();
-        }
-      });
+      createEnv(html, (err, window) => {
+        const config = window.userale.options();
+        expect(config.userId).to.equal('testuser');
+        window.close();
+        done();
+      }, { url : 'http://localhost:8080?user=testuser' });
     });
   });
 });
