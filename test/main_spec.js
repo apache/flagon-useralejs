@@ -40,6 +40,7 @@ describe('Userale API', () => {
         'transmitInterval',
         'logCountThreshold',
         'userId',
+        'sessionID',
         'version',
         'logDetails',
         'resolution',
