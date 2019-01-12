@@ -24,7 +24,8 @@
     "Clay Gimenez",
     "Robert Foley",
     "Michelle Beard",
-    "Alex Ford"
+    "Alex Ford",
+    "Joshua C. Poore"
   ],
   "license": "Apache-2.0",
   "bugs": {
@@ -46,7 +47,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^5.0.0",
     "gulp-json-modify": "^1.0.2",
-    "gulp-mocha": "^3.0.1",
+    "gulp-mocha": "^6.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^2.0.0",
