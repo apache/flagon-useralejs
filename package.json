@@ -23,6 +23,7 @@
     "Clay Gimenez",
     "Robert Foley",
     "Michelle Beard"
+    "Joshua C. Poore"
   ],
   "license": "Apache-2.0",
   "bugs": {
@@ -42,7 +43,7 @@
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
-    "gulp-mocha": "^3.0.1",
+    "gulp-mocha": "^6.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",

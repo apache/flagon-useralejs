@@ -73,9 +73,7 @@ gulp.task('lint', function() {
 gulp.task('test', ['build', 'lint'], function() {
   return gulp.src('test/**/*_spec.js', { read : false })
     .pipe(mocha({
-      compilers : {
-        js : babel
-      }
+      compilers : 'js:babel-core/register'
     }))
     .on('error', function(err) {
       gutil.log(err);
