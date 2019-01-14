@@ -14,24 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var del = require('del');
-var eslint = require('gulp-eslint');
-var rollup = require('rollup').rollup;
-var json = require('rollup-plugin-json');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var mocha = require('gulp-mocha');
-var babel = require('babel-register');
-var jsonModify = require('gulp-json-modify');
-var filter = require('gulp-filter');
-var uglifyHarmony = require('uglify-js-harmony');
-var minifier = require('gulp-uglify/minifier');
-var replace = require('gulp-replace');
-var version = require('./package.json').version;
-var userale = 'userale-' + version;
-var userAleWebExtDirName = 'UserAleWebExtension';
+const composer = require('gulp-uglify/composer');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const del = require('del');
+const eslint = require('gulp-eslint');
+const log = require('gulplog')
+const rollup = require('rollup').rollup;
+const json = require('rollup-plugin-json');
+const uglify = require('gulp-uglify');
+const rename = require('gulp-rename');
+const mocha = require('gulp-mocha');
+const babel = require('babel-register');
+const jsonModify = require('gulp-json-modify');
+const filter = require('gulp-filter');
+const pump = require('pump');
+const replace = require('gulp-replace');
+const version = require('./package.json').version;
+const uglifyjs = require('uglify-es');
+const userale = 'userale-' + version;
+const userAleWebExtDirName = 'UserAleWebExtension';
 
 // Clean build directory
 gulp.task('clean', function() {
@@ -105,21 +107,21 @@ gulp.task('rollup-web-ext-options', function() {
 });
 
 // Build for the browser web extension
-gulp.task('build-web-ext', ['rollup-web-ext-options', 'rollup-web-ext-background', 'rollup-web-ext-content'], function() {
+gulp.task('build-web-ext', gulp.series(['rollup-web-ext-content', 'rollup-web-ext-background', 'rollup-web-ext-options']), function() {
     return gulp.src(['src/' + userAleWebExtDirName + '/icons/**/*.*',
               'src/' + userAleWebExtDirName + '/manifest.json',
               'src/' + userAleWebExtDirName + '/optionsPage.html'
               ],
              { base: 'src/' + userAleWebExtDirName + '' })
-            .on('error', gutil.log)
+            .on('error', log.error)
             .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));        
 });
 
 // Minify and output completed build
-gulp.task('build', ['rollup', 'build-web-ext'], function() {
-  return gulp.src('build/' + userale + '.js')
+gulp.task('build', gulp.series(['rollup', 'build-web-ext']), function() {
+  return gulp.src(['build/' + userale + '.js'])
     .pipe(uglify())
-    .on('error', gutil.log)
+    .on('error', log.error)
     .pipe(rename({ suffix : '.min' }))
     .pipe(gulp.dest('build'))
     .pipe(rename(userale + '.min.js'))
@@ -128,25 +130,25 @@ gulp.task('build', ['rollup', 'build-web-ext'], function() {
 
 // Lint
 gulp.task('lint', function() {
-  return gulp.src('src/**/*.js')
+  return gulp.src(['src/**/*.js'])
     .pipe(eslint())
     .pipe(eslint.format());
 });
 
 // Test
 // TODO: separate out tests that depend on built library for faster tests?
-gulp.task('test', ['build', 'lint'], function() {
-  return gulp.src('test/**/*_spec.js', { read : false })
+gulp.task('test', gulp.series(['build', 'lint']), function() {
+  return gulp.src(['test/**/*_spec.js'], { read : false })
     .pipe(mocha({
-      compilers : 'js:babel-core/register'
+      require: ['babel-core/register']
     }))
     .on('error', function(err) {
-      gutil.log(err);
+      log.error(err);
       this.emit('end');
     });
 });
 
 // Development mode
-gulp.task('dev', ['clean', 'test'], function() {
-  gulp.watch(['src/**/*.js', 'test/**/*.{js,html}'], ['test']);
+gulp.task('dev', gulp.series(['clean', 'test']), function() {
+  gulp.watch(['src/**/*.js', 'test/**/*.{js,html}'], gulp.parallel(['test']));
 });

@@ -43,14 +43,15 @@
     "chai": "^3.5.0",
     "del": "^2.2.2",
     "express": "^4.13.4",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
+    "gulplog": "^1.0.0",
     "gulp-eslint": "^3.0.1",
     "gulp-filter": "^5.0.0",
     "gulp-json-modify": "^1.0.2",
     "gulp-mocha": "^6.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
-    "gulp-uglify": "^2.0.0",
+    "gulp-uglify": "^3.0.1",
     "gulp-util": "^3.0.7",
     "jsdom": "^8.4.0",
     "nodemon": "^1.9.2",
@@ -59,6 +60,8 @@
     "sinon": "^1.17.6"
   },
   "dependencies": {
-    "uglify-js-harmony": "^2.7.7"
+    "uglify-es": "^3.3.9",
+    "composer": "^4.1.0",
+    "pump": "^3.0.0"
   }
 }
