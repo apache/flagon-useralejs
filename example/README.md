@@ -11,17 +11,20 @@ Please see the [Prerequsites](https://github.com/apache/incubator-senssoft-usera
 
 ## Running the Logging Server
 
-Assuming you have [node.js](https://nodejs.org/) installed, simply run
+Ensure that you have [node.js](https://nodejs.org/) installed. Then run:
 
 ```
-npm run example:watch
+$npm run example:watch
 ```
 
 ## Running the Example
 
-Simply open index.html in your browser... you will see a very simply HTML Webpage with a button.
+Open index.html in your favorite html editor (Notepad++,Brackets,etc.). Modify the "src" line of the UserALE.js script tag so that it 
+refers to the filepath of your useralejs-1.0.0.min.js script ("file:///...[your file path].../build/userale-1.0.0.min.js").
 
-When you click the button, the events will be logged to the server (in memory), logs looks similar to the following
+Save the index.html file, then open index.html in your browser (you can drag it directly into a tab). You will see a very simple HTML Webpage with a button labeled, "Click Me!".
+
+When you click the button, the events will be logged to the server (in memory), and will print to your terminal. These UserALE.js logs look similar to the following:
 
 ```
 
