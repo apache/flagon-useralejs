@@ -14,26 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const composer = require('gulp-uglify/composer');
-const gulp = require('gulp');
-const gutil = require('gulp-util');
-const del = require('del');
-const eslint = require('gulp-eslint');
-const log = require('gulplog')
-const rollup = require('rollup').rollup;
-const json = require('rollup-plugin-json');
-const uglify = require('gulp-uglify');
-const rename = require('gulp-rename');
-const mocha = require('gulp-mocha');
-const babel = require('babel-register');
-const jsonModify = require('gulp-json-modify');
-const filter = require('gulp-filter');
-const pump = require('pump');
-const replace = require('gulp-replace');
-const version = require('./package.json').version;
-const uglifyjs = require('uglify-es');
-const userale = 'userale-' + version;
-const userAleWebExtDirName = 'UserAleWebExtension';
+var composer = require('gulp-uglify/composer');
+var gulp = require('gulp');
+var del = require('del');
+var eslint = require('gulp-eslint');
+var log = require('gulplog')
+var rollup = require('rollup').rollup;
+var json = require('rollup-plugin-json');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var mocha = require('gulp-mocha');
+var babel = require('babel-register');
+var jsonModify = require('gulp-json-modify');
+var filter = require('gulp-filter');
+var pump = require('pump');
+var replace = require('gulp-replace');
+var version = require('./package.json').version;
+var uglifyjs = require('uglify-es');
+var userale = 'userale-' + version;
+var userAleWebExtDirName = 'UserAleWebExtension';
 
 // Clean build directory
 gulp.task('clean', function() {
@@ -107,7 +106,7 @@ gulp.task('rollup-web-ext-options', function() {
 });
 
 // Build for the browser web extension
-gulp.task('build-web-ext', gulp.series(['rollup-web-ext-content', 'rollup-web-ext-background', 'rollup-web-ext-options']), function() {
+gulp.task('build-web-ext', gulp.series(['rollup-web-ext-content', 'rollup-web-ext-background', 'rollup-web-ext-options'], function() {
     return gulp.src(['src/' + userAleWebExtDirName + '/icons/**/*.*',
               'src/' + userAleWebExtDirName + '/manifest.json',
               'src/' + userAleWebExtDirName + '/optionsPage.html'
@@ -115,10 +114,10 @@ gulp.task('build-web-ext', gulp.series(['rollup-web-ext-content', 'rollup-web-ex
              { base: 'src/' + userAleWebExtDirName + '' })
             .on('error', log.error)
             .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));        
-});
+}));
 
 // Minify and output completed build
-gulp.task('build', gulp.series(['rollup', 'build-web-ext']), function() {
+gulp.task('build', gulp.series(['rollup', 'build-web-ext'], function() {
   return gulp.src(['build/' + userale + '.js'])
     .pipe(uglify())
     .on('error', log.error)
@@ -126,7 +125,7 @@ gulp.task('build', gulp.series(['rollup', 'build-web-ext']), function() {
     .pipe(gulp.dest('build'))
     .pipe(rename(userale + '.min.js'))
     .pipe(gulp.dest('build'));
-});
+}));
 
 // Lint
 gulp.task('lint', function() {
@@ -137,7 +136,7 @@ gulp.task('lint', function() {
 
 // Test
 // TODO: separate out tests that depend on built library for faster tests?
-gulp.task('test', gulp.series(['build', 'lint']), function() {
+gulp.task('test', gulp.series(['build', 'lint'], function() {
   return gulp.src(['test/**/*_spec.js'], { read : false })
     .pipe(mocha({
       require: ['babel-core/register']
@@ -146,9 +145,9 @@ gulp.task('test', gulp.series(['build', 'lint']), function() {
       log.error(err);
       this.emit('end');
     });
-});
+}));
 
 // Development mode
-gulp.task('dev', gulp.series(['clean', 'test']), function() {
+gulp.task('dev', gulp.series(['clean', 'test'], function() {
   gulp.watch(['src/**/*.js', 'test/**/*.{js,html}'], gulp.parallel(['test']));
-});
+}));
