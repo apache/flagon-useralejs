@@ -7,7 +7,7 @@ This directory provides
 
 ## Prerequisites
 
-Please see the [Prerequsites](https://github.com/apache/incubator-senssoft-useralejs#prerequsites)
+Please see the [Prerequsites](https://github.com/apache/incubator-flagon-useralejs#prerequsites)
 
 ## Running the Logging Server
 
@@ -68,4 +68,4 @@ When you click the button, the events will be logged to the server (in memory), 
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/senssoft) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.

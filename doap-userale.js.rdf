@@ -21,15 +21,15 @@
         See the License for the specific language governing permissions and
         limitations under the License.
     -->
-    <Project rdf:about="http://senssoft.incubator.apache.org">
+    <Project rdf:about="http://flagon.incubator.apache.org">
         <created>2016-11-10</created>
         <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
-        <name>Apache SensSoft - UserALE.js</name>
-        <homepage rdf:resource="http://senssoft.incubator.apache.org" />
-        <asfext:pmc rdf:resource="http://senssoft.incubator.apache.org" />
+        <name>Apache Flagon - UserALE.js</name>
+        <homepage rdf:resource="http://flagon.incubator.apache.org" />
+        <asfext:pmc rdf:resource="http://flagon.incubator.apache.org" />
         <shortdesc>UserALE.js is the UserALE client for DOM and JavaScript-based applications.</shortdesc>
         <description>UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.</description>
-        <bug-database rdf:resource="https://issues.apache.org/jira/browse/SENSSOFT" />
+        <bug-database rdf:resource="https://issues.apache.org/jira/browse/FLAGON" />
         <mailing-list rdf:resource="https://cwiki.apache.org/confluence/x/whTiAw" />
         <download-page rdf:resource="https://cwiki.apache.org/confluence/x/whTiAw" />
         <programming-language>Javascript</programming-language>
@@ -43,14 +43,14 @@
         </release>
         <repository>
             <SVNRepository>
-                <location rdf:resource="https://git-wip-us.apache.org/repos/asf/incubator-senssoft-useralejs.git"/>
-                <browse rdf:resource="https://github.com/apache/incubator-senssoft-useralejs"/>
+                <location rdf:resource="https://git-wip-us.apache.org/repos/asf/incubator-flagon-useralejs.git"/>
+                <browse rdf:resource="https://github.com/apache/incubator-flagon-useralejs"/>
             </SVNRepository>
         </repository>
         <maintainer>
             <foaf:Person>
-                <foaf:name>SensSoft Development Team</foaf:name>
-                <foaf:mbox rdf:resource="mailto:dev@senssoft.incubator.apache.org"/>
+                <foaf:name>Flagon Development Team</foaf:name>
+                <foaf:mbox rdf:resource="mailto:dev@flagon.incubator.apache.org"/>
             </foaf:Person>
         </maintainer>
     </Project>
