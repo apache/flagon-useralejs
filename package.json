@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://git.apache.org/incubator-senssoft-useralejs.git"
+    "url": "git://git.apache.org/incubator-flagon-useralejs.git"
   },
   "keywords": [
     "UserALE",
     "Logging"
   ],
-  "author": "Apache SensSoft",
+  "author": "Apache Flagon",
   "contributors": [
     "Clay Gimenez",
     "Robert Foley",
@@ -27,9 +27,9 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://issues.apache.org/jira/browse/senssoft"
+    "url": "https://issues.apache.org/jira/browse/FLAGON"
   },
-  "homepage": "http://senssoft.incubator.apache.org",
+  "homepage": "http://flagon.incubator.apache.org",
   "engines": {
     "node": "~8.2.1",
     "npm": "~5.3.0"
