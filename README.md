@@ -3,7 +3,7 @@
 [![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=plastic)](https://builds.apache.org/job/useralejs-ci?)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The official JavaScript client for [Apache Flagon](https://github.com/apache/incubator-flagon-userale).  
+The official JavaScript client for [Apache Flagon](https://github.com/apache/incubator-flagon-useralejs).  
 
 Additional documentation can be found at http://flagon.incubator.apache.org/userale/
 

@@ -43,7 +43,7 @@
         </release>
         <repository>
             <SVNRepository>
-                <location rdf:resource="https://git-wip-us.apache.org/repos/asf/incubator-flagon-useralejs.git"/>
+                <location rdf:resource="https://gitbox.apache.org/repos/asf/incubator-flagon-useralejs.git"/>
                 <browse rdf:resource="https://github.com/apache/incubator-flagon-useralejs"/>
             </SVNRepository>
         </repository>
