@@ -1,7 +1,7 @@
 (function (exports) {
 	'use strict';
 
-	var version$1 = "1.1.0";
+	var version$1 = "2.0.0";
 
 	/*
 	 * Licensed to the Apache Software Foundation (ASF) under one or more
