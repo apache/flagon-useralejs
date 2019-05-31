@@ -12,7 +12,7 @@ UserALE.js - 1.0.0 (2019-05-29)
     * [FLAGON-293] - NPM Publish Package State
 
 
-** Bug
+* Bug
     * [FLAGON-80] - Update data-url to http://localhost:8000
     * [FLAGON-157] - Log Halt
     * [FLAGON-168] - UserALE script not reading from script data tags
@@ -28,7 +28,7 @@ UserALE.js - 1.0.0 (2019-05-29)
 
 
 
-** Improvement
+* Improvement
     * [FLAGON-9] - Improved build and deployment system
     * [FLAGON-78] - Add user tracking support?
     * [FLAGON-81] - Setup Builds for All SensSoft components on builds.apache.org
