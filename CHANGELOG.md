@@ -41,3 +41,33 @@ UserALE.js - 1.0.0 (2019-05-29)
     * [FLAGON-266] - UserALE needs to be ES6 compliant
     * [FLAGON-273] - All copyright notices should be @CSDL not @Apache
     * [FLAGON-282] - NPM install/post_install
+    
+    * Wish
+        * [FLAGON-185] - [RELEASE PROC] Confirm that Jenkins Build Metrics are Posted
+    
+    * Task
+        * [FLAGON-4] - Deployment Instructions for UserALE.js
+        * [FLAGON-21] - Update userId query parameter documentation
+        * [FLAGON-22] - Limit max retries
+        * [FLAGON-27] - [RELEASE PROC] NPM Package for UserALE.js
+        * [FLAGON-60] - Parent Apache License Headers to all Source Code
+        * [FLAGON-94] - [RELEASE PROC] Add Contributing Guide
+        * [FLAGON-96] - Switch Lint Config to AirBnB
+        * [FLAGON-98] - Improve deployment workflow
+        * [FLAGON-180] - [RELEASE PROC] NPM Account Credentials
+        * [FLAGON-181] - [RELEASE PROC] Generate Functional Test Plan
+        * [FLAGON-182] - [RELEASE PROC] Release Guide for UserALE.js
+        * [FLAGON-186] - [RELEASE PROC] Sign UserALE Release
+        * [FLAGON-191] - Add CHANGELOG to UserALE.js
+        * [FLAGON-203] - Address UserALE.js feedback from lewismc
+        * [FLAGON-235] - Creat DOAP for UserALE.js
+        * [FLAGON-286] - Ensure all UserALE.js tests pass with npm run test
+        * [FLAGON-383] - Update README.md and Notices to Reflect Flagon namechange
+        * [FLAGON-385] - Add Package-lock.json file to repos
+        * [FLAGON-387] - [reReleaseProc] generate rc candidates in staging environment for review
+        * [FLAGON-388] - [reReleaseProc] Add Keys to dist dev
+        * [FLAGON-389] - [reReleaseProc] Update v1.0.0 Changelog 
+        * [FLAGON-390] - [reReleaseProc] Create v1.0.0 ReRelease Branch
+        * [FLAGON-391] - Update release scripts
+        * [FLAGON-396] - Add License to testUtils
+        * [FLAGON-397] - Add Apache License headers to pre-built Artifacts
