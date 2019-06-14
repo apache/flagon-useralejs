@@ -15,13 +15,19 @@
  * limitations under the License.
  */
 
+var sendIntervalId = null;
+
 /**
  * Initializes the log queue processors.
  * @param  {Array} logs   Array of logs to append to.
  * @param  {Object} config Configuration object to use when logging.
  */
 export function initSender(logs, config) {
-  sendOnInterval(logs, config);
+  if (sendIntervalId !== null) {
+    clearInterval(sendIntervalId);
+  }
+
+  sendIntervalId = sendOnInterval(logs, config);
   sendOnClose(logs, config);
 }
 
@@ -30,9 +36,14 @@ export function initSender(logs, config) {
  * if the queue has reached the threshold specified by the provided config.
  * @param  {Array} logs   Array of logs to read from.
  * @param  {Object} config Configuration object to be read from.
+ * @return {Number}        The newly created interval id.
  */
 export function sendOnInterval(logs, config) {
-  setInterval(function() {
+  return setInterval(function() {
+    if (!config.on) {
+      return;
+    }
+
     if (logs.length >= config.logCountThreshold) {
       sendLogs(logs.slice(0), config.url, 0); // Send a copy
       logs.splice(0); // Clear array reference (no reassignment)
@@ -46,6 +57,10 @@ export function sendOnInterval(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 export function sendOnClose(logs, config) {
+  if (!config.on) {
+    return;
+  }
+
   if (navigator.sendBeacon) {
     window.addEventListener('unload', function() {
       navigator.sendBeacon(config.url, JSON.stringify(logs));

@@ -3,15 +3,23 @@
 [![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=plastic)](https://builds.apache.org/job/useralejs-ci?)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-The official JavaScript client for [Apache Flagon](https://github.com/apache/incubator-flagon-useralejs).  
+The official JavaScript client for [Apache Flagon UserALE](https://github.com/apache/incubator-flagon-userale).  
 
-Additional documentation can be found at http://flagon.incubator.apache.org/userale/
+UserALE.js is a client side instrumentation library written in JavaScript. It is designed to be an easy-to-use, lightweight, and dependency-free way to quickly gather logs from your web applications.
+
+Additional documentation can be found at our [project website](http://flagon.incubator.apache.org/userale/).
 
 ## Prerequsites
 
-Several dependencies are required, simply execute the following and you are good to go.
+To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or install via [NPM and Node.js](https://www.npmjs.com/package/useralejs).
+
+UserALE.js utilizes NPM for package and dependency management. Execute the following to install dependencies.
 ```
+#install required packages
 npm install
+
+#review major dependencies
+npm ls --depth=0
 ```
 
 ## Build
@@ -19,6 +27,7 @@ npm install
 To build UserALE.js:
 
 ```
+#Build UserALE.js
 npm run build
 ```
 
@@ -26,28 +35,37 @@ npm run build
 
 To test UserALE.js:
 ```
+#Run UserALE.js unit tests
 npm run test
 ```
-... you should eventually see something as follows
+... you'll see something like:
 ```
 ...
-  26 passing (837ms)
+    attachHandlers
+    ✓ attaches all the event handlers without duplicates
+    ✓ debounces bufferedEvents (505ms)
+    defineDetails
+      - configures high detail events correctly
+...
+
+  45 passing (954ms)
   1 pending
 ```
 Any failing tests will also be logged in the terminal. If there are failing tests, please consider [logging an issue in JIRA](https://issues.apache.org/jira/projects/FLAGON).
 
 ## Use and Configure
 
-To include UserALE.js in your project:
+To start logging with UserALE.js, you can either include our script in the web application to be logged, or use our WebExtension to gather logs across any page a user visits.
 
-```
-<script src="/path/to/userale-1.0.0.min.js"></script>
-```
+To instrument a specific project, simply include this script tag on the page:
 
-HTML5 Data Parameters are used to configure UserALE.js.  For example, to set the logging URL:
-
+```html
+<script src="/path/to/userale-2.0.0.min.js"></script>
 ```
-<script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+UserALE.js is designed to be easily configured to fit your use case. We use HTML data parameters to pass configuration options to the library. For example, to set the logging URL:
+
+```html
+<script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
 ```
 
 The complete list of configurable options is:
@@ -65,18 +83,88 @@ The complete list of configurable options is:
 | data-user-from-params | Query param in the page URL to fetch userId from | null |
 | data-tool | Name of tool being logged | null |
 
-## Next Up
+If you're interested in using our WebExtension to log user activity across all pages they visit, check out our browser specific instructions [here](https://github.com/apache/incubator-flagon-useralejs/blob/FLAGON-336/src/UserALEWebExtension/README.md).
 
-Our top priority is to improve the testing system and to complete test coverage.  After that is complete:
+## Customizing your logs
 
-- Use web workers to remove load from main thread if available
-- Update the example server to present a simple test app/interface
-- Release UserALE.js through channels like NPM, Bower, etc.
+For some applications, it may be desirable to filter logs based on some runtime parameters or to enhance the logs with information available to the app. To support this use-case, there is an API exposed against the global UserALE object.
+
+The two functions exposed are the `setLogFilter` and `setLogMapper` functions. These allow dynamic modifications to the logs at runtime, but before they are shipped to the server.
+
+Here is an example of a filter that bounces out unwanted log and event types from your logging stream:
+```html
+<html>
+  <head>
+    <script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+<!--
+Modify the array page-by-page to curate your log stream:
+by adding unwanted event 'types' in type_array;
+by adding unwanted log classes to eliminate 'raw' or 'interval' logs from your stream.
+-->
+  <script type="text/javascript">
+    var type_array = ['mouseup', 'mouseover', 'dblclick', 'blur', 'focus']
+    var logType_array = ['interval']
+    window.userale.filter(function (log) {
+      return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+    });
+  </script>
+  <body>
+    <div id="app">
+      <!-- application goes here -->
+    </div>
+  </body>
+</html>
+```
+
+Here is an example of a mapping function that adds runtime information about the current "score":
+```html
+<html>
+  <head>
+    <script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+  </head>
+  <body>
+    <div id="app">
+      <button id="increment">+</button>
+      <button id="decrement">-</button>
+      <div id="scoreboard"></div>
+    </div>
+
+    <script type="text/javascript">
+      var score = 0;
+      var scoreBoard = document.getElementById('scoreboard');
+      scoreBoard.innerText = '0';
+
+      function setScore(nextScore) {
+        score = nextScore;
+        scoreBoard.innerText = String(score);
+      }
+
+      document.getElementById('increment').addEventListener('click', function () {
+        setScore(score + 1);
+      });
+
+      document.getElementById('decrement').addEventListener('click', function () {
+        if (score) {
+          setScore(score - 1);
+        }
+      });
+
+      window.userale.map(function (log) {
+        return Object.assign({}, log, { score: score }); // Add the "score" property to the log
+      });
+    </script>
+  </body>
+</html>
+```
+
+Even with this small API, it is possible to compose very powerful logging capabilities and progressively append additionally app-specific logic to your logs.
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+
+Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
 ## License
 
-Apache Flagon UserALE.js is provided under Apache License version 2.0. See LICENSE file for more details.
+Apache Flagon UserALE.js is provided under Apache License version 2.0. See LICENSE and NOTICE files at MASTER for more details.

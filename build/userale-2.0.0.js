@@ -19,7 +19,7 @@
 (function (exports) {
 	'use strict';
 
-	var version$1 = "1.0.0";
+	var version$1 = "2.0.0";
 
 	/*
 	 * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -64,6 +64,7 @@
 	  settings.toolName = get('data-tool') || null;
 	  settings.userFromParams = get('data-user-from-params') || null;
 	  settings.time = timeStampScale(document.createEvent('CustomEvent'));
+	  settings.sessionID = get('data-session') || 'session_' + String(Date.now());
 
 	  return settings;
 	}
@@ -176,6 +177,34 @@
 	var logs$1;
 	var config$1;
 
+	// Interval Logging Globals
+	var intervalID;
+	var intervalType;
+	var intervalPath;
+	var intervalTimer;
+	var intervalCounter;
+	var intervalLog;
+
+	var filterHandler = null;
+	var mapHandler = null;
+
+	/**
+	 * Assigns a handler to filter logs out of the queue.
+	 * @param  {Function} callback The handler to invoke when logging.
+	 */
+	function setLogFilter(callback) {
+	  filterHandler = callback;
+	}
+
+	/**
+	 * Assigns a handler to transform logs from their default structure.
+	 * @param  {Function} callback The handler to invoke when logging.
+	 */
+	function setLogMapper(callback) {
+	  mapHandler = callback;
+	}
+
+
 	/**
 	 * Assigns the config and log container to be used by the logging functions.
 	 * @param  {Array} newLogs   Log container.
@@ -184,6 +213,14 @@
 	function initPackager(newLogs, newConfig) {
 	  logs$1 = newLogs;
 	  config$1 = newConfig;
+	  filterHandler = null;
+	  mapHandler = null;
+	  intervalID = null;
+	  intervalType = null;
+	  intervalPath = null;
+	  intervalTimer = null;
+	  intervalCounter = 0;
+	  intervalLog = null;
 	}
 
 	/**
@@ -202,23 +239,120 @@
 	    details = detailFcn(e);
 	  }
 
+	  var timeFields = extractTimeFields(
+	    (e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now()
+	  );
+
 	  var log = {
 	    'target' : getSelector(e.target),
 	    'path' : buildPath(e),
-	    'clientTime' : Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now()),
+	    'clientTime' : timeFields.milli,
+	    'microTime' : timeFields.micro,
 	    'location' : getLocation(e),
 	    'type' : e.type,
+	    'logType': 'raw',
 	    'userAction' : true,
 	    'details' : details,
 	    'userId' : config$1.userId,
 	    'toolVersion' : config$1.version,
 	    'toolName' : config$1.toolName,
-	    'useraleVersion': config$1.useraleVersion
+	    'useraleVersion': config$1.useraleVersion,
+	    'sessionID': config$1.sessionID
 	  };
+
+	  if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+	    return false;
+	  }
+
+	  if (typeof mapHandler === 'function') {
+	    log = mapHandler(log);
+	  }
 
 	  logs$1.push(log);
 
 	  return true;
+	}
+
+	/**
+	 * Extract the millisecond and microsecond portions of a timestamp.
+	 * @param  {Number} timeStamp The timestamp to split into millisecond and microsecond fields.
+	 * @return {Object}           An object containing the millisecond
+	 *                            and microsecond portions of the timestamp.
+	 */
+	function extractTimeFields(timeStamp) {
+	  return {
+	    milli: Math.floor(timeStamp),
+	    micro: Number((timeStamp % 1).toFixed(3)),
+	  };
+	}
+
+	/**
+	 * Track intervals and gather details about it.
+	 * @param {Object} e
+	 * @return boolean
+	 */
+	function packageIntervalLog(e) {
+	    var target = getSelector(e.target);
+	    var path = buildPath(e);
+	    var type = e.type;
+	    var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now());
+
+	    // Init - this should only happen once on initialization
+	    if (intervalID == null) {
+	        intervalID = target;
+	        intervalType = type;
+	        intervalPath = path;
+	        intervalTimer = timestamp;
+	        intervalCounter = 0;
+	    }
+
+	    if (intervalID !== target || intervalType !== type) {
+	        // When to create log? On transition end
+	        // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
+
+	        intervalLog = {
+	            'target': intervalID,
+	            'path': intervalPath,
+	            'count': intervalCounter,
+	            'duration': timestamp - intervalTimer,  // microseconds
+	            'startTime': intervalTimer,
+	            'endTime': timestamp,
+	            'type': intervalType,
+	            'logType': 'interval',    
+	            'targetChange': intervalID !== target,
+	            'typeChange': intervalType !== type,
+	            'userAction': false,
+	            'userId': config$1.userId,
+	            'toolVersion': config$1.version,
+	            'toolName': config$1.toolName,
+	            'useraleVersion': config$1.useraleVersion,
+	            'sessionID': config$1.sessionID
+	        };
+
+	        if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
+	          return false;
+	        }
+
+	        if (typeof mapHandler === 'function') {
+	          intervalLog = mapHandler(intervalLog);
+	        }
+
+	        logs$1.push(intervalLog);
+
+	        // Reset
+	        intervalID = target;
+	        intervalType = type;
+	        intervalPath = path;
+	        intervalTimer = timestamp;
+	        intervalCounter = 0;
+	    }
+
+	    // Interval is still occuring, just update counter
+	    if (intervalID == target && intervalType == type) {
+	        intervalCounter = intervalCounter + 1;
+	    }
+
+	    return true;
 	}
 
 	/**
@@ -293,7 +427,23 @@
 	var events;
 	var bufferBools;
 	var bufferedEvents;
-	var windowEvents;
+	//@todo: Investigate drag events and their behavior
+	var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+	var windowEvents = ['load', 'blur', 'focus'];
+
+	/**
+	 * Maps an event to an object containing useful information.
+	 * @param  {Object} e Event to extract data from
+	 */
+	function extractMouseEvent(e) {
+	  return {
+	    'clicks' : e.detail,
+	    'ctrl' : e.ctrlKey,
+	    'alt' : e.altKey,
+	    'shift' : e.shiftKey,
+	    'meta' : e.metaKey
+	  };
+	}
 
 	/**
 	 * Defines the way information is extracted from various events.
@@ -305,10 +455,10 @@
 	  // Keys are event types
 	  // Values are functions that return details object if applicable
 	  events = {
-	    'click' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
-	    'dblclick' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
-	    'mousedown' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
-	    'mouseup' : function(e) { return { 'clicks' : e.detail, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; },
+	    'click' : extractMouseEvent,
+	    'dblclick' : extractMouseEvent,
+	    'mousedown' : extractMouseEvent,
+	    'mouseup' : extractMouseEvent,
 	    'focus' : null,
 	    'blur' : null,
 	    'input' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
@@ -328,8 +478,6 @@
 	    'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
 	    'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
 	  };
-
-	  windowEvents = ['load', 'blur', 'focus'];
 	}
 
 	/**
@@ -343,6 +491,12 @@
 	  Object.keys(events).forEach(function(ev) {
 	    document.addEventListener(ev, function(e) {
 	      packageLog(e, events[ev]);
+	    }, true);
+	  });
+
+	  intervalEvents.forEach(function(ev) {
+	    document.addEventListener(ev, function(e) {
+	        packageIntervalLog(e);
 	    }, true);
 	  });
 
@@ -384,13 +538,19 @@
 	 * limitations under the License.
 	 */
 
+	var sendIntervalId = null;
+
 	/**
 	 * Initializes the log queue processors.
 	 * @param  {Array} logs   Array of logs to append to.
 	 * @param  {Object} config Configuration object to use when logging.
 	 */
 	function initSender(logs, config) {
-	  sendOnInterval(logs, config);
+	  if (sendIntervalId !== null) {
+	    clearInterval(sendIntervalId);
+	  }
+
+	  sendIntervalId = sendOnInterval(logs, config);
 	  sendOnClose(logs, config);
 	}
 
@@ -399,9 +559,14 @@
 	 * if the queue has reached the threshold specified by the provided config.
 	 * @param  {Array} logs   Array of logs to read from.
 	 * @param  {Object} config Configuration object to be read from.
+	 * @return {Number}        The newly created interval id.
 	 */
 	function sendOnInterval(logs, config) {
-	  setInterval(function() {
+	  return setInterval(function() {
+	    if (!config.on) {
+	      return;
+	    }
+
 	    if (logs.length >= config.logCountThreshold) {
 	      sendLogs(logs.slice(0), config.url, 0); // Send a copy
 	      logs.splice(0); // Clear array reference (no reassignment)
@@ -415,6 +580,10 @@
 	 * @param  {Object} config Configuration object to be read from.
 	 */
 	function sendOnClose(logs, config) {
+	  if (!config.on) {
+	    return;
+	  }
+
 	  if (navigator.sendBeacon) {
 	    window.addEventListener('unload', function() {
 	      navigator.sendBeacon(config.url, JSON.stringify(logs));
@@ -457,8 +626,6 @@
 	var config = {};
 	var logs = [];
 	exports.started = false;
-
-
 	// Start up Userale
 	config.on = false;
 	config.useraleVersion = version$1;
@@ -547,5 +714,7 @@
 	exports.stop = stop;
 	exports.options = options;
 	exports.log = log;
+	exports.map = setLogMapper;
+	exports.filter = setLogFilter;
 
 }((this.userale = this.userale || {})));
