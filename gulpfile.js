@@ -43,7 +43,7 @@ gulp.task('clean', function() {
 // Build the module with Rollup
 gulp.task('rollup', function() {
   return rollup({
-    entry : 'src/main.js',
+    input : 'src/main.js',
     plugins : [
         license({
           banner: 'Licensed to the Apache Software Foundation (ASF) under one or more\n' +
@@ -67,9 +67,9 @@ gulp.task('rollup', function() {
   })
   .then(function(bundle) {
     return bundle.write({
+      file : 'build/' + userale + '.js',
       format : 'iife',
-      moduleName : 'userale',
-      dest : 'build/' + userale + '.js'
+      name: 'userale'
     });
   });
 });
@@ -78,15 +78,16 @@ gulp.task('rollup', function() {
 // Build the module with Rollup
 gulp.task('rollup-web-ext-content', function() {
   return rollup({
-    entry : 'src/' + userAleWebExtDirName + '/content.js',
+    input : 'src/' + userAleWebExtDirName + '/content.js',
     plugins : [
       json()
     ]
   })
   .then(function(bundle) {
     return bundle.write({
-      moduleName : 'user-ale-ext-content',
-      dest : 'build/' + userAleWebExtDirName + '/content.js'
+      file : 'build/' + userAleWebExtDirName + '/content.js',
+      name : 'user-ale-ext-content',
+      format : 'esm'
     });
   });
 });
@@ -94,15 +95,16 @@ gulp.task('rollup-web-ext-content', function() {
 // Build the module with Rollup
 gulp.task('rollup-web-ext-background', function() {
   return rollup({
-    entry : 'src/' + userAleWebExtDirName + '/background.js',
+    input : 'src/' + userAleWebExtDirName + '/background.js',
     plugins : [
       json()
     ]
   })
   .then(function(bundle) {
     return bundle.write({
-      moduleName : 'user-ale-ext-background',
-      dest : 'build/' + userAleWebExtDirName + '/background.js'
+      file : 'build/' + userAleWebExtDirName + '/background.js',
+      name : 'user-ale-ext-background',
+      format : 'esm'
     });
   });
 });
@@ -110,15 +112,16 @@ gulp.task('rollup-web-ext-background', function() {
 // Build the module with Rollup
 gulp.task('rollup-web-ext-options', function() {
   return rollup({
-    entry : 'src/' + userAleWebExtDirName + '/options.js',
+    input : 'src/' + userAleWebExtDirName + '/options.js',
     plugins : [
       json()
     ]
   })
   .then(function(bundle) {
     return bundle.write({
-      moduleName : 'user-ale-ext-options',
-      dest : 'build/' + userAleWebExtDirName + '/options.js'
+      file : 'build/' + userAleWebExtDirName + '/options.js',
+      name : 'user-ale-ext-options',
+      format : "esm"
     });
   });
 });
