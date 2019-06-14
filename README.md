@@ -11,7 +11,7 @@ Additional documentation can be found at our [project website](http://flagon.inc
 
 ## Prerequsites
 
-To build UserALE.js, you will need to install [NPM and Node.js](https://nodejs.org/).
+To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or install via [NPM and Node.js](https://www.npmjs.com/package/useralejs).
 
 UserALE.js utilizes NPM for package and dependency management. Execute the following to install dependencies.
 ```
@@ -46,71 +46,7 @@ npm run test
     ✓ debounces bufferedEvents (505ms)
     defineDetails
       - configures high detail events correctly
-
-  configure
-    ✓ merges new configs into main config object
-    ✓ includes a userid if present in the window.location
-    getUserIdFromParams
-      ✓ fetches userId from URL params
-      ✓ returns null if no matching param
-
-  getInitialSettings
-    timeStampScale
-      ✓ no event.timestamp
-      ✓ zero
-      ✓ epoch milliseconds
-      ✓ epoch microseconds
-      ✓ performance navigation time
-    getInitialSettings
-      ✓ fetches all settings from a script tag (122ms)
-      ✓ grabs user id from params
-
-  Userale API
-    ✓ provides configs
-    ✓ edits configs
-    ✓ starts + stops (214ms)
-    ✓ sends custom logs
-
-  packageLogs
-    setLogFilter
-      ✓ assigns the handler to the provided value
-      ✓ allows the handler to be nulled
-    setLogMapper
-      ✓ assigns the handler to the provided value
-      ✓ allows the handler to be nulled
-    packageLog
-      ✓ only executes if on
-      ✓ calls detailFcn with the event as an argument if provided
-      ✓ packages logs
-      ✓ filters logs when a handler is assigned and returns false
-      ✓ assigns logs to the mapper's return value if a handler is assigned
-      ✓ does not call the map handler if the log is filtered out
-      ✓ does not attempt to call a non-function filter/mapper
-    extractTimeFields
-      ✓ returns the millisecond and microsecond portions of a timestamp
-      ✓ sets micro to 0 when no decimal is present
-      ✓ always returns an object
-    getLocation
-      ✓ returns event page location
-      ✓ calculates page location if unavailable
-      ✓ fails to null
-    selectorizePath
-      ✓ returns a new array of the same length provided
-    getSelector
-      ✓ builds a selector
-      ✓ identifies window
-      ✓ handles a non-null unknown value
-    buildPath
-      ✓ builds a path
-      ✓ defaults to path if available
-
-  sendLogs
-    ✓ sends logs on an interval
-    ✓ does not send logs if the config is off
-    ✓ sends logs on page exit with navigator
-    ✓ sends logs on page exit without navigator
-    ✓ does not send logs on page exit if config is off
-
+...
 
   45 passing (954ms)
   1 pending
@@ -124,12 +60,12 @@ To start logging with UserALE.js, you can either include our script in the web a
 To instrument a specific project, simply include this script tag on the page:
 
 ```html
-<script src="/path/to/userale-1.0.0.min.js"></script>
+<script src="/path/to/userale-2.0.0.min.js"></script>
 ```
 UserALE.js is designed to be easily configured to fit your use case. We use HTML data parameters to pass configuration options to the library. For example, to set the logging URL:
 
 ```html
-<script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+<script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
 ```
 
 The complete list of configurable options is:
@@ -155,19 +91,23 @@ For some applications, it may be desirable to filter logs based on some runtime 
 
 The two functions exposed are the `setLogFilter` and `setLogMapper` functions. These allow dynamic modifications to the logs at runtime, but before they are shipped to the server.
 
-Here is an example of a filter that only keeps every second log (odd-even):
+Here is an example of a filter that bounces out unwanted log and event types from your logging stream:
 ```html
 <html>
   <head>
     <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
-
-    <script type="text/javascript">
-      var logCounter = 0;
-      window.userale.filter(function (log) {
-        return (logCounter++ % 2);
-      });
-    </script>
-  </head>
+<!--
+Modify the array page-by-page to curate your log stream:
+by adding unwanted event 'types' in type_array;
+by adding unwanted log classes to eliminate 'raw' or 'interval' logs from your stream.
+-->
+  <script type="text/javascript">
+    var type_array = ['mouseup', 'mouseover', 'dblclick', 'blur', 'focus']
+    var logType_array = ['interval']
+    window.userale.filter(function (log) {
+      return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+    });
+  </script>
   <body>
     <div id="app">
       <!-- application goes here -->
@@ -219,17 +159,11 @@ Here is an example of a mapping function that adds runtime information about the
 
 Even with this small API, it is possible to compose very powerful logging capabilities and progressively append additionally app-specific logic to your logs.
 
-## Next Up
-
-Our top priority is to improve the testing system and to complete test coverage.  After that is complete:
-
-- Use web workers to remove load from main thread if available
-- Update the example server to present a simple test app/interface
-- Release UserALE.js through channels like NPM, Bower, etc.
-
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+
+Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
 ## License
 
