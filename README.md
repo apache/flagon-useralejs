@@ -95,7 +95,7 @@ Here is an example of a filter that bounces out unwanted log and event types fro
 ```html
 <html>
   <head>
-    <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+    <script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
 <!--
 Modify the array page-by-page to curate your log stream:
 by adding unwanted event 'types' in type_array;
@@ -120,7 +120,7 @@ Here is an example of a mapping function that adds runtime information about the
 ```html
 <html>
   <head>
-    <script src="/path/to/userale-1.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+    <script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
   </head>
   <body>
     <div id="app">
