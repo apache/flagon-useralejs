@@ -25,6 +25,7 @@ var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var mocha = require('gulp-mocha');
 var babel = require('babel-register');
+var license = require('rollup-plugin-license');
 var jsonModify = require('gulp-json-modify');
 var filter = require('gulp-filter');
 var pump = require('pump');
@@ -44,6 +45,23 @@ gulp.task('rollup', function() {
   return rollup({
     entry : 'src/main.js',
     plugins : [
+        license({
+          banner: 'Licensed to the Apache Software Foundation (ASF) under one or more\n' +
+              'contributor license agreements.  See the NOTICE file distributed with\n' +
+              'this work for additional information regarding copyright ownership.\n' +
+              'The ASF licenses this file to You under the Apache License, Version 2.0\n' +
+              '(the "License"); you may not use this file except in compliance with\n' +
+              'the License.  You may obtain a copy of the License at\n' +
+              '\n' +
+              'http://www.apache.org/licenses/LICENSE-2.0\n' +
+              '\n' +
+              'Unless required by applicable law or agreed to in writing, software\n' +
+              'distributed under the License is distributed on an "AS IS" BASIS,\n' +
+              'WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n' +
+              'See the License for the specific language governing permissions and\n' +
+              'limitations under the License.' +
+              '\n@preserved'
+        }),
       json()
     ]
   })
@@ -113,13 +131,21 @@ gulp.task('build-web-ext', gulp.series(['rollup-web-ext-content', 'rollup-web-ex
               ],
              { base: 'src/' + userAleWebExtDirName + '' })
             .on('error', log.error)
-            .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));        
+            .pipe(gulp.dest('build/' + userAleWebExtDirName + '/'));
 }));
 
 // Minify and output completed build
 gulp.task('build', gulp.series(['rollup', 'build-web-ext'], function() {
   return gulp.src(['build/' + userale + '.js'])
-    .pipe(uglify())
+      .pipe(uglify({
+        output: {
+          comments: function (node, comment) {
+            if (/@preserved/.test(comment.value)) {
+              return true;
+            }
+          }
+        }
+      }))
     .on('error', log.error)
     .pipe(rename({ suffix : '.min' }))
     .pipe(gulp.dest('build'))

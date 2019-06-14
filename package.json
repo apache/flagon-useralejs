@@ -56,9 +56,8 @@
     "nodemon": "^1.9.2",
     "rollup": "^0.26.0",
     "rollup-plugin-json": "^2.0.1",
-    "sinon": "^1.17.6"
-  },
-  "dependencies": {
+    "sinon": "^1.17.6",
+    "rollup-plugin-license": "^0.9.0",
     "uglify-es": "^3.3.9",
     "composer": "^4.1.0",
     "pump": "^3.0.0"

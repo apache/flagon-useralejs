@@ -36,9 +36,9 @@
         <category rdf:resource="https://projects.apache.org/projects.html?category#Library" />
         <release>
             <Version>
-                <name>0.1.0 release</name>
-                <created>2018-01-18</created>
-                <revision>0.1.0</revision>
+                <name>2.0.0 release</name>
+                <created>2018-06-15</created>
+                <revision>2.0.0</revision>
             </Version>
         </release>
         <repository>
