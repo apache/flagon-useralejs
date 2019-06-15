@@ -83,7 +83,10 @@ gulp.task('rollup-web-ext-content', function() {
     input : 'src/' + userAleWebExtDirName + '/content.js',
     plugins : [
       json(),
-      resolve()
+      resolve({
+        browser: true,
+        preferBuiltins: false
+      })
     ]
   })
   .then(function(bundle) {
@@ -101,7 +104,10 @@ gulp.task('rollup-web-ext-background', function() {
     input : 'src/' + userAleWebExtDirName + '/background.js',
     plugins : [
       json(),
-      resolve()
+      resolve({
+        browser: true,
+        preferBuiltins: false
+      })
     ]
   })
   .then(function(bundle) {
@@ -119,7 +125,10 @@ gulp.task('rollup-web-ext-options', function() {
     input : 'src/' + userAleWebExtDirName + '/options.js',
     plugins : [
       json(),
-      resolve()
+      resolve({
+        browser: true,
+        preferBuiltins: false
+      })
     ]
   })
   .then(function(bundle) {
