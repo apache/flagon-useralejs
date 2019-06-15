@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 
-/*
- eslint-disable
- */
+/* eslint-disable */
 
 import * as globals from './globals';
 import * as MessageTypes from './messageTypes.js';
