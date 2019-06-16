@@ -30,12 +30,10 @@ var jsonModify = require('gulp-json-modify');
 var filter = require('gulp-filter');
 var pump = require('pump');
 var replace = require('gulp-replace');
-var commonjs = require('rollup-plugin-commonjs');
-var resolve = require('rollup-plugin-node-resolve');
 var version = require('./package.json').version;
 var uglifyjs = require('uglify-es');
 var userale = 'userale-' + version;
-var userAleWebExtDirName = 'UserAleWebExtension';
+var userAleWebExtDirName = 'UserALEWebExtension';
 
 // Clean build directory
 gulp.task('clean', function() {
@@ -64,9 +62,7 @@ gulp.task('rollup', function() {
               'limitations under the License.' +
               '\n@preserved'
         }),
-      json(),
-      resolve(),
-      commonjs()
+      json()
     ]
   })
   .then(function(bundle) {
@@ -84,12 +80,7 @@ gulp.task('rollup-web-ext-content', function() {
   return rollup({
     input : 'src/' + userAleWebExtDirName + '/content.js',
     plugins : [
-      json(),
-      resolve({
-        browser: true,
-        preferBuiltins: false
-      }),
-      commonjs()
+      json()
     ]
   })
   .then(function(bundle) {
@@ -106,12 +97,7 @@ gulp.task('rollup-web-ext-background', function() {
   return rollup({
     input : 'src/' + userAleWebExtDirName + '/background.js',
     plugins : [
-      json(),
-      resolve({
-        browser: true,
-        preferBuiltins: false
-      }),
-      commonjs()
+      json()
     ]
   })
   .then(function(bundle) {
@@ -128,12 +114,7 @@ gulp.task('rollup-web-ext-options', function() {
   return rollup({
     input : 'src/' + userAleWebExtDirName + '/options.js',
     plugins : [
-      json(),
-      resolve({
-        browser: true,
-        preferBuiltins: false
-      }),
-      commonjs()
+      json()
     ]
   })
   .then(function(bundle) {
