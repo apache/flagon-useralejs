@@ -1,73 +1,114 @@
 Changelog
 =========
 
-UserALE.js - 1.0.0 (2019-05-29)
+UserALE.js - 2.0.0 (2019-06-20)
 -------------------------------
-* Initial release of UserALE.js 0.1.0.
-* [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12341550)
-* Sub-task
-    * [FLAGON-56] - Build Test App Container with UserALE.js
-    * [FLAGON-65] - Add ALv2.0 License Headers to UserALE.js
-    * [FLAGON-91] - Userale.js Jenkins Build
-    * [FLAGON-293] - NPM Publish Package State
+* Release Notes - Flagon - Version UserALE.js 2.0.0
+* [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12343068)
 
 
-* Bug
-    * [FLAGON-80] - Update data-url to http://localhost:8000
-    * [FLAGON-157] - Log Halt
-    * [FLAGON-168] - UserALE script not reading from script data tags
-    * [FLAGON-187] - Fix npm build warnings for UserALE.js 0.1
-    * [FLAGON-188] - npm run test:watch breaks
-    * [FLAGON-214] - Added UserALE tag, but no logs generated
-    * [FLAGON-288] - Download page must not link to dist.apache.org
+** Sub-task
+    * [FLAGON-220] - Add interval log timeout
+    * [FLAGON-231] - Add Micro Second Field in UserALE.js to cover Elastic indexing and time encoding issues.
+    * [FLAGON-240] - Update Elasticsearch mapping to accurately parse clientTime variable from userale.js
+    * [FLAGON-333] - Add pageURL to UserALE.js logs
+    * [FLAGON-334] - Add pageTitle to UserALE.js
+    * [FLAGON-337] - Add pageReferrer to UserALE.js 
+
+
+** Bug
+    * [FLAGON-79] - clientTime is not properly formmated 
+    * [FLAGON-167] - Browser plugin CORS permissions
+    * [FLAGON-169] - Browser Blocking Mixed Content
+    * [FLAGON-221] - Elasticsearch 5.x does not support microsecond precision
+    * [FLAGON-321] - Gulp Mocha Dependency Deprecation: Critical Command Injection Vulnerability
     * [FLAGON-322] - minimatch deprecation: ReDOS vulnerability
     * [FLAGON-323] - Update to Gulp 4.0.0
     * [FLAGON-324] - Example Page Does Not Generate Logs
-    * [FLAGON-384] - useralejs Jenkins build is failing (#32-33)
+    * [FLAGON-338] - Mocha unit tests treat 'document' and 'window' as 'Undefinied' vars 
+    * [FLAGON-340] - UserALE.js fails to build on Branch-336
+
+
+** New Feature
+    * [FLAGON-29] - Determine how best to track sessions and users
+    * [FLAGON-166] - Build Firefox Plugin that Deploys UserALE.min Script Tag (.js Use Case)
+    * [FLAGON-173] - Provide Options page for Web Extension plugin
+    * [FLAGON-192] - Record Interval Events
+    * [FLAGON-232] - Explore options for capturing unique UserIDs (distinguishing browsers) at runtime.
+    * [FLAGON-328] - Page Sessions in UserALE.js
+    * [FLAGON-336] - Document Meta-Data on UserALE.js Logs
+
+
+** Improvement
+    * [FLAGON-99] - Add custom log API method
+    * [FLAGON-175] - Integrate web extension with existing User ALE build process
+    * [FLAGON-196] - UserALE.js time sync
+    * [FLAGON-217] - Track what type of change occurred in UserALE.js
+    * [FLAGON-238] - Integrate Plugin Build Processes into NPM Build process
+    * [FLAGON-271] - Investigate workflow for adding Chrome plugin to Chrome Store
+    * [FLAGON-376] - Add pre-build UserALE.js in src
+
+** Test
+    * [FLAGON-174] - Test web extension with Chrome
+    * [FLAGON-183] - [RELEASE PROC] Verify UserALE.js Unit Tests for -192 Branch
+
+
+** Task
+    * [FLAGON-93] - Readme Documentation of JS API
+    * [FLAGON-223] - Make UserALE.js plugin persistent
+    * [FLAGON-224] - Update UserALE.js Browser Plugin to Save Operating Params
+    * [FLAGON-239] - Submit Firefox Extension to Firefox Verification
+    * [FLAGON-285] - Address WARN deprecated during npm install
+    * [FLAGON-289] - Remove Logstash Dependency for Header Requests
+    * [FLAGON-294] - Branch Management
+    * [FLAGON-345] - Update README.md files to Apache Flagon
+    * [FLAGON-383] - Update README.md and Notices to Reflect Flagon namechange
+    * [FLAGON-385] - Add Package-lock.json file to repos
+    * [FLAGON-392] - Clean up for Merge with master
+    * [FLAGON-396] - Add License to testUtils
+    * [FLAGON-397] - Add Apache License headers to pre-built Artifacts
+    * [FLAGON-399] - Update DOAP to reflect new version
+    * [FLAGON-400] - Update Gulpfile to Add License to Build Artifacts
+    * [FLAGON-401] - Add License to WebExtension Files
+    * [FLAGON-402] - Update index.html version number
+    * [FLAGON-403] - Add updated KEYs
+    * [FLAGON-404] - Update Readme.md to reflect version 2.0.0
+    * [FLAGON-405] - Add new filter examples to Readme.md
+    * [FLAGON-407] - Jenkins Builds Failing at Master
+    * [FLAGON-408] - Update webextension files for Userale version number
+    * [FLAGON-409] - Update package.json file to indicate that we can now support Node 12.2.0 (engines)
 
 
 
 
-* Improvement
-    * [FLAGON-9] - Improved build and deployment system
-    * [FLAGON-78] - Add user tracking support?
-    * [FLAGON-81] - Setup Builds for All SensSoft components on builds.apache.org
-    * [FLAGON-100] - Improve log debouncing
-    * [FLAGON-114] - Allow limiting scope of logging to selected element
-    * [FLAGON-189] - UserALE.js Missing Src Code Documentation
-    * [FLAGON-213] - Update SensSoft Documentation
-    * [FLAGON-230] - Discover requirements for accrediting plugin through Firefox
-    * [FLAGON-250] - Create README for UserALE.js examples directory
-    * [FLAGON-266] - UserALE needs to be ES6 compliant
-    * [FLAGON-273] - All copyright notices should be @CSDL not @Apache
-    * [FLAGON-282] - NPM install/post_install
-    
-    * Wish
-        * [FLAGON-185] - [RELEASE PROC] Confirm that Jenkins Build Metrics are Posted
-    
-    * Task
-        * [FLAGON-4] - Deployment Instructions for UserALE.js
-        * [FLAGON-21] - Update userId query parameter documentation
-        * [FLAGON-22] - Limit max retries
-        * [FLAGON-27] - [RELEASE PROC] NPM Package for UserALE.js
-        * [FLAGON-60] - Parent Apache License Headers to all Source Code
-        * [FLAGON-94] - [RELEASE PROC] Add Contributing Guide
-        * [FLAGON-96] - Switch Lint Config to AirBnB
-        * [FLAGON-98] - Improve deployment workflow
-        * [FLAGON-180] - [RELEASE PROC] NPM Account Credentials
-        * [FLAGON-181] - [RELEASE PROC] Generate Functional Test Plan
-        * [FLAGON-182] - [RELEASE PROC] Release Guide for UserALE.js
-        * [FLAGON-186] - [RELEASE PROC] Sign UserALE Release
-        * [FLAGON-191] - Add CHANGELOG to UserALE.js
-        * [FLAGON-203] - Address UserALE.js feedback from lewismc
-        * [FLAGON-235] - Creat DOAP for UserALE.js
-        * [FLAGON-286] - Ensure all UserALE.js tests pass with npm run test
-        * [FLAGON-383] - Update README.md and Notices to Reflect Flagon namechange
-        * [FLAGON-385] - Add Package-lock.json file to repos
-        * [FLAGON-387] - [reReleaseProc] generate rc candidates in staging environment for review
-        * [FLAGON-388] - [reReleaseProc] Add Keys to dist dev
-        * [FLAGON-389] - [reReleaseProc] Update v1.0.0 Changelog 
-        * [FLAGON-390] - [reReleaseProc] Create v1.0.0 ReRelease Branch
-        * [FLAGON-391] - Update release scripts
-        * [FLAGON-396] - Add License to testUtils
-        * [FLAGON-397] - Add Apache License headers to pre-built Artifacts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
