@@ -116,45 +116,18 @@ by adding unwanted log classes to eliminate 'raw' or 'interval' logs from your s
 </html>
 ```
 
-Here is an example of a mapping function that adds runtime information about the current "score":
+Here is an example of a mapping function that adds customizable labels to events detected on specific DOM elements:
 ```html
-<html>
-  <head>
-    <script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
-  </head>
-  <body>
-    <div id="app">
-      <button id="increment">+</button>
-      <button id="decrement">-</button>
-      <div id="scoreboard"></div>
-    </div>
-
     <script type="text/javascript">
-      var score = 0;
-      var scoreBoard = document.getElementById('scoreboard');
-      scoreBoard.innerText = '0';
-
-      function setScore(nextScore) {
-        score = nextScore;
-        scoreBoard.innerText = String(score);
-      }
-
-      document.getElementById('increment').addEventListener('click', function () {
-        setScore(score + 1);
-      });
-
-      document.getElementById('decrement').addEventListener('click', function () {
-        if (score) {
-          setScore(score - 1);
-        }
-      });
-
       window.userale.map(function (log) {
-        return Object.assign({}, log, { score: score }); // Add the "score" property to the log
+        var targetsForLabels = ["button#test_button"];
+        if (targetsForLabels.includes(log.target)) {
+            return Object.assign({}, log, { CustomLabel: "Click me!" });
+        } else {
+            return log;  
+        } 
       });
     </script>
-  </body>
-</html>
 ```
 
 Even with this small API, it is possible to compose very powerful logging capabilities and progressively append additionally app-specific logic to your logs.
