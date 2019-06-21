@@ -7,7 +7,7 @@ UserALE.js - 2.0.0 (2019-06-20)
 * [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12343068)
 
 
-** Sub-task
+* Sub-task
     * [FLAGON-220] - Add interval log timeout
     * [FLAGON-231] - Add Micro Second Field in UserALE.js to cover Elastic indexing and time encoding issues.
     * [FLAGON-240] - Update Elasticsearch mapping to accurately parse clientTime variable from userale.js
@@ -16,7 +16,7 @@ UserALE.js - 2.0.0 (2019-06-20)
     * [FLAGON-337] - Add pageReferrer to UserALE.js 
 
 
-** Bug
+* Bug
     * [FLAGON-79] - clientTime is not properly formmated 
     * [FLAGON-167] - Browser plugin CORS permissions
     * [FLAGON-169] - Browser Blocking Mixed Content
@@ -29,7 +29,7 @@ UserALE.js - 2.0.0 (2019-06-20)
     * [FLAGON-340] - UserALE.js fails to build on Branch-336
 
 
-** New Feature
+* New Feature
     * [FLAGON-29] - Determine how best to track sessions and users
     * [FLAGON-166] - Build Firefox Plugin that Deploys UserALE.min Script Tag (.js Use Case)
     * [FLAGON-173] - Provide Options page for Web Extension plugin
@@ -39,7 +39,7 @@ UserALE.js - 2.0.0 (2019-06-20)
     * [FLAGON-336] - Document Meta-Data on UserALE.js Logs
 
 
-** Improvement
+* Improvement
     * [FLAGON-99] - Add custom log API method
     * [FLAGON-175] - Integrate web extension with existing User ALE build process
     * [FLAGON-196] - UserALE.js time sync
@@ -48,12 +48,12 @@ UserALE.js - 2.0.0 (2019-06-20)
     * [FLAGON-271] - Investigate workflow for adding Chrome plugin to Chrome Store
     * [FLAGON-376] - Add pre-build UserALE.js in src
 
-** Test
+* Test
     * [FLAGON-174] - Test web extension with Chrome
     * [FLAGON-183] - [RELEASE PROC] Verify UserALE.js Unit Tests for -192 Branch
 
 
-** Task
+* Task
     * [FLAGON-93] - Readme Documentation of JS API
     * [FLAGON-223] - Make UserALE.js plugin persistent
     * [FLAGON-224] - Update UserALE.js Browser Plugin to Save Operating Params
@@ -77,7 +77,10 @@ UserALE.js - 2.0.0 (2019-06-20)
     * [FLAGON-407] - Jenkins Builds Failing at Master
     * [FLAGON-408] - Update webextension files for Userale version number
     * [FLAGON-409] - Update package.json file to indicate that we can now support Node 12.2.0 (engines)
-
+    * [FLAGON-410] - Add setLogMapper API examples to README.md and Website
+    * [FLAGON-411] - Update Release Scripts to Package WebExtension
+    * [FLAGON-412] - Update Example page to include mapping and filtering examples
+    * [FLAGON-413] - Update Changelog for Release Candidate
 
 
 
