@@ -11,7 +11,7 @@ Additional documentation can be found at our [project website](http://flagon.inc
 
 ## Prerequsites
 
-To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or install via [NPM and Node.js](https://www.npmjs.com/package/useralejs).
+To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or include in your project via the [flagon-useralejs NPM module](https://www.npmjs.com/package/flagon-useralejs).
 
 UserALE.js utilizes NPM for package and dependency management. Execute the following to install dependencies.
 ```
@@ -21,6 +21,8 @@ npm install
 #review major dependencies
 npm ls --depth=0
 ```
+
+Pre-tested and pre-built UserALE.js script are included in the [/build dir](https://github.com/apache/incubator-flagon-useralejs/tree/master/build) in our repositories, release artifiacts, and our [NPM module](https://www.npmjs.com/package/flagon-useralejs). However, you can modify and build your own versions of these scripts with the following steps:
 
 ## Build
 
@@ -55,9 +57,9 @@ Any failing tests will also be logged in the terminal. If there are failing test
 
 ## Use and Configure
 
-To start logging with UserALE.js, you can either include our script in the web application to be logged, or use our WebExtension to gather logs across any page a user visits.
+To start logging with UserALE.js, you can either include our script in the web application to be logged, or use our [WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension) to gather logs across any page a user visits.
 
-To instrument a specific project, simply include this script tag on the page:
+To collect logs from a specific project, simply include this script tag on the page:
 
 ```html
 <script src="/path/to/userale-2.0.0.min.js"></script>
@@ -85,9 +87,13 @@ The complete list of configurable options is:
 
 If you're interested in using our WebExtension to log user activity across all pages they visit, check out our browser specific instructions [here](https://github.com/apache/incubator-flagon-useralejs/blob/FLAGON-336/src/UserALEWebExtension/README.md).
 
+You can also test out UserALE.js behavior with different script tag parameters using our ['example' test utility](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
+
 ## Customizing your logs
 
 For some applications, it may be desirable to filter logs based on some runtime parameters or to enhance the logs with information available to the app. To support this use-case, there is an API exposed against the global UserALE object.
+
+The [flagon-useralejs NPM module](https://www.npmjs.com/package/flagon-useralejs) exposes UserALE.js functions for use in the NPM environment. However, this API is a cleaner, more intuitive way of modifying UserALE.js behavior to suite your needs.
 
 The two functions exposed are the `setLogFilter` and `setLogMapper` functions. These allow dynamic modifications to the logs at runtime, but before they are shipped to the server.
 
@@ -131,6 +137,8 @@ Here is an example of a mapping function that adds customizable labels to events
 ```
 
 Even with this small API, it is possible to compose very powerful logging capabilities and progressively append additionally app-specific logic to your logs.
+
+You can experiment with these functions in our [example test utility](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
 
 ## Contributing
 

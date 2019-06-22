@@ -20,7 +20,7 @@ $npm run example:watch
 ## Running the Example
 
 Open index.html in your favorite html editor (Notepad++,Brackets,etc.). Modify the "src" line of the UserALE.js script tag so that it 
-refers to the filepath of your useralejs-1.0.0.min.js script ("file:///...[your file path].../build/userale-1.0.0.min.js").
+refers to the filepath of your useralejs-2.0.0.min.js script ("file:///...[your file path].../build/userale-2.0.0.min.js").
 
 Save the index.html file, then open index.html in your browser (you can drag it directly into a tab). You will see a very simple HTML Webpage with a button labeled, "Click Me!".
 
