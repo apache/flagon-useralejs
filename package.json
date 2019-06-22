@@ -1,8 +1,8 @@
 {
-  "name": "useralejs",
+  "name": "flagon-useralejs",
   "version": "1.0.0",
   "description": "UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
-  "main": "build/userale.js",
+  "main": "build/userale-1.0.0.js",
   "scripts": {
     "pretest": "gulp lint",
     "test": "gulp test",
@@ -16,7 +16,12 @@
   },
   "keywords": [
     "UserALE",
-    "Logging"
+    "Logging",
+    "Log Analytics",
+    "Business Analytics",
+    "Usability",
+    "User Testing",
+    "Behavioral Analytics"
   ],
   "author": "Apache Flagon",
   "contributors": [
