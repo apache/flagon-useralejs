@@ -267,6 +267,9 @@ function packageLog(e, detailFcn) {
   var log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
+    'pageUrl': window.location.href,
+    'pageTitle': document.title,
+    'pageReferrer': document.referrer,
     'clientTime' : timeFields.milli,
     'microTime' : timeFields.micro,
     'location' : getLocation(e),
@@ -334,6 +337,9 @@ function packageIntervalLog(e) {
         intervalLog = {
             'target': intervalID,
             'path': intervalPath,
+            'pageUrl': window.location.href,
+            'pageTitle': document.title,
+            'pageReferrer': document.referrer,
             'count': intervalCounter,
             'duration': timestamp - intervalTimer,  // microseconds
             'startTime': intervalTimer,

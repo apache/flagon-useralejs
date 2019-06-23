@@ -16,6 +16,7 @@
  */
 import { expect } from 'chai';
 import jsdom from 'jsdom';
+import 'jsdom-global/register';
 import fs from 'fs';
 import {
   packageLog, initPackager, getLocation, getSelector, buildPath, selectorizePath,
