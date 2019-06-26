@@ -1,5 +1,5 @@
 {
-  "name": "flagon-userale-js",
+  "name": "flagon-userale",
   "version": "1.0.0",
   "description": "Apache UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
   "main": "build/userale-1.0.0.js",

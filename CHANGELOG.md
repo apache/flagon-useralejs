@@ -3,7 +3,7 @@ Changelog
 
 UserALE.js - 1.0.0 (2019-05-29)
 -------------------------------
-* Initial release of UserALE.js 0.1.0.
+* (Re)Release of Apache SensSoft (Incubating) v1.0.0 
 * [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12341550)
 * Sub-task
     * [FLAGON-56] - Build Test App Container with UserALE.js
