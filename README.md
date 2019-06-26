@@ -11,7 +11,7 @@ Additional documentation can be found at our [project website](http://flagon.inc
 
 ## Prerequsites
 
-To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or include in your project via the [flagon-useralejs NPM module](https://www.npmjs.com/package/flagon-useralejs).
+To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or include in your project via the [flagon-userale NPM module](https://www.npmjs.com/package/flagon-userale).
 
 UserALE.js utilizes NPM for package and dependency management. Execute the following to install dependencies.
 ```
@@ -22,7 +22,7 @@ npm install
 npm ls --depth=0
 ```
 
-Pre-tested and pre-built UserALE.js script are included in the [/build dir](https://github.com/apache/incubator-flagon-useralejs/tree/master/build) in our repositories, release artifiacts, and our [NPM module](https://www.npmjs.com/package/flagon-useralejs). However, you can modify and build your own versions of these scripts with the following steps:
+Pre-tested and pre-built UserALE.js script are included in the [/build dir](https://github.com/apache/incubator-flagon-useralejs/tree/master/build) in our repositories, release artifiacts, and our [NPM module](https://www.npmjs.com/package/flagon-userale). However, you can modify and build your own versions of these scripts with the following steps:
 
 ## Build
 
@@ -93,7 +93,7 @@ You can also test out UserALE.js behavior with different script tag parameters u
 
 For some applications, it may be desirable to filter logs based on some runtime parameters or to enhance the logs with information available to the app. To support this use-case, there is an API exposed against the global UserALE object.
 
-The [flagon-useralejs NPM module](https://www.npmjs.com/package/flagon-useralejs) exposes UserALE.js functions for use in the NPM environment. However, this API is a cleaner, more intuitive way of modifying UserALE.js behavior to suite your needs.
+The [flagon-useralejs NPM module](https://www.npmjs.com/package/flagon-userale) exposes UserALE.js functions for use in the NPM environment. However, this API is a cleaner, more intuitive way of modifying UserALE.js behavior to suite your needs.
 
 The two functions exposed are the `setLogFilter` and `setLogMapper` functions. These allow dynamic modifications to the logs at runtime, but before they are shipped to the server.
 
