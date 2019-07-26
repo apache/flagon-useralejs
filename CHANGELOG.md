@@ -1,7 +1,26 @@
 Changelog
 =========
 
-UserALE.js - 2.0.0 (2019-06-20)
+Apache UserALE.js (Incubating) 2.0.1 (2019-07-25)
+-------------------------------
+*Release Notes - Flagon - Version UserALE.js 2.0.1
+*[Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12345942)
+
+* Sub-task
+    * [FLAGON-423] - Update Package File to Fix Down Stream Dependencies
+
+* Bug
+    * [FLAGON-422] - Update NPM modules to fix prototype pollution issues in npm packages
+
+* Task
+    * [FLAGON-424] - Update Gulp to 4.0.2 as matter of protocol post Prototype Pollution.
+    * [FLAGON-425] - Update gulp-eslint
+    * [FLAGON-426] - update rollup 
+    * [FLAGON-427] - update nodemon
+    * [FLAGON-428] - update sinon
+    * [FLAGON-429] - test userale.js builds and artifacts on npm 6.10
+    
+Apache UserALE.js (Incubating) 2.0.0 (2019-06-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.0.0
 * [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12343068)
