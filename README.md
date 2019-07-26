@@ -9,6 +9,13 @@ UserALE.js is a client side instrumentation library written in JavaScript. It is
 
 Additional documentation can be found at our [project website](http://flagon.incubator.apache.org/userale/).
 
+## What's New in (Patch) Version 2.0.1?
+
+- Updates to package.json and package-lock.json to resolve downstream Prototype Pollution vulnerabilities in dev dependencies
+- Updates to package.json and package-lock.json to modernize deprecated npm modules
+
+See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
+
 ## Prerequsites
 
 To build UserALE.js, you will need to download our source (here), our [release distributions](http://flagon.incubator.apache.org/releases/) or include in your project via the [flagon-userale NPM module](https://www.npmjs.com/package/flagon-userale).
