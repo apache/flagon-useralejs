@@ -19,7 +19,7 @@
 var userale = (function (exports) {
   'use strict';
 
-  var version = "2.0.0";
+  var version = "2.0.1";
 
   /*
    * Licensed to the Apache Software Foundation (ASF) under one or more
