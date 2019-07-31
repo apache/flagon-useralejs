@@ -11,6 +11,14 @@
     "dev": "gulp dev",
     "example:watch": "nodemon -w ./example example/server.js"
   },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "DISCLAIMER",
+    "CHANGELOG.md",
+    "KEYS"
+  ],
   "repository": {
     "type": "git",
     "url": "git://git.apache.org/incubator-flagon-useralejs.git"
@@ -38,8 +46,8 @@
   },
   "homepage": "http://flagon.incubator.apache.org",
   "engines": {
-    "node": "10.10.0 - 12.2.0",
-    "npm": "6.4.1 - 6.9.0"
+    "node": "10.10.0 || 11.10.0 - 12.2.0",
+    "npm": "6.4.1 || 6.7.0 - 6.9.0"
   },
   "devDependencies": {
     "babel-preset-env": "^1.7.0",

@@ -9,7 +9,7 @@ UserALE.js is a client side instrumentation library written in JavaScript. It is
 
 Additional documentation can be found at our [project website](http://flagon.incubator.apache.org/userale/).
 
-## What's New in (Patch) Version 2.0.1?
+## What's New in Version 2.0.1?
 
 - Updates to package.json and package-lock.json to resolve downstream Prototype Pollution vulnerabilities in dev dependencies
 - Updates to package.json and package-lock.json to modernize deprecated npm modules
