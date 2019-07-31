@@ -69,12 +69,12 @@ To start logging with UserALE.js, you can either include our script in the web a
 To collect logs from a specific project, simply include this script tag on the page:
 
 ```html
-<script src="/path/to/userale-2.0.0.min.js"></script>
+<script src="/path/to/userale-2.0.1.min.js"></script>
 ```
 UserALE.js is designed to be easily configured to fit your use case. We use HTML data parameters to pass configuration options to the library. For example, to set the logging URL:
 
 ```html
-<script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+<script src="/path/to/userale-2.0.1.min.js" data-url="http://yourLoggingUrl"></script>
 ```
 
 The complete list of configurable options is:
@@ -108,7 +108,7 @@ Here is an example of a filter that bounces out unwanted log and event types fro
 ```html
 <html>
   <head>
-    <script src="/path/to/userale-2.0.0.min.js" data-url="http://yourLoggingUrl"></script>
+    <script src="/path/to/userale-2.0.1.min.js" data-url="http://yourLoggingUrl"></script>
 <!--
 Modify the array page-by-page to curate your log stream:
 by adding unwanted event 'types' in type_array;
