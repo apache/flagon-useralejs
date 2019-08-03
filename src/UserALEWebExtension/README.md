@@ -28,8 +28,8 @@ Here is a rundown of the UserALE Extension hierarchy.
 ## Quick Start
 
 1. You need to have a UserALE server running; one way is to clone the UserALE repository, run the build, and then start the included test server.
-    1. git clone https://github.com/apache/incubator-senssoft-useralejs.git
-    1. cd incubator-senssoft-useralejs
+    1. git clone https://github.com/apache/incubator-flagon-useralejs.git
+    1. cd incubator-flagon-useralejs
     1. npm install && npm run build
     1. npm run example:watch
     1. A UserALE logging server should now be running on http://localhost:8000
