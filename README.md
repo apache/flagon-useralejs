@@ -92,7 +92,7 @@ The complete list of configurable options is:
 | data-user-from-params | Query param in the page URL to fetch userId from | null |
 | data-tool | Name of tool being logged | null |
 
-If you're interested in using our WebExtension to log user activity across all pages they visit, check out our browser specific instructions [here](https://github.com/apache/incubator-flagon-useralejs/blob/FLAGON-336/src/UserALEWebExtension/README.md).
+If you're interested in using our WebExtension to log user activity across all pages they visit, check out our browser specific instructions [here](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension).
 
 You can also test out UserALE.js behavior with different script tag parameters using our ['example' test utility](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
 
