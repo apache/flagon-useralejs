@@ -11,14 +11,6 @@
     "dev": "gulp dev",
     "example:watch": "nodemon -w ./example example/server.js"
   },
-  "files": [
-    "README.md",
-    "LICENSE",
-    "NOTICE",
-    "DISCLAIMER",
-    "CHANGELOG.md",
-    "KEYS"
-  ],
   "repository": {
     "type": "git",
     "url": "git://git.apache.org/incubator-flagon-useralejs.git"
