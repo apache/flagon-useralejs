@@ -59,6 +59,8 @@ In order to experiment with the `filter` API, simply un-alias the relevant code 
 
 Repeat the same steps on the next code block to experiment with the `mapper` API. Manipulating the arguments in this code block allows you to experiment with modifying and adding fields in UserALE.js' [data schema](http://flagon.incubator.apache.org/docs/useralejs/dataschema/).
 
+NOTE: Each modification of index.html will require that you both save the modifications and refresh the webpage in your browser.
+
 See the [Flagon website](http://flagon.incubator.apache.org/) for additional documentation on the [API](http://flagon.incubator.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.incubator.apache.org/docs/stack/scaling/).
 
 ## Capturing Logs Using the Logging Server

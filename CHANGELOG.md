@@ -1,16 +1,20 @@
 Changelog
 =========
 
-Apache UserALE.js (Incubating) 2.0.1 (2019-07-25)
+Apache Flagon UserALE.js (Incubating) 2.0.1 (2019-08-05)
 -------------------------------
-*Release Notes - Flagon - Version UserALE.js 2.0.1
-*[Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12345942)
+* Release Notes - Flagon - Version UserALE.js 2.0.2
+* [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12345954)
 
 * Sub-task
     * [FLAGON-423] - Update Package File to Fix Down Stream Dependencies
-
+    
 * Bug
     * [FLAGON-422] - Update NPM modules to fix prototype pollution issues in npm packages
+    * [FLAGON-433] - FIx Package.json and Package-Log.json to resolve npm packaging issue
+
+* Improvement
+    * [FLAGON-432] - Improve UserALEjs Example Server Instructions
 
 * Task
     * [FLAGON-424] - Update Gulp to 4.0.2 as matter of protocol post Prototype Pollution.
@@ -19,12 +23,12 @@ Apache UserALE.js (Incubating) 2.0.1 (2019-07-25)
     * [FLAGON-427] - update nodemon
     * [FLAGON-428] - update sinon
     * [FLAGON-429] - test userale.js builds and artifacts on npm 6.10
+    * [FLAGON-430] - update rollup-plugin-license
     
-Apache UserALE.js (Incubating) 2.0.0 (2019-06-20)
+Apache Flagon UserALE.js (Incubating) 2.0.0 (2019-06-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.0.0
 * [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12343068)
-
 
 * Sub-task
     * [FLAGON-220] - Add interval log timeout
@@ -33,7 +37,6 @@ Apache UserALE.js (Incubating) 2.0.0 (2019-06-20)
     * [FLAGON-333] - Add pageURL to UserALE.js logs
     * [FLAGON-334] - Add pageTitle to UserALE.js
     * [FLAGON-337] - Add pageReferrer to UserALE.js 
-
 
 * Bug
     * [FLAGON-79] - clientTime is not properly formmated 
@@ -47,7 +50,6 @@ Apache UserALE.js (Incubating) 2.0.0 (2019-06-20)
     * [FLAGON-338] - Mocha unit tests treat 'document' and 'window' as 'Undefinied' vars 
     * [FLAGON-340] - UserALE.js fails to build on Branch-336
 
-
 * New Feature
     * [FLAGON-29] - Determine how best to track sessions and users
     * [FLAGON-166] - Build Firefox Plugin that Deploys UserALE.min Script Tag (.js Use Case)
@@ -56,7 +58,6 @@ Apache UserALE.js (Incubating) 2.0.0 (2019-06-20)
     * [FLAGON-232] - Explore options for capturing unique UserIDs (distinguishing browsers) at runtime.
     * [FLAGON-328] - Page Sessions in UserALE.js
     * [FLAGON-336] - Document Meta-Data on UserALE.js Logs
-
 
 * Improvement
     * [FLAGON-99] - Add custom log API method
@@ -70,7 +71,6 @@ Apache UserALE.js (Incubating) 2.0.0 (2019-06-20)
 * Test
     * [FLAGON-174] - Test web extension with Chrome
     * [FLAGON-183] - [RELEASE PROC] Verify UserALE.js Unit Tests for -192 Branch
-
 
 * Task
     * [FLAGON-93] - Readme Documentation of JS API
