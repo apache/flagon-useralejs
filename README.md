@@ -9,10 +9,11 @@ UserALE.js is a client side instrumentation library written in JavaScript. It is
 
 Additional documentation can be found at our [project website](http://flagon.incubator.apache.org/userale/).
 
-## What's New in Version 2.0.1?
+## What's New in Version 2.0.2?
 
 - Updates to package.json and package-lock.json to resolve downstream Prototype Pollution vulnerabilities in dev dependencies
 - Updates to package.json and package-lock.json to modernize deprecated npm modules
+- Minor updates to README documentation for UserALE.js' [Example Test Utilities](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
 
@@ -69,12 +70,12 @@ To start logging with UserALE.js, you can either include our script in the web a
 To collect logs from a specific project, simply include this script tag on the page:
 
 ```html
-<script src="/path/to/userale-2.0.1.min.js"></script>
+<script src="/path/to/userale-2.0.2.min.js"></script>
 ```
 UserALE.js is designed to be easily configured to fit your use case. We use HTML data parameters to pass configuration options to the library. For example, to set the logging URL:
 
 ```html
-<script src="/path/to/userale-2.0.1.min.js" data-url="http://yourLoggingUrl"></script>
+<script src="/path/to/userale-2.0.2.min.js" data-url="http://yourLoggingUrl"></script>
 ```
 
 The complete list of configurable options is:
@@ -108,7 +109,7 @@ Here is an example of a filter that bounces out unwanted log and event types fro
 ```html
 <html>
   <head>
-    <script src="/path/to/userale-2.0.1.min.js" data-url="http://yourLoggingUrl"></script>
+    <script src="/path/to/userale-2.0.2.min.js" data-url="http://yourLoggingUrl"></script>
 <!--
 Modify the array page-by-page to curate your log stream:
 by adding unwanted event 'types' in type_array;

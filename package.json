@@ -1,8 +1,8 @@
 {
   "name": "flagon-userale",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
-  "main": "build/userale-2.0.1.js",
+  "main": "build/userale-2.0.2.js",
   "scripts": {
     "pretest": "gulp lint",
     "test": "gulp test",
@@ -62,7 +62,7 @@
     "nodemon": "^1.19.1",
     "rollup": "^1.17.0",
     "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-license": "^0.9.0",
+    "rollup-plugin-license": "^0.10.0",
     "sinon": "^7.3.2",
     "uglify-es": "^3.3.9",
     "composer": "^4.1.0",
