@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Apache Flagon UserALE.js (Incubating) 2.0.2 (2019-08-05)
+Apache Flagon UserALE.js (Incubating) 2.0.2 (2019-08-06)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.0.2
 * [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?projectId=12320621&version=12345954)
