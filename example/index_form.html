@@ -1,0 +1,81 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements.  See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+<head>
+  <title>UserAleJS - Example Page</title>
+  <script
+    src="file:///Users/jpoore/Documents/Apache_Flagon/test/incubator-flagon-useralejs/build/userale-2.0.2.min.js"
+    data-url="http://localhost:8000/"
+    data-user="example-user"
+    data-log-details="true"
+    data-version="2.0.2"
+    data-tool="Apache UserALE.js Example"
+  ></script>
+    <script type="text/javascript">
+    window.userale.filter(function (log) {
+      var type_array = ['mouseup', 'mousedown', 'dblclick', 'blur']
+      var logType_array = ['interval']
+      return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+    });
+  </script>
+</head>
+<body>
+  <br>
+  <br>
+  <br>
+  <div class="container">
+    <button id="test_button">Click me!</button>
+  </div>
+<!--Play around with this mapping function to transform your logs!
+    <script type="text/javascript">
+      window.userale.map(function (log) {
+        var targetsForLabels = ["button#test_button"];
+        if (targetsForLabels.includes(log.target)) {
+            return Object.assign({}, log, { CustomLabel: "Click me!" });
+        } else {
+            return log;  
+        } 
+      });
+  </script>
+-->
+  <br>
+  <br>
+  <br>
+  <form id="test_text_input">
+    <label>Test field: <input type="text"></label>
+    <br><br>
+    <button type="submit">Submit form</button>
+  </form>
+  <br>
+  <br>
+  <br>
+  <select name="cars">
+    <option value="volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="fiat">Fiat</option>
+    <option value="audi">Audi</option>
+  </select>
+  <br>
+  <br>
+  <br>
+  <form id="test_radio_input">
+    <input type="radio" name="gender" value="male" checked> Male<br>
+    <input type="radio" name="gender" value="female"> Female<br>
+    <input type="radio" name="gender" value="other"> Other
+  </form>
+</body>
+</html>
