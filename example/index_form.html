@@ -26,14 +26,24 @@ limitations under the License.
     data-tool="Apache UserALE.js Example"
   ></script>
     <script type="text/javascript">
-    window.userale.filter(function (log) {
-      var type_array = ['mouseup', 'mousedown', 'dblclick', 'blur']
-      var logType_array = ['interval']
-      return !type_array.includes(log.type) && !logType_array.includes(log.logType);
-    });
-  </script>
+        window.userale.filter(function (log) {
+            var type_array = ['mouseup', 'mousedown', 'dblclick', 'blur'];
+            var logType_array = ['interval'];
+            return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+        });
+    </script>
+
 </head>
 <body>
+
+
+<script type="text/javascript">
+    const changeMe = "me";
+    window.userale.options({
+        "userId": changeMe
+    })
+</script>
+
   <br>
   <br>
   <br>

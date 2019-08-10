@@ -65,6 +65,7 @@ var ADD_LOG = prefix + 'ADD_LOG';
  * limitations under the License.
  */
 
+
 /**
  * Creates a function to normalize the timestamp of the provided event.
  * @param  {Object} e An event containing a timeStamp property.

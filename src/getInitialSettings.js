@@ -41,10 +41,27 @@ export function getInitialSettings() {
   settings.toolName = get('data-tool') || null;
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
-  settings.sessionID = get('data-session') || 'session_' + String(Date.now());
+  settings.sessionID = get('data-session') || getSessionId("userAleSessionId", 'session_' + String(Date.now()));
 
   return settings;
 }
+
+/**
+ * defines sessionId, stores it in sessionStorage, checks to see if there is a sessionId in
+ * storage when script is started. This prevents events like 'submit', which refresh page data
+ * from refreshing the current user session
+ *
+ */
+export function getSessionId(sessionKey, value){
+  if (sessionStorage.getItem(sessionKey) === null) {
+    var storedSession = value;
+    sessionStorage.setItem(sessionKey, value);
+  } else {
+    storedSession = sessionStorage.getItem(sessionKey);
+  }
+  return storedSession;
+}
+
 
 /**
  * Creates a function to normalize the timestamp of the provided event.
