@@ -67,6 +67,8 @@ var version = "2.0.2";
  * limitations under the License.
  */
 
+var SessionId = getSessionId("userAleSessionId", 'session_' + String(Date.now()));
+
 /**
  * Extracts the initial configuration settings from the
  * currently executing script tag.
@@ -93,7 +95,7 @@ function getInitialSettings() {
   settings.toolName = get('data-tool') || null;
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
-  settings.sessionID = get('data-session') || getSessionId("userAleSessionId", 'session_' + String(Date.now()));
+  settings.sessionID = get('data-session') || SessionId;
 
   return settings;
 }
@@ -105,11 +107,11 @@ function getInitialSettings() {
  *
  */
 function getSessionId(sessionKey, value){
-  if (sessionStorage.getItem(sessionKey) === null) {
+  if (JSON.parse(window.sessionStorage.getItem(sessionKey) === null)) {
     var storedSession = value;
-    sessionStorage.setItem(sessionKey, value);
+    window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
   } else {
-    storedSession = sessionStorage.getItem(sessionKey);
+    storedSession = JSON.parse(window.sessionStorage.getItem(sessionKey));
   }
   return storedSession;
 }

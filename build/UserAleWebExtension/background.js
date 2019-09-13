@@ -65,6 +65,24 @@ var ADD_LOG = prefix + 'ADD_LOG';
  * limitations under the License.
  */
 
+var SessionId = getSessionId("userAleSessionId", 'session_' + String(Date.now()));
+
+/**
+ * defines sessionId, stores it in sessionStorage, checks to see if there is a sessionId in
+ * storage when script is started. This prevents events like 'submit', which refresh page data
+ * from refreshing the current user session
+ *
+ */
+function getSessionId(sessionKey, value){
+  if (JSON.parse(window.sessionStorage.getItem(sessionKey) === null)) {
+    var storedSession = value;
+    window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
+  } else {
+    storedSession = JSON.parse(window.sessionStorage.getItem(sessionKey));
+  }
+  return storedSession;
+}
+
 
 /**
  * Creates a function to normalize the timestamp of the provided event.
