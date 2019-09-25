@@ -17,7 +17,6 @@
 import { expect } from 'chai';
 import jsdom from 'jsdom';
 import 'jsdom-global/register';
-import { Storage } from 'dom-storage';
 import fs from 'fs';
 
 import { createEnv } from './testUtils';
@@ -71,7 +70,6 @@ describe('getInitialSettings', () => {
       const html = fs.readFileSync(__dirname + '/getInitialSettings_fetchAll.html');
 
       createEnv(html, (err, window) => {
-        window.sessionStorage = new Storage(null, { strict: true });
         const config = window.userale.options();
         expect(config).to.have.property('autostart', true);
         expect(config).to.have.property('url', 'http://test.com');
