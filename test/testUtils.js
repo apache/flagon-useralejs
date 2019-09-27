@@ -58,6 +58,8 @@ export function createEnv(html, doneCallback, extraConfig) {
       }
 
       window.sessionStorage = new Storage(null, { strict: true });
+      window.localStorage = new Storage(null, { strict: true });
+
     },
     done: doneCallback,
     virtualConsole,

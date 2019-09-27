@@ -53,35 +53,17 @@ var ADD_LOG = prefix + 'ADD_LOG';
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
+ * (the 'License'); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  * 
  *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-var SessionId = getSessionId("userAleSessionId", 'session_' + String(Date.now()));
-
-/**
- * defines sessionId, stores it in sessionStorage, checks to see if there is a sessionId in
- * storage when script is started. This prevents events like 'submit', which refresh page data
- * from refreshing the current user session
- *
- */
-function getSessionId(sessionKey, value){
-  if (JSON.parse(window.sessionStorage.getItem(sessionKey) === null)) {
-    var storedSession = value;
-    window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
-  } else {
-    storedSession = JSON.parse(window.sessionStorage.getItem(sessionKey));
-  }
-  return storedSession;
-}
 
 
 /**

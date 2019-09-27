@@ -26,19 +26,19 @@ var userale = (function (exports) {
    * contributor license agreements.  See the NOTICE file distributed with
    * this work for additional information regarding copyright ownership.
    * The ASF licenses this file to You under the Apache License, Version 2.0
-   * (the "License"); you may not use this file except in compliance with
+   * (the 'License'); you may not use this file except in compliance with
    * the License.  You may obtain a copy of the License at
    * 
    *   http://www.apache.org/licenses/LICENSE-2.0
    * 
    * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
+   * distributed under the License is distributed on an 'AS IS' BASIS,
    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
 
-  var SessionId = getSessionId("userAleSessionId", 'session_' + String(Date.now()));
+   var sessionId = null;
 
   /**
    * Extracts the initial configuration settings from the
@@ -47,6 +47,10 @@ var userale = (function (exports) {
    */
   function getInitialSettings() {
     var settings = {};
+
+    if (sessionId === null) {
+      sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
+    }
 
     var script = document.currentScript || (function () {
       var scripts = document.getElementsByTagName('script');
@@ -66,7 +70,7 @@ var userale = (function (exports) {
     settings.toolName = get('data-tool') || null;
     settings.userFromParams = get('data-user-from-params') || null;
     settings.time = timeStampScale(document.createEvent('CustomEvent'));
-    settings.sessionID = get('data-session') || SessionId;
+    settings.sessionID = get('data-session') || sessionId;
 
     return settings;
   }
@@ -78,13 +82,12 @@ var userale = (function (exports) {
    *
    */
   function getSessionId(sessionKey, value){
-    if (JSON.parse(window.sessionStorage.getItem(sessionKey) === null)) {
-      var storedSession = value;
+    if (window.sessionStorage.getItem(sessionKey) === null) {
       window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
-    } else {
-      storedSession = JSON.parse(window.sessionStorage.getItem(sessionKey));
+      return JSON.stringify(value);
     }
-    return storedSession;
+
+    return JSON.parse(window.sessionStorage.getItem(sessionKey));
   }
 
 
