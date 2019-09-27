@@ -156,20 +156,6 @@ function timeStampScale(e) {
   return tsScaler;
 }
 
-<<<<<<< HEAD
-/**
- * Updates the current configuration
- * object with the provided values.
- * @param  {Object} newConfig The configuration options to use.
- * @return {Object}           Returns the updated configuration.
- */
-function options(newConfig) {
-  if (newConfig !== undefined) {
-    configure(config$1, newConfig);
-  }
-
-  return config$1;
-=======
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -485,7 +471,6 @@ function selectorizePath(path) {
     ++i;
   }
   return pathSelectors;
->>>>>>> FLAGON-434
 }
 
 /*
@@ -734,17 +719,6 @@ function attachHandlers(config) {
   return true;
 }
 
-<<<<<<< HEAD
-function injectScript(config) {
-  options(config);
-//  start();  not necessary given that autostart in place, and option is masked from WebExt users
-  setLogFilter(function (log) {
-    queueLog(Object.assign({}, log, {
-      pageUrl: document.location.href,
-    }));
-    return false;
-  });
-=======
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -810,7 +784,6 @@ function options(newConfig) {
   }
 
   return config$1;
->>>>>>> FLAGON-434
 }
 
 /*
