@@ -3,17 +3,19 @@
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
+ * (the 'License'); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  * 
  *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+ var sessionId = null;
 
 /**
  * Extracts the initial configuration settings from the
@@ -22,6 +24,10 @@
  */
 export function getInitialSettings() {
   var settings = {};
+
+  if (sessionId === null) {
+    sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
+  }
 
   var script = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
@@ -41,10 +47,26 @@ export function getInitialSettings() {
   settings.toolName = get('data-tool') || null;
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
-  settings.sessionID = get('data-session') || 'session_' + String(Date.now());
+  settings.sessionID = get('data-session') || sessionId;
 
   return settings;
 }
+
+/**
+ * defines sessionId, stores it in sessionStorage, checks to see if there is a sessionId in
+ * storage when script is started. This prevents events like 'submit', which refresh page data
+ * from refreshing the current user session
+ *
+ */
+export function getSessionId(sessionKey, value){
+  if (window.sessionStorage.getItem(sessionKey) === null) {
+    window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
+    return JSON.stringify(value);
+  }
+
+  return JSON.parse(window.sessionStorage.getItem(sessionKey));
+}
+
 
 /**
  * Creates a function to normalize the timestamp of the provided event.

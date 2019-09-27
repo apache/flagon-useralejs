@@ -52,6 +52,24 @@ export function sendOnInterval(logs, config) {
 }
 
 /**
+ * Provides a simplified send function that can be called before events that would
+ * refresh page can resolve so that log queue ('logs) can be shipped immediately. This
+ * is different than sendOnClose because browser security practices prevent you from
+ * listening the process responsible for window navigation actions, in action (e.g., refresh;
+ * you can only detect, after the fact, the process responsible for the current window state.
+ * @param  {Array} logs   Array of logs to read from.
+ * @param  {Object} config Configuration object to be read from.
+ */
+export function sendOnRefresh(logs, config) {
+  if (!config.on) {
+    return;
+  }
+  if (logs.length > 0) {
+    sendLogs(logs, config.url, 1);
+  }
+}
+
+/**
  * Attempts to flush the remaining logs when the window is closed.
  * @param  {Array} logs   Array of logs to be flushed.
  * @param  {Object} config Configuration object to be read from.

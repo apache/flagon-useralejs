@@ -47,6 +47,7 @@
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
     "del": "^2.2.2",
+    "dom-storage": "2.0.2",
     "express": "^4.13.4",
     "gulp": "^4.0.2",
     "gulplog": "^1.0.0",

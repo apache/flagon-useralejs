@@ -15,14 +15,18 @@
  * limitations under the License.
  */
 
+import { logs } from './packageLogs';
 import { packageLog } from './packageLogs.js';
-import { packageIntervalLog } from './packageLogs';
+import { packageIntervalLog} from './packageLogs';
+import { sendOnRefresh } from "./sendLogs";
+
 
 var events;
 var bufferBools;
 var bufferedEvents;
 //@todo: Investigate drag events and their behavior
 var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+var refreshEvents;
 var windowEvents = ['load', 'blur', 'focus'];
 
 /**
@@ -62,8 +66,7 @@ export function defineDetails(config) {
     'drag' : null,
     'drop' : null,
     'keydown' : config.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
-    'mouseover' : null,
-    'submit' : null
+    'mouseover' : null
   };
 
   bufferBools = {};
@@ -71,6 +74,10 @@ export function defineDetails(config) {
     'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
     'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
     'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
+  };
+
+  refreshEvents = {
+    'submit' : null
   };
 }
 
@@ -103,6 +110,13 @@ export function attachHandlers(config) {
         packageLog(e, bufferedEvents[ev]);
         setTimeout(function() { bufferBools[ev] = true; }, config.resolution);
       }
+    }, true);
+  });
+
+  Object.keys(refreshEvents).forEach(function(ev) {
+    document.addEventListener(ev, function(e) {
+      packageLog(e, events[ev]);
+      sendOnRefresh(logs,config);
     }, true);
   });
 

@@ -18,17 +18,27 @@ limitations under the License.
 <head>
   <title>UserAleJS - Example Page</title>
   <script
-    src="file:///{your file path}/incubator-flagon-useralejs/build/userale-2.0.2.min.js"
+    src="file:///Users/jpoore/Documents/Apache_Flagon/test/incubator-flagon-useralejs/build/userale-2.0.2.min.js"
     data-url="http://localhost:8000/"
     data-user="example-user"
     data-version="2.0.2"
     data-tool="Apache UserALE.js Example"
   ></script>
+<!--Try out the options function to change UserALE.js params@
+  <script type="text/javascript">
+      const changeMe = "me";
+      window.userale.options({
+        "userId": changeMe,
+        "version": "4.2.0",
+        "sessionID": "42"
+      })
+  </script>
+-->
 <!--Try out a UserALE.js filter!
     <script type="text/javascript">
     window.userale.filter(function (log) {
-      var type_array = ['mouseup', 'mouseover', 'dblclick', 'blur', 'focus']
-      var logType_array = ['interval']
+      var type_array = ['mouseup', 'mouseover', 'dblclick', 'blur', 'focus'];
+      var logType_array = ['interval'];
       return !type_array.includes(log.type) && !logType_array.includes(log.logType);
     });
   </script>

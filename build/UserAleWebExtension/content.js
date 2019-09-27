@@ -55,17 +55,19 @@ var version = "2.0.2";
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
+ * (the 'License'); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  * 
  *   http://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+ var sessionId = null;
 
 /**
  * Extracts the initial configuration settings from the
@@ -74,6 +76,10 @@ var version = "2.0.2";
  */
 function getInitialSettings() {
   var settings = {};
+
+  if (sessionId === null) {
+    sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
+  }
 
   var script = document.currentScript || (function () {
     var scripts = document.getElementsByTagName('script');
@@ -93,10 +99,26 @@ function getInitialSettings() {
   settings.toolName = get('data-tool') || null;
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
-  settings.sessionID = get('data-session') || 'session_' + String(Date.now());
+  settings.sessionID = get('data-session') || sessionId;
 
   return settings;
 }
+
+/**
+ * defines sessionId, stores it in sessionStorage, checks to see if there is a sessionId in
+ * storage when script is started. This prevents events like 'submit', which refresh page data
+ * from refreshing the current user session
+ *
+ */
+function getSessionId(sessionKey, value){
+  if (window.sessionStorage.getItem(sessionKey) === null) {
+    window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
+    return JSON.stringify(value);
+  }
+
+  return JSON.parse(window.sessionStorage.getItem(sessionKey));
+}
+
 
 /**
  * Creates a function to normalize the timestamp of the provided event.
@@ -134,6 +156,20 @@ function timeStampScale(e) {
   return tsScaler;
 }
 
+<<<<<<< HEAD
+/**
+ * Updates the current configuration
+ * object with the provided values.
+ * @param  {Object} newConfig The configuration options to use.
+ * @return {Object}           Returns the updated configuration.
+ */
+function options(newConfig) {
+  if (newConfig !== undefined) {
+    configure(config$1, newConfig);
+  }
+
+  return config$1;
+=======
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -449,120 +485,7 @@ function selectorizePath(path) {
     ++i;
   }
   return pathSelectors;
-}
-
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-var events;
-var bufferBools;
-var bufferedEvents;
-//@todo: Investigate drag events and their behavior
-var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
-var windowEvents = ['load', 'blur', 'focus'];
-
-/**
- * Maps an event to an object containing useful information.
- * @param  {Object} e Event to extract data from
- */
-function extractMouseEvent(e) {
-  return {
-    'clicks' : e.detail,
-    'ctrl' : e.ctrlKey,
-    'alt' : e.altKey,
-    'shift' : e.shiftKey,
-    'meta' : e.metaKey
-  };
-}
-
-/**
- * Defines the way information is extracted from various events.
- * Also defines which events we will listen to.
- * @param  {Object} config Configuration object to read from.
- */
-function defineDetails(config) {
-  // Events list
-  // Keys are event types
-  // Values are functions that return details object if applicable
-  events = {
-    'click' : extractMouseEvent,
-    'dblclick' : extractMouseEvent,
-    'mousedown' : extractMouseEvent,
-    'mouseup' : extractMouseEvent,
-    'focus' : null,
-    'blur' : null,
-    'input' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-    'change' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-    'dragstart' : null,
-    'dragend' : null,
-    'drag' : null,
-    'drop' : null,
-    'keydown' : config.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
-    'mouseover' : null,
-    'submit' : null
-  };
-
-  bufferBools = {};
-  bufferedEvents = {
-    'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
-    'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
-    'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
-  };
-}
-
-/**
- * Hooks the event handlers for each event type of interest.
- * @param  {Object} config Configuration object to use.
- * @return {boolean}        Whether the operation succeeded
- */
-function attachHandlers(config) {
-  defineDetails(config);
-
-  Object.keys(events).forEach(function(ev) {
-    document.addEventListener(ev, function(e) {
-      packageLog(e, events[ev]);
-    }, true);
-  });
-
-  intervalEvents.forEach(function(ev) {
-    document.addEventListener(ev, function(e) {
-        packageIntervalLog(e);
-    }, true);
-  });
-
-  Object.keys(bufferedEvents).forEach(function(ev) {
-    bufferBools[ev] = true;
-
-    window.addEventListener(ev, function(e) {
-      if (bufferBools[ev]) {
-        bufferBools[ev] = false;
-        packageLog(e, bufferedEvents[ev]);
-        setTimeout(function() { bufferBools[ev] = true; }, config.resolution);
-      }
-    }, true);
-  });
-
-  windowEvents.forEach(function(ev) {
-    window.addEventListener(ev, function(e) {
-      packageLog(e, function() { return { 'window' : true }; });
-    }, true);
-  });
-
-  return true;
+>>>>>>> FLAGON-434
 }
 
 /*
@@ -616,6 +539,24 @@ function sendOnInterval(logs, config) {
       logs.splice(0); // Clear array reference (no reassignment)
     }
   }, config.transmitInterval);
+}
+
+/**
+ * Provides a simplified send function that can be called before events that would
+ * refresh page can resolve so that log queue ('logs) can be shipped immediately. This
+ * is different than sendOnClose because browser security practices prevent you from
+ * listening the process responsible for window navigation actions, in action (e.g., refresh;
+ * you can only detect, after the fact, the process responsible for the current window state.
+ * @param  {Array} logs   Array of logs to read from.
+ * @param  {Object} config Configuration object to be read from.
+ */
+function sendOnRefresh(logs, config) {
+  if (!config.on) {
+    return;
+  }
+  if (logs.length > 0) {
+    sendLogs(logs, config.url, 1);
+  }
 }
 
 /**
@@ -684,6 +625,143 @@ function sendLogs(logs, url, retries) {
  * limitations under the License.
  */
 
+
+var events;
+var bufferBools;
+var bufferedEvents;
+//@todo: Investigate drag events and their behavior
+var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+var refreshEvents;
+var windowEvents = ['load', 'blur', 'focus'];
+
+/**
+ * Maps an event to an object containing useful information.
+ * @param  {Object} e Event to extract data from
+ */
+function extractMouseEvent(e) {
+  return {
+    'clicks' : e.detail,
+    'ctrl' : e.ctrlKey,
+    'alt' : e.altKey,
+    'shift' : e.shiftKey,
+    'meta' : e.metaKey
+  };
+}
+
+/**
+ * Defines the way information is extracted from various events.
+ * Also defines which events we will listen to.
+ * @param  {Object} config Configuration object to read from.
+ */
+function defineDetails(config) {
+  // Events list
+  // Keys are event types
+  // Values are functions that return details object if applicable
+  events = {
+    'click' : extractMouseEvent,
+    'dblclick' : extractMouseEvent,
+    'mousedown' : extractMouseEvent,
+    'mouseup' : extractMouseEvent,
+    'focus' : null,
+    'blur' : null,
+    'input' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
+    'change' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
+    'dragstart' : null,
+    'dragend' : null,
+    'drag' : null,
+    'drop' : null,
+    'keydown' : config.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
+    'mouseover' : null
+  };
+
+  bufferBools = {};
+  bufferedEvents = {
+    'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
+    'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
+    'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
+  };
+
+  refreshEvents = {
+    'submit' : null
+  };
+}
+
+/**
+ * Hooks the event handlers for each event type of interest.
+ * @param  {Object} config Configuration object to use.
+ * @return {boolean}        Whether the operation succeeded
+ */
+function attachHandlers(config) {
+  defineDetails(config);
+
+  Object.keys(events).forEach(function(ev) {
+    document.addEventListener(ev, function(e) {
+      packageLog(e, events[ev]);
+    }, true);
+  });
+
+  intervalEvents.forEach(function(ev) {
+    document.addEventListener(ev, function(e) {
+        packageIntervalLog(e);
+    }, true);
+  });
+
+  Object.keys(bufferedEvents).forEach(function(ev) {
+    bufferBools[ev] = true;
+
+    window.addEventListener(ev, function(e) {
+      if (bufferBools[ev]) {
+        bufferBools[ev] = false;
+        packageLog(e, bufferedEvents[ev]);
+        setTimeout(function() { bufferBools[ev] = true; }, config.resolution);
+      }
+    }, true);
+  });
+
+  Object.keys(refreshEvents).forEach(function(ev) {
+    document.addEventListener(ev, function(e) {
+      packageLog(e, events[ev]);
+      sendOnRefresh(logs,config);
+    }, true);
+  });
+
+  windowEvents.forEach(function(ev) {
+    window.addEventListener(ev, function(e) {
+      packageLog(e, function() { return { 'window' : true }; });
+    }, true);
+  });
+
+  return true;
+}
+
+<<<<<<< HEAD
+function injectScript(config) {
+  options(config);
+//  start();  not necessary given that autostart in place, and option is masked from WebExt users
+  setLogFilter(function (log) {
+    queueLog(Object.assign({}, log, {
+      pageUrl: document.location.href,
+    }));
+    return false;
+  });
+=======
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * 
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 var config$1 = {};
 var logs$1 = [];
 var started = false;
@@ -732,6 +810,7 @@ function options(newConfig) {
   }
 
   return config$1;
+>>>>>>> FLAGON-434
 }
 
 /*
