@@ -773,18 +773,6 @@ function setup(config) {
 }
 
 /**
- * Used to start the logging process if the
- * autostart configuration option is set to false.
- */
-function start() {
-  if (!started) {
-    setup(config$1);
-  }
-
-  config$1.on = true;
-}
-
-/**
  * Updates the current configuration
  * object with the provided values.
  * @param  {Object} newConfig The configuration options to use.
@@ -848,7 +836,7 @@ function queueLog(log) {
 
 function injectScript(config) {
   options(config);
-  start();
+//  start();  not necessary given that autostart in place, and option is masked from WebExt users
   setLogFilter(function (log) {
     queueLog(Object.assign({}, log, {
       pageUrl: document.location.href,
