@@ -5,9 +5,7 @@ this work for additional information regarding copyright ownership.
 The ASF licenses this file to You under the Apache License, Version 2.0
 (the "License"); you may not use this file except in compliance with
 the License.  You may obtain a copy of the License at
-
   http://www.apache.org/licenses/LICENSE-2.0
-
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,36 +16,41 @@ limitations under the License.
 <head>
   <title>UserAleJS - Example Page</title>
   <script
-    src="file:///Users/jpoore/Documents/Apache_Flagon/test/incubator-flagon-useralejs/build/userale-2.0.2.min.js"
-    data-url="http://localhost:8000/"
-    data-user="example-user"
-    data-version="2.0.2"
-    data-tool="Apache UserALE.js Example"
+          src="file:///{Your File Path Here}/incubator-flagon-useralejs/build/userale-2.0.2.min.js"
+          data-url="http://localhost:8000/"
+          data-user="example-user"
+          data-log-details="true"
+          data-version="2.0.2"
+          data-tool="Apache UserALE.js Example"
   ></script>
-<!--Try out the options function to change UserALE.js params@
-  <script type="text/javascript">
-      const changeMe = "me";
-      window.userale.options({
-        "userId": changeMe,
-        "version": "4.2.0",
-        "sessionID": "42"
-      })
-  </script>
--->
-<!--Try out a UserALE.js filter!
+  <!--Try out the options function to change UserALE.js params!
+    <script type="text/javascript">
+        const changeMe = "me";
+        window.userale.options({
+          "userId": changeMe,
+          "version": "4.2.0",
+          "sessionID": "42"
+        })
+    </script>
+  -->
+  <!--Try out a UserALE.js filter to eliminate the logs that you don't want!
     <script type="text/javascript">
     window.userale.filter(function (log) {
-      var type_array = ['mouseup', 'mouseover', 'dblclick', 'blur', 'focus'];
+      var type_array = ['mouseup', 'mouseover', 'mousedown', 'dblclick', 'blur', 'focus'];
       var logType_array = ['interval'];
       return !type_array.includes(log.type) && !logType_array.includes(log.logType);
     });
-  </script>
--->
+    </script>
+  -->
 </head>
 <body>
-  <div class="container">
-    <button id="test_button">Click me!</button>
-  </div>
+<br>
+<br>
+<br>
+<p>Click the button below to generate targeted click events.</p>
+<div class="container">
+  <button id="test_button">Click me!</button>
+</div>
 <!--Play around with this mapping function to transform your logs!
     <script type="text/javascript">
       window.userale.map(function (log) {
@@ -55,10 +58,38 @@ limitations under the License.
         if (targetsForLabels.includes(log.target)) {
             return Object.assign({}, log, { CustomLabel: "Click me!" });
         } else {
-            return log;  
-        } 
+            return log;
+        }
       });
   </script>
 -->
+<br>
+<br>
+<br>
+<p>Play around with these form elements to see a variety of UserALE.js log types:</p>
+<p>Capture inputs and changes to text fields</p>
+<form id="test_text_input">
+  <label>Test field: <input type="text"></label>
+  <br><br>
+  <button type="submit">Submit form</button>
+</form>
+<br>
+<br>
+<br>
+<p>Capture inputs and changes to different types of selections</p>
+<select name="UserALE.js Committers">
+  <option value="clay">Clay</option>
+  <option value="rob">Rob</option>
+  <option value="michelle">Michelle</option>
+  <option value="josh">Josh</option>
+</select>
+<br>
+<br>
+<br>
+<form id="test_radio_input">
+  <input type="radio" name="Use Case" value="business analytics" checked> Business Analytics<br>
+  <input type="radio" name="Use Case" value="HCI"> HCI<br>
+  <input type="radio" name="Use Case" value="other"> Other
+</form>
 </body>
 </html>
