@@ -740,6 +740,7 @@ var config$1 = {};
 var logs$1 = [];
 var started = false;
 
+
 // Start up Userale
 config$1.on = false;
 config$1.useraleVersion = version;

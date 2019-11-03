@@ -719,6 +719,7 @@ var userale = (function (exports) {
   var logs$1 = [];
   exports.started = false;
 
+
   // Start up Userale
   config$1.on = false;
   config$1.useraleVersion = version;
@@ -802,10 +803,14 @@ var userale = (function (exports) {
     }
   }
 
+  exports.buildPath = buildPath;
+  exports.details = defineDetails;
   exports.filter = setLogFilter;
+  exports.getSelector = getSelector;
   exports.log = log;
   exports.map = setLogMapper;
   exports.options = options;
+  exports.packageLog = packageLog;
   exports.start = start;
   exports.stop = stop;
   exports.version = version$1;
