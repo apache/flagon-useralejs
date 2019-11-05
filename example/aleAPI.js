@@ -25,7 +25,7 @@ window.userale.options({
 
 /**Try out the 'Filter' API to eliminate the logs that you don't want!*/
 window.userale.filter(function (log) {
-    var type_array = ['mouseup', 'mouseover', 'mousedown', 'dblclick', 'blur', 'focus'];
+    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus'];
     var logType_array = ['interval'];
     return !type_array.includes(log.type) && !logType_array.includes(log.logType);
 });
@@ -33,10 +33,11 @@ window.userale.filter(function (log) {
 /**Log Mapping API
 
 /**Play around with the 'Mapping' API to add or modify existing fields in your logs!*/
+/**the example below modifies fields attached to logs on the "Click Me" button on the Example page*/
 window.userale.map(function (log) {
     var targetsForLabels = ["button#test_button"];
     if (targetsForLabels.includes(log.target)) {
-        return Object.assign({}, log, { customLabel: "Click me!" });
+        return Object.assign({}, log, { customLabel: "Click Me!" });
     } else {
         return log;
     }
@@ -46,6 +47,7 @@ window.userale.map(function (log) {
 
 /**Check out the 'log' API to generate custom events and add them to the log queue! The possibilities are endless
 /*You can fully customize your custom logs and define any data schema that suits you*/
+/**this example works with the "Test Field" form element on the Example Page*/
 document.addEventListener('change', function(e) {
     if (e.target.value === 'goodbye') {
         window.userale.log({
@@ -56,7 +58,7 @@ document.addEventListener('change', function(e) {
             type: 'change',
             logType: 'custom',
             userAction: false,
-            detail: 'disinterested user',
+            details: 'disinterested user',
             userId: window.userale.options.userId,
             toolVersion: window.userale.options.toolVersion,
             toolName: window.userale.options.toolName,
@@ -68,6 +70,7 @@ document.addEventListener('change', function(e) {
 });
 
 /**Alternatively, you can use UserALE.js' own packaging function for HTML events to strive for standardization!*/
+/**this example works with the "Test Field" form element on the Example Page*/
 document.addEventListener('change', function(e){
     if (e.target.value === 'hello') {
         window.userale.packageLog(e, function(){return "cool user!"});
