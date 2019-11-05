@@ -37,7 +37,7 @@ Once you've modified the script tag `src` field, save `index.html`.
 
 Next open index.html in your browser (you can drag it directly into a tab or double-click it). 
 
-You will see a very simple HTML Webpage with a button labeled, "Click Me!".
+You will see a very simple HTML Webpage with a few interactive features.
 
 On this page, all user events will be captured and sent to the logging server. See instructions below.
 
@@ -45,21 +45,10 @@ On this page, all user events will be captured and sent to the logging server. S
 
 The UserALE.js Example page can be used to test the structure of logs after instrumentation or UserALE.js src code modification. It can also be used to experiment with UserALE.js API functions.
 
-In order to experiment with the `filter` API, simply un-alias the relevant code snippet hard-coded in the UserALE.js Example Page. Manipulating the arguments in this code block allows you to experiment with omitting various event and log types from your UserALE.js data stream. See below:
+In order to experiment with various elements of the UserALE.js API, simply modify the API examples in `aleAPI.js`. 
 
-```
-    <script type="text/javascript">
-    window.userale.filter(function (log) {
-      var type_array = ['mouseup', 'mouseover', 'dblclick', 'blur', 'focus']
-      var logType_array = ['interval']
-      return !type_array.includes(log.type) && !logType_array.includes(log.logType);
-    });
-  </script>
-```
 
-Repeat the same steps on the next code block to experiment with the `mapper` API. Manipulating the arguments in this code block allows you to experiment with modifying and adding fields in UserALE.js' [data schema](http://flagon.incubator.apache.org/docs/useralejs/dataschema/).
-
-NOTE: Each modification of index.html will require that you both save the modifications and refresh the webpage in your browser.
+NOTE: Each modification of `index.html` or `aleAPI.js` will require that you both save the modifications and refresh the webpage in your browser.
 
 See the [Flagon website](http://flagon.incubator.apache.org/) for additional documentation on the [API](http://flagon.incubator.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.incubator.apache.org/docs/stack/scaling/).
 
@@ -90,12 +79,12 @@ $npm run example:watch
 Once started you will see:
 
 ```
-> flagon-userale@2.0.2 example:watch /Users/jpoore/Documents/Apache_Flagon/prod/incubator-flagon-useralejs
+> flagon-userale@2.0.2 example:watch .../Apache_Flagon/prod/incubator-flagon-useralejs
 > nodemon -w ./example example/server.js
 
 [nodemon] 1.19.1
 [nodemon] to restart at any time, enter `rs`
-[nodemon] watching: /Users/jpoore/Documents/Apache_Flagon/prod/incubator-flagon-useralejs/example/**/*
+[nodemon] watching: .../Apache_Flagon/prod/incubator-flagon-useralejs/example/**/*
 [nodemon] starting `node example/server.js`
 UserAle Local running on port 8000
 ```
