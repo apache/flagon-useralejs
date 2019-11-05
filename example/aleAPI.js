@@ -59,11 +59,11 @@ document.addEventListener('change', function(e) {
             logType: 'custom',
             userAction: false,
             details: 'disinterested user',
-            userId: window.userale.options.userId,
-            toolVersion: window.userale.options.toolVersion,
-            toolName: window.userale.options.toolName,
-            useraleVersion: window.userale.options.useraleVersion,
-            sessionID: window.userale.options.sessionID,
+            userId: window.userale.options().userId,
+            toolVersion: window.userale.options().version,
+            toolName: window.userale.options().toolName,
+            useraleVersion: window.userale.options().useraleVersion,
+            sessionID: window.userale.options().sessionID,
             customLabel: "no follow up"
         });
     }
