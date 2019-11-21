@@ -35,7 +35,7 @@ export function getInitialSettings() {
   })();
 
   var get = script ? script.getAttribute.bind(script) : function() { return null; };
-
+  // @todo add authHeader setting
   settings.autostart = get('data-autostart') === 'false' ? false : true;
   settings.url = get('data-url') || 'http://localhost:8000';
   settings.transmitInterval = +get('data-interval') || 5000;
@@ -48,6 +48,7 @@ export function getInitialSettings() {
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
   settings.sessionID = get('data-session') || sessionId;
+//  settings.authHeader = get ('data-auth') || null;
 
   return settings;
 }

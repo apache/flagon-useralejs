@@ -17,7 +17,7 @@
 const changeMe = "me";
 window.userale.options({
     "userId": changeMe,
-    "version": "4.2.0",
+    "version": "4.2.1",
     "sessionID": "42"
 });
 
@@ -87,4 +87,6 @@ window.userale.map(function (log) {
         return log;
     }
 });
+
+// @todo example for extracting text from click events
 

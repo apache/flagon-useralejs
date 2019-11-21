@@ -84,6 +84,7 @@ export function packageLog(e, detailFcn) {
     (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
   );
 
+  // @todo add host IP in meta data properties
   var log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
@@ -109,7 +110,7 @@ export function packageLog(e, detailFcn) {
   }
 
   if (typeof mapHandler === 'function') {
-    log = mapHandler(log);
+    log = mapHandler(log, e);
   }
 
   logs.push(log);

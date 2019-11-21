@@ -58,7 +58,7 @@ var userale = (function (exports) {
     })();
 
     var get = script ? script.getAttribute.bind(script) : function() { return null; };
-
+    // @todo add authHeader setting
     settings.autostart = get('data-autostart') === 'false' ? false : true;
     settings.url = get('data-url') || 'http://localhost:8000';
     settings.transmitInterval = +get('data-interval') || 5000;
@@ -71,6 +71,7 @@ var userale = (function (exports) {
     settings.userFromParams = get('data-user-from-params') || null;
     settings.time = timeStampScale(document.createEvent('CustomEvent'));
     settings.sessionID = get('data-session') || sessionId;
+  //  settings.authHeader = get ('data-auth') || null;
 
     return settings;
   }
@@ -265,6 +266,7 @@ var userale = (function (exports) {
       (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
     );
 
+    // @todo add host IP in meta data properties
     var log = {
       'target' : getSelector(e.target),
       'path' : buildPath(e),
@@ -290,7 +292,7 @@ var userale = (function (exports) {
     }
 
     if (typeof mapHandler === 'function') {
-      log = mapHandler(log);
+      log = mapHandler(log, e);
     }
 
     logs.push(log);
@@ -556,9 +558,14 @@ var userale = (function (exports) {
   function sendLogs(logs, url, retries) {
     var req = new XMLHttpRequest();
 
+    // @todo setRequestHeader for Auth
     var data = JSON.stringify(logs);
 
     req.open('POST', url);
+    //if (config.authHeader) {
+    //  req.setRequestHeader('Authorization', config.authHeader)
+    //}
+
     req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
     req.onreadystatechange = function() {
@@ -589,7 +596,7 @@ var userale = (function (exports) {
    * limitations under the License.
    */
 
-
+  // @todo var>let
   var events;
   var bufferBools;
   var bufferedEvents;
@@ -602,6 +609,7 @@ var userale = (function (exports) {
    * Maps an event to an object containing useful information.
    * @param  {Object} e Event to extract data from
    */
+  // @todo add extract text (inner, by event class) to mouse events
   function extractMouseEvent(e) {
     return {
       'clicks' : e.detail,

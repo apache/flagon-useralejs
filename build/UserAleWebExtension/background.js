@@ -218,9 +218,14 @@ function sendOnClose(logs, config) {
 function sendLogs(logs, url, retries) {
   var req = new XMLHttpRequest();
 
+  // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
 
   req.open('POST', url);
+  //if (config.authHeader) {
+  //  req.setRequestHeader('Authorization', config.authHeader)
+  //}
+
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
   req.onreadystatechange = function() {

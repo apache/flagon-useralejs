@@ -99,12 +99,19 @@ export function sendOnClose(logs, config) {
  * @param  {string} url     URL to send the POST request to.
  * @param  {Number} retries Maximum number of attempts to send the logs.
  */
+
+// @todo expose config object to sendLogs replate url with config.url
 export function sendLogs(logs, url, retries) {
   var req = new XMLHttpRequest();
 
+  // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
 
   req.open('POST', url);
+  //if (config.authHeader) {
+  //  req.setRequestHeader('Authorization', config.authHeader)
+  //}
+
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
   req.onreadystatechange = function() {

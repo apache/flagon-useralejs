@@ -87,7 +87,7 @@ function getInitialSettings() {
   })();
 
   var get = script ? script.getAttribute.bind(script) : function() { return null; };
-
+  // @todo add authHeader setting
   settings.autostart = get('data-autostart') === 'false' ? false : true;
   settings.url = get('data-url') || 'http://localhost:8000';
   settings.transmitInterval = +get('data-interval') || 5000;
@@ -100,6 +100,7 @@ function getInitialSettings() {
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
   settings.sessionID = get('data-session') || sessionId;
+//  settings.authHeader = get ('data-auth') || null;
 
   return settings;
 }
@@ -286,6 +287,7 @@ function packageLog(e, detailFcn) {
     (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
   );
 
+  // @todo add host IP in meta data properties
   var log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
@@ -311,7 +313,7 @@ function packageLog(e, detailFcn) {
   }
 
   if (typeof mapHandler === 'function') {
-    log = mapHandler(log);
+    log = mapHandler(log, e);
   }
 
   logs.push(log);
@@ -577,9 +579,14 @@ function sendOnClose(logs, config) {
 function sendLogs(logs, url, retries) {
   var req = new XMLHttpRequest();
 
+  // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
 
   req.open('POST', url);
+  //if (config.authHeader) {
+  //  req.setRequestHeader('Authorization', config.authHeader)
+  //}
+
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
   req.onreadystatechange = function() {
@@ -610,7 +617,7 @@ function sendLogs(logs, url, retries) {
  * limitations under the License.
  */
 
-
+// @todo var>let
 var events;
 var bufferBools;
 var bufferedEvents;
@@ -623,6 +630,7 @@ var windowEvents = ['load', 'blur', 'focus'];
  * Maps an event to an object containing useful information.
  * @param  {Object} e Event to extract data from
  */
+// @todo add extract text (inner, by event class) to mouse events
 function extractMouseEvent(e) {
   return {
     'clicks' : e.detail,
