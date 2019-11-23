@@ -45,7 +45,7 @@ export function sendOnInterval(logs, config) {
     }
 
     if (logs.length >= config.logCountThreshold) {
-      sendLogs(logs.slice(0), config.url, 0); // Send a copy
+      sendLogs(logs.slice(0), config, 0); // Send a copy
       logs.splice(0); // Clear array reference (no reassignment)
     }
   }, config.transmitInterval);
@@ -65,7 +65,7 @@ export function sendOnRefresh(logs, config) {
     return;
   }
   if (logs.length > 0) {
-    sendLogs(logs, config.url, 1);
+    sendLogs(logs, config, 1);
   }
 }
 
@@ -86,7 +86,7 @@ export function sendOnClose(logs, config) {
   } else {
     window.addEventListener('beforeunload', function() {
       if (logs.length > 0) {
-        sendLogs(logs, config.url, 1);
+        sendLogs(logs, config, 1);
       }
     })
   }
@@ -96,28 +96,28 @@ export function sendOnClose(logs, config) {
  * Sends the provided array of logs to the specified url,
  * retrying the request up to the specified number of retries.
  * @param  {Array} logs    Array of logs to send.
- * @param  {string} url     URL to send the POST request to.
+ * @param  {string} config     configuration parameters (e.g., to extract URL from & send the POST request to).
  * @param  {Number} retries Maximum number of attempts to send the logs.
  */
 
 // @todo expose config object to sendLogs replate url with config.url
-export function sendLogs(logs, url, retries) {
+export function sendLogs(logs, config, retries) {
   var req = new XMLHttpRequest();
 
   // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
 
-  req.open('POST', url);
-  //if (config.authHeader) {
-  //  req.setRequestHeader('Authorization', config.authHeader)
-  //}
+  req.open('POST', config.url);
+  if (config.authHeader) {
+    req.setRequestHeader('Authorization', config.authHeader)
+  }
 
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
   req.onreadystatechange = function() {
     if (req.readyState === 4 && req.status !== 200) {
       if (retries > 0) {
-        sendLogs(logs, url, retries--);
+        sendLogs(logs, config, retries--);
       }
     }
   };
