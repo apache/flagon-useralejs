@@ -58,7 +58,6 @@ var userale = (function (exports) {
     })();
 
     var get = script ? script.getAttribute.bind(script) : function() { return null; };
-    // @todo add authHeader setting
     settings.autostart = get('data-autostart') === 'false' ? false : true;
     settings.url = get('data-url') || 'http://localhost:8000';
     settings.transmitInterval = +get('data-interval') || 5000;
@@ -266,7 +265,6 @@ var userale = (function (exports) {
       (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
     );
 
-    // @todo add host IP in meta data properties
     var log = {
       'target' : getSelector(e.target),
       'path' : buildPath(e),
@@ -298,6 +296,56 @@ var userale = (function (exports) {
     logs.push(log);
 
     return true;
+  }
+
+  /**
+   * Packages the provided customLog to include standard meta data and appends it to the log container.
+   * @param  {Object} customLog        The behavior to be logged.
+   * @param  {Function} detailFcn     The function to extract additional log parameters from the event.
+   * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
+   * @return {boolean}           Whether the event was logged.
+   */
+  function packageCustomLog(customLog, detailFcn, userAction) {
+      if (!config.on) {
+          return false;
+      }
+
+      var details = null;
+      if (detailFcn) {
+          details = detailFcn();
+      }
+
+      var timeFields = extractTimeFields(Date.now());
+
+      var metaData = {
+          'pageUrl': window.location.href,
+          'pageTitle': document.title,
+          'pageReferrer': document.referrer,
+          'clientTime' : timeFields.milli,
+          'microTime' : timeFields.micro,
+          'logType': 'custom',
+          'userAction' : userAction,
+          'details' : details,
+          'userId' : config.userId,
+          'toolVersion' : config.version,
+          'toolName' : config.toolName,
+          'useraleVersion': config.useraleVersion,
+          'sessionID': config.sessionID
+      };
+
+      var log = Object.assign(customLog, metaData);
+
+      if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+          return false;
+      }
+
+      if (typeof mapHandler === 'function') {
+          log = mapHandler(log);
+      }
+
+      logs.push(log);
+
+      return true;
   }
 
   /**
@@ -618,7 +666,8 @@ var userale = (function (exports) {
       'ctrl' : e.ctrlKey,
       'alt' : e.altKey,
       'shift' : e.shiftKey,
-      'meta' : e.metaKey
+      'meta' : e.metaKey,
+  //    'text' : e.target.innerHTML
     };
   }
 
@@ -820,6 +869,7 @@ var userale = (function (exports) {
   exports.log = log;
   exports.map = setLogMapper;
   exports.options = options;
+  exports.packageCustomLog = packageCustomLog;
   exports.packageLog = packageLog;
   exports.start = start;
   exports.stop = stop;

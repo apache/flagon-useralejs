@@ -40,7 +40,8 @@ function extractMouseEvent(e) {
     'ctrl' : e.ctrlKey,
     'alt' : e.altKey,
     'shift' : e.shiftKey,
-    'meta' : e.metaKey
+    'meta' : e.metaKey,
+//    'text' : e.target.innerHTML
   };
 }
 

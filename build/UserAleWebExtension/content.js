@@ -87,7 +87,6 @@ function getInitialSettings() {
   })();
 
   var get = script ? script.getAttribute.bind(script) : function() { return null; };
-  // @todo add authHeader setting
   settings.autostart = get('data-autostart') === 'false' ? false : true;
   settings.url = get('data-url') || 'http://localhost:8000';
   settings.transmitInterval = +get('data-interval') || 5000;
@@ -287,7 +286,6 @@ function packageLog(e, detailFcn) {
     (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
   );
 
-  // @todo add host IP in meta data properties
   var log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
@@ -639,7 +637,8 @@ function extractMouseEvent(e) {
     'ctrl' : e.ctrlKey,
     'alt' : e.altKey,
     'shift' : e.shiftKey,
-    'meta' : e.metaKey
+    'meta' : e.metaKey,
+//    'text' : e.target.innerHTML
   };
 }
 

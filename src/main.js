@@ -29,6 +29,7 @@ export {
   setLogMapper as map,
   setLogFilter as filter,
   packageLog as packageLog,
+  packageCustomLog as packageCustomLog,
   getSelector as getSelector,
   buildPath as buildPath,
   } from './packageLogs.js';
