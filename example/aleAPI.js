@@ -25,7 +25,7 @@ window.userale.options({
 
 /**Try out the 'Filter' API to eliminate the logs that you don't want!*/
 window.userale.filter(function (log) {
-    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input'];
+    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus'];
     var logType_array = ['interval'];
     return !type_array.includes(log.type) && !logType_array.includes(log.logType);
 });
@@ -66,6 +66,7 @@ document.addEventListener('change', function(e) {
             sessionID: window.userale.options().sessionID,
             customLabel: "(custom) log Example!"
         });
+        window.alert()
     }
 });
 
@@ -82,7 +83,7 @@ document.addEventListener('change', function(e){
             }
         });
       //  todo figure out passing details output to packagelog window.userale.details(window.userale.options());
-        window.userale.packageLog(e, events['change']);
+        window.userale.packageLog(e, function(){return 'add additional details here!'});
     } else {
         return false
     }
