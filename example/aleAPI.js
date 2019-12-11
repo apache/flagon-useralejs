@@ -66,7 +66,6 @@ document.addEventListener('change', function(e) {
             sessionID: window.userale.options().sessionID,
             customLabel: "(custom) log Example!"
         });
-        window.alert()
     }
 });
 
@@ -75,8 +74,8 @@ document.addEventListener('change', function(e) {
 document.addEventListener('change', function(e){
     if (e.target.value === 'packageLog') {
         window.userale.map(function (log) {
-            var targetsForLabels = ["packaged this log"];
-            if (targetsForLabels.includes(log.details)) {
+            var targetsForLabels = ['change'];
+            if (targetsForLabels.includes(log.type)) {
                 return Object.assign({}, log, { logType: 'custom', customLabel: 'packageLog Example' });
             } else {
                 return log;
