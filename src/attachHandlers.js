@@ -34,7 +34,7 @@ var windowEvents = ['load', 'blur', 'focus'];
  * @param  {Object} e Event to extract data from
  */
 // @todo add extract text (inner, by event class) to mouse events
-function extractMouseEvent(e) {
+export function extractMouseEvent(e) {
   return {
     'clicks' : e.detail,
     'ctrl' : e.ctrlKey,
@@ -81,6 +81,39 @@ export function defineDetails(config) {
   refreshEvents = {
     'submit' : null
   };
+}
+
+/**
+ * Defines the way information is extracted from various events.
+ * Also defines which events we will listen to.
+ * @param  {Object} options UserALE.js Configuration object to read from.
+ * @param   {string}    type of html event (e.g., 'click', 'mouseover', etc.), such as passed to addEventListener methods.
+ */
+export function defineCustomDetails(options, type) {
+  // Events list
+  // Keys are event types
+  // Values are functions that return details object if applicable
+  var eventType = {
+    'click' : extractMouseEvent,
+    'dblclick' : extractMouseEvent,
+    'mousedown' : extractMouseEvent,
+    'mouseup' : extractMouseEvent,
+    'focus' : null,
+    'blur' : null,
+    'input' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
+    'change' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
+    'dragstart' : null,
+    'dragend' : null,
+    'drag' : null,
+    'drop' : null,
+    'keydown' : options.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
+    'mouseover' : null,
+    'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
+    'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
+    'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; },
+    'submit' : null
+  };
+  return eventType[type];
 }
 
 /**

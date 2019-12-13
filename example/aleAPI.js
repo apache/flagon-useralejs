@@ -12,18 +12,24 @@
 // limitations under the License.
 
 /** Options API
-
-/**Try out the 'Options' function to change UserALE.js params!*/
+ *
+ * the 'options' API allows you to dynamically change UserALE.js params and set meta data values
+ *pass in variables or properties into the options object, such as sessionStorage or localStorage
+ */
 const changeMe = "me";
 window.userale.options({
     "userId": changeMe,
     "version": "next",
+    "logDetails": "true",
     "sessionID": "this one"
 });
 
 /**Filter API
 
-/**Try out the 'Filter' API to eliminate the logs that you don't want!*/
+/**the 'filter' API allows you to eliminate logs you don't want
+ *use as a global filter and add classes of events or log types to eliminate
+ *or use in block scope to surgically eliminate logs from specific elements from an event handler
+ */
 window.userale.filter(function (log) {
     var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus'];
     var logType_array = ['interval'];
@@ -31,23 +37,41 @@ window.userale.filter(function (log) {
 });
 
 /**Log Mapping API
-
-/**Play around with the 'Mapping' API to add or modify existing fields in your logs!*/
-/**the example below modifies fields attached to logs on the "Click Me" button on the Example page*/
-window.userale.map(function (log, e) {
-    var targetsForLabels = ["button#test_button"];
-    if (targetsForLabels.includes(log.target)) {
-        return Object.assign({}, log, { customLabel: e.target.innerHTML });
+ *
+ * the 'map' API allows you to add or modify new fields to your logs
+ * this example works with the "Click Me!" button at the top of index.html
+ */
+ document.addEventListener('click', function(e){
+    if (e.target.innerHTML === 'Click Me!') {
+        window.userale.map(function (log) {
+            return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
+        });
+        window.userale.packageLog(e, window.userale.details(window.userale.options(),'click'));
     } else {
-        return log;
+        return false
     }
 });
 
-/**'Log' API and Custom Log Functions
+/** Alternate Log Mapping API Example
+ * Build a global mapping function with conditional logic to modify logs for similar events
+ * this example works with the "Click Me!" button at the top of index.html
+ */
+//window.userale.map(function (log, e) {
+//    var targetsForLabels = ["button#test_button"];
+//    if (targetsForLabels.includes(log.target)) {
+//        return Object.assign({}, log, { customLabel: e.target.innerHTML });
+//    } else {
+//        return log;
+//    }
+//});
 
-/**Check out the 'log' API to generate custom events and add them to the log queue! The possibilities are endless
-/*You can fully customize your custom logs and define any data schema that suits you*/
-/**this example works with the "Test Field" form element on the Example Page*/
+/**'Log' API and Custom Log Functions
+ *
+ * the 'log' API generate custom events and add them to the log queue
+ * pass in any keys:values for fully customized logs
+ * utilize 'options' and other functions to streamline populating custom logs
+ * type 'log' into the 'API Test Field' to see this custom log sent to our example server
+ */
 document.addEventListener('change', function(e) {
     if (e.target.value === 'log') {
         window.userale.log({
@@ -69,10 +93,12 @@ document.addEventListener('change', function(e) {
     }
 });
 
-/**Alternatively, you can use UserALE.js' own packaging function for HTML events to strive for standardization!*/
-/**this example works with the "Test Field" form element on the Example Page*/
+/**you can also use UserALE.js' own packaging function for HTML events to strive for standardization
+ * type 'packageLog into the 'API Test Field' to see this custom log sent to our example server
+ */
 document.addEventListener('change', function(e){
     if (e.target.value === 'packageLog') {
+        /**You can then use the 'Mapping' API function to modify custom logs created with the packageLog function*/
         window.userale.map(function (log) {
             var targetsForLabels = ['change'];
             if (targetsForLabels.includes(log.type)) {
@@ -81,15 +107,16 @@ document.addEventListener('change', function(e){
                 return log;
             }
         });
-      //  todo figure out passing details output to packagelog window.userale.details(window.userale.options());
-        window.userale.packageLog(e, function(){return 'add additional details here!'});
+        /**You can also use the details function to package additional log meta data, or add custom details*/
+        window.userale.packageLog(e, window.userale.details(window.userale.options(),'change'));
     } else {
         return false
     }
 });
-/**You can then use the 'Mapping' API function to modify custom logs created with the packageLog function*/
 
-
+/**you can also just add boilerplate UserALE.js meta data to custom logs with the packageCustomLog function
+ * type 'packageCustomLog into the 'API Test Field' to see this custom log sent to our example server
+ */
 document.addEventListener('change', function(e) {
     if (e.target.value === 'packageCustomLog') {
         window.userale.packageCustomLog({
@@ -103,6 +130,3 @@ document.addEventListener('change', function(e) {
         return false
     }
 });
-
-// @todo example for extracting text from click events
-

@@ -710,6 +710,39 @@ var userale = (function (exports) {
   }
 
   /**
+   * Defines the way information is extracted from various events.
+   * Also defines which events we will listen to.
+   * @param  {Object} options UserALE.js Configuration object to read from.
+   * @param   {string}    type of html event (e.g., 'click', 'mouseover', etc.), such as passed to addEventListener methods.
+   */
+  function defineCustomDetails(options, type) {
+    // Events list
+    // Keys are event types
+    // Values are functions that return details object if applicable
+    var eventType = {
+      'click' : extractMouseEvent,
+      'dblclick' : extractMouseEvent,
+      'mousedown' : extractMouseEvent,
+      'mouseup' : extractMouseEvent,
+      'focus' : null,
+      'blur' : null,
+      'input' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
+      'change' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
+      'dragstart' : null,
+      'dragend' : null,
+      'drag' : null,
+      'drop' : null,
+      'keydown' : options.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
+      'mouseover' : null,
+      'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
+      'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
+      'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; },
+      'submit' : null
+    };
+    return eventType[type];
+  }
+
+  /**
    * Hooks the event handlers for each event type of interest.
    * @param  {Object} config Configuration object to use.
    * @return {boolean}        Whether the operation succeeded
@@ -863,7 +896,7 @@ var userale = (function (exports) {
   }
 
   exports.buildPath = buildPath;
-  exports.details = defineDetails;
+  exports.details = defineCustomDetails;
   exports.filter = setLogFilter;
   exports.getSelector = getSelector;
   exports.log = log;

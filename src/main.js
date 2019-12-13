@@ -25,6 +25,7 @@ import { initSender } from './sendLogs.js';
 var config = {};
 var logs = [];
 export var started = false;
+export { defineCustomDetails as details} from './attachHandlers.js';
 export {
   setLogMapper as map,
   setLogFilter as filter,
@@ -33,10 +34,6 @@ export {
   getSelector as getSelector,
   buildPath as buildPath,
   } from './packageLogs.js';
-
-export {
- defineDetails as details,
-} from './attachHandlers.js';
 
 
 // Start up Userale
