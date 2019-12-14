@@ -14,24 +14,26 @@
 /** Options API
  *
  * the 'options' API allows you to dynamically change UserALE.js params and set meta data values
- *pass in variables or properties into the options object, such as sessionStorage or localStorage
+ * pass in variables or properties into the options object, such as from sessionStorage or localStorage
  */
 const changeMe = "me";
 window.userale.options({
     "userId": changeMe,
     "version": "next",
-    "logDetails": "true",
+    "logDetails": false,
     "sessionID": "this one"
 });
 
 /**Filter API
 
 /**the 'filter' API allows you to eliminate logs you don't want
- *use as a global filter and add classes of events or log types to eliminate
- *or use in block scope to surgically eliminate logs from specific elements from an event handler
+ * use as a global filter and add classes of events or log types to eliminate
+ * or use in block scope to surgically eliminate logs from specific elements from an event handler
+ * Note that for surgical filters, you may need to clear or reset back to a global filter callback
+ * the same is true for the 'map' API. See examples below:
  */
 window.userale.filter(function (log) {
-    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus'];
+    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input'];
     var logType_array = ['interval'];
     return !type_array.includes(log.type) && !logType_array.includes(log.logType);
 });
@@ -41,12 +43,15 @@ window.userale.filter(function (log) {
  * the 'map' API allows you to add or modify new fields to your logs
  * this example works with the "Click Me!" button at the top of index.html
  */
- document.addEventListener('click', function(e){
+document.addEventListener('click', function(e){
     if (e.target.innerHTML === 'Click Me!') {
         window.userale.map(function (log) {
             return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
         });
         window.userale.packageLog(e, window.userale.details(window.userale.options(),'click'));
+        /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
+         * the callback may be applied to other events of the same class (e.g., click) */
+        window.userale.map();
     } else {
         return false
     }
@@ -55,6 +60,7 @@ window.userale.filter(function (log) {
 /** Alternate Log Mapping API Example
  * Build a global mapping function with conditional logic to modify logs for similar events
  * this example works with the "Click Me!" button at the top of index.html
+ * Also, note that specifying log as a return will keep the scope of this callback limited to only the events you want
  */
 //window.userale.map(function (log, e) {
 //    var targetsForLabels = ["button#test_button"];

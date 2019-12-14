@@ -630,7 +630,6 @@ var windowEvents = ['load', 'blur', 'focus'];
  * Maps an event to an object containing useful information.
  * @param  {Object} e Event to extract data from
  */
-// @todo add extract text (inner, by event class) to mouse events
 function extractMouseEvent(e) {
   return {
     'clicks' : e.detail,
