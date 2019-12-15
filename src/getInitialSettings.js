@@ -48,7 +48,7 @@ export function getInitialSettings() {
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
   settings.sessionID = get('data-session') || sessionId;
   settings.authHeader = get ('data-auth') || null;
-
+  settings.custIndex = get ('data-index') || null;
   return settings;
 }
 

@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+import { detect } from 'detect-browser';
+var browser = detect();
+
 export var logs;
 var config;
 
@@ -90,6 +93,7 @@ export function packageLog(e, detailFcn) {
     'pageUrl': window.location.href,
     'pageTitle': document.title,
     'pageReferrer': document.referrer,
+    'browser': detectBrowser(),
     'clientTime' : timeFields.milli,
     'microTime' : timeFields.micro,
     'location' : getLocation(e),
@@ -140,6 +144,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'pageUrl': window.location.href,
         'pageTitle': document.title,
         'pageReferrer': document.referrer,
+        'browser': detectBrowser(),
         'clientTime' : timeFields.milli,
         'microTime' : timeFields.micro,
         'logType': 'custom',
@@ -210,6 +215,7 @@ export function packageIntervalLog(e) {
             'pageUrl': window.location.href,
             'pageTitle': document.title,
             'pageReferrer': document.referrer,
+            'browser': detectBrowser(),
             'count': intervalCounter,
             'duration': timestamp - intervalTimer,  // microseconds
             'startTime': intervalTimer,
@@ -231,7 +237,7 @@ export function packageIntervalLog(e) {
         }
 
         if (typeof mapHandler === 'function') {
-          intervalLog = mapHandler(intervalLog);
+          intervalLog = mapHandler(intervalLog, e);
         }
 
         logs.push(intervalLog);
@@ -319,4 +325,8 @@ export function selectorizePath(path) {
     ++i;
   }
   return pathSelectors;
+}
+
+export function detectBrowser() {
+    return {'browser': browser.name, 'version': browser.version};
 }
