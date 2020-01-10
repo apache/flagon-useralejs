@@ -29,11 +29,12 @@ window.userale.options({
 /**the 'filter' API allows you to eliminate logs you don't want
  * use as a global filter and add classes of events or log types to eliminate
  * or use in block scope to surgically eliminate logs from specific elements from an event handler
+ * The filter below reduces logs to capture click, change, select, and submit events on index.html
  * Note that for surgical filters, you may need to clear or reset back to a global filter callback
  * the same is true for the 'map' API. See examples below:
  */
 window.userale.filter(function (log) {
-    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input'];
+    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
     var logType_array = ['interval'];
     return !type_array.includes(log.type) && !logType_array.includes(log.logType);
 });
@@ -94,7 +95,7 @@ document.addEventListener('change', function(e) {
             toolName: window.userale.options().toolName,
             useraleVersion: window.userale.options().useraleVersion,
             sessionID: window.userale.options().sessionID,
-            customLabel: "(custom) log Example!"
+            customLabel: "(custom) Log Example"
         });
     }
 });
@@ -126,7 +127,7 @@ document.addEventListener('change', function(e){
 document.addEventListener('change', function(e) {
     if (e.target.value === 'packageCustomLog') {
         window.userale.packageCustomLog({
-            customLabel: 'packageCustomLog Example!',
+            customLabel: 'packageCustomLog Example',
             customField1: 'foo',
             customField2: 'bar'},
             function(){return 'add additional details here!'},

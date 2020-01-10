@@ -72,7 +72,7 @@ gulp.task('rollup', function() {
   .then(function(bundle) {
     return bundle.write({
       file : 'build/' + userale + '.js',
-      format : 'iife',
+      format : 'umd',
       name: 'userale'
     });
   });

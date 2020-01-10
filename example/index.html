@@ -14,25 +14,31 @@ limitations under the License.
 -->
 <html>
 <head>
-  <title>UserAleJS - Example Page</title>
+  <title>UserALE.js - Example Page</title>
 
   <!-- Load UserALE.js and set logging parameters-->
   <script
-          src="{your path here}/build/userale-2.0.2.min.js"
+          src="../build/userale-2.1.0.min.js"
           data-url="http://localhost:8000/"
           data-user="example-user"
-          data-log-details="false"
+          data-log-details="true" <!--careful! 'true' will give you keys and inputs-->
           data-version="2.1.0"
           data-tool="Apache UserALE.js Example"
   ></script>
-  <!-- Load UserALE.js API calls to modify log stream -->
+  <!-- Load UserALE.js API calls to modify log stream-->
   <script
-          src="{your path here}/example/aleAPI.js"
+          src="./index.js"
   ></script>
 </head>
 <body>
 <br>
-<br>
+<p>
+  This UserALE.js Example Page lets you explore how UserALE.js works, deploys with a script tag, and the data it generates.<br>
+  By default, you'll see the raw logs UserALE.js generates. We kept this page simple so that its easy to see how things work.
+</p>
+<p>
+  To see how our API can be used to shape UserALE.js logs to your needs, uncomment the 'index.js' script tag in index.html.
+</p>
 <br>
 <p>Click the button below to generate targeted click events.</p>
 <div class="container">
@@ -40,25 +46,32 @@ limitations under the License.
 </div>
 <br>
 <br>
-<br>
-<p>Play around with these form elements to see a variety of UserALE.js log types:</p>
-<p>Capture inputs and changes to text fields</p>
+<p>Play around with the form elements below to see a variety of UserALE.js log types:</p>
+<p>
+  Capture changes to fields (and values, when it's safe).
+</p>
+<p>
+  With index.js injected into the page, you can use the 'Test Field' below to see the behavior of our API dynamically.<br>
+  Type in the following UserALE.js function names to see their behavior.
+<ul>
+  <li>"log" - ship a fully customized log, built from scratch</li>
+  <li>"packageLog" - hijack our own pipeline to modify and ship logs packaged exactly like standard UserALE.js logs</li>
+  <li>"packageCustomLog" - smash a number of custom fields together with UserALE.js standard metadata</li>
+</ul>
+
 <form id="test_text_input">
-  <label>Test field: <input type="text"></label>
+  <label>Test Field: <input type="text"></label>
   <br><br>
   <button type="submit">Submit form</button>
 </form>
 <br>
-<br>
-<br>
-<p>Capture inputs and changes to different types of selections</p>
+<p>Capture inputs and changes to different types of selections.</p>
 <select name="UserALE.js Committers">
   <option value="clay">Clay</option>
   <option value="rob">Rob</option>
   <option value="michelle">Michelle</option>
   <option value="josh">Josh</option>
 </select>
-<br>
 <br>
 <br>
 <form id="test_radio_input">

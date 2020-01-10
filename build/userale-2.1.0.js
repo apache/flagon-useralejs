@@ -16,8 +16,11 @@
  * @preserved
  */
 
-var userale = (function (exports) {
-  'use strict';
+(function (global, factory) {
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = global || self, factory(global.userale = {}));
+}(this, (function (exports) { 'use strict';
 
   var version = "2.1.0";
 
@@ -529,7 +532,7 @@ var userale = (function (exports) {
           'sessionID': config.sessionID
       };
 
-      var log = Object.assign(customLog, metaData);
+      var log = Object.assign(metaData, customLog);
 
       if ((typeof filterHandler === 'function') && !filterHandler(log)) {
           return false;
@@ -1108,6 +1111,6 @@ var userale = (function (exports) {
   exports.stop = stop;
   exports.version = version$1;
 
-  return exports;
+  Object.defineProperty(exports, '__esModule', { value: true });
 
-}({}));
+})));

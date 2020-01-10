@@ -157,7 +157,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'sessionID': config.sessionID
     };
 
-    var log = Object.assign(customLog, metaData);
+    var log = Object.assign(metaData, customLog);
 
     if ((typeof filterHandler === 'function') && !filterHandler(log)) {
         return false;
