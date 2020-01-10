@@ -97,6 +97,7 @@ export function packageLog(e, detailFcn) {
     'clientTime' : timeFields.milli,
     'microTime' : timeFields.micro,
     'location' : getLocation(e),
+    'scrnRes' : getSreenRes(),
     'type' : e.type,
     'logType': 'raw',
     'userAction' : true,
@@ -147,6 +148,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'browser': detectBrowser(),
         'clientTime' : timeFields.milli,
         'microTime' : timeFields.micro,
+        'scrnRes' : getSreenRes(),
         'logType': 'custom',
         'userAction' : userAction,
         'details' : details,
@@ -272,6 +274,14 @@ export function getLocation(e) {
   } else {
     return { 'x' : null, 'y' : null };
   }
+}
+
+/**
+ * Extracts innerWidth and innerHeight to provide estimates of screen resolution
+ * @return {Object} An object containing the innerWidth and InnerHeight
+ */
+export function getSreenRes() {
+    return { 'width': window.innerWidth, 'height': window.innerHeight};
 }
 
 /**

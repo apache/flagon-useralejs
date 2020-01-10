@@ -490,6 +490,7 @@ function packageLog(e, detailFcn) {
     'clientTime' : timeFields.milli,
     'microTime' : timeFields.micro,
     'location' : getLocation(e),
+    'scrnRes' : getSreenRes(),
     'type' : e.type,
     'logType': 'raw',
     'userAction' : true,
@@ -614,6 +615,14 @@ function getLocation(e) {
   } else {
     return { 'x' : null, 'y' : null };
   }
+}
+
+/**
+ * Extracts innerWidth and innerHeight to provide estimates of screen resolution
+ * @return {Object} An object containing the innerWidth and InnerHeight
+ */
+function getSreenRes() {
+    return { 'width': window.innerWidth, 'height': window.innerHeight};
 }
 
 /**
