@@ -68,7 +68,7 @@ export function initPackager(newLogs, newConfig) {
 }
 
 /**
- * Transforms the provided event into a log and appends it to the log container.
+ * Transforms the provided HTML event into a log and appends it to the log queue.
  * @param  {Object} e         The event to be logged.
  * @param  {Function} detailFcn The function to extract additional log parameters from the event.
  * @return {boolean}           Whether the event was logged.
@@ -123,7 +123,7 @@ export function packageLog(e, detailFcn) {
 }
 
 /**
- * Packages the provided customLog to include standard meta data and appends it to the log container.
+ * Packages the provided customLog to include standard meta data and appends it to the log queue.
  * @param  {Object} customLog        The behavior to be logged.
  * @param  {Function} detailFcn     The function to extract additional log parameters from the event.
  * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
