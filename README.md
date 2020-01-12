@@ -1,6 +1,7 @@
 # Apache Flagon UserALE.js (Incubating)
 
-[![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=plastic)](https://builds.apache.org/job/useralejs-ci?)
+[![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=flat)](https://builds.apache.org/job/useralejs-ci?)
+![npm](https://img.shields.io/npm/v/flagon-userale)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 The official JavaScript client for [Apache Flagon UserALE](https://github.com/apache/incubator-flagon-userale).  
