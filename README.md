@@ -274,12 +274,12 @@ We use gulp-mocha for unit tests. The results will print to your terminal:
   45 passing (954ms)
   1 pending
 ```
-Any failing tests will also be logged in the terminal. If there are failing tests, please consider [authoring an issue in GitHub](https://github.com/apache/incubator-flagon-useralejs/projects/1).
+Any failing tests will also be logged in the terminal. If there are failing tests, please consider [submitting an issue report via JIRA](https://issues.apache.org/jira/browse/FLAGON) or adding a note [in GitHub](https://github.com/apache/incubator-flagon-useralejs/projects/1).
 
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://github.com/apache/incubator-flagon-useralejs/projects/1) for problems you encounter or a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+Contributions are welcome!  Simply [submit an issue report via JIRA](https://issues.apache.org/jira/browse/FLAGON) or adding a note [in GitHub](https://github.com/apache/incubator-flagon-useralejs/projects/1) for problems you encounter. Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
 
 Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
