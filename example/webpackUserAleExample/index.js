@@ -25,6 +25,7 @@ import * as userale from 'flagon-userale';
 const changeMe = "me";
 userale.options({
     "userId": changeMe,
+    "url": "http://localhost:8000/",
     "version": "next",
     "logDetails": false,
     "sessionID": "this one"
