@@ -22,11 +22,16 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 [Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
 [License](https://github.com/apache/incubator-flagon-useralejs#license)
 
-## What's New in Version 2.0.2?
+## What's New in Version 2.1.0?
 
-- Updates to package.json and package-lock.json to resolve downstream Prototype Pollution vulnerabilities in dev dependencies
-- Updates to package.json and package-lock.json to modernize deprecated npm modules
-- Minor updates to README documentation for UserALE.js' [Example Test Utilities](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
+- Module package-bundler deployment support (include UserALE.js via 'import' & 'require')
+- Updated existing example page to include a range of HTML elements
+- New example page for including UserALE.js as a module (Webpack example)
+- Added support for logging from HTML Forms
+- Added SessionId persistence via SessionStorage
+- Exposes a wide range of functions to support custom logging with UserALE.js
+- Added support for passing Auth-headers via log pipeline to back-end
+- Added additional log fields: browser type and version, inner width/height (for heatmaps)
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
 
