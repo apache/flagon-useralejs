@@ -13,6 +13,9 @@
 
 import * as userale from 'flagon-userale';
 
+//or use require
+//const userale = require('flagon-userale');
+
 
 /** Options API
  *

@@ -87,6 +87,10 @@ Below are a few notes that are useful as you begin to modify the UserALE.js **mo
 
 ```html
 import * as userale from 'flagon-userale';
+
+or
+
+const userale = require('flagon-userale');
 ```
 
 * `index.js` is bundled with **Webpack**, resulting in a `main.js` file in the /dist directory. `index.html` includes `main.js` through a script tag.
