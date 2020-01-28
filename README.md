@@ -6,9 +6,9 @@
 ![npm](https://img.shields.io/npm/v/flagon-userale)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-Apache UserALE.js is part of the [Apache Flagon Project](http://flagon.incubator.apache.org/). It is a client side instrumentation library written in JavaScript designed for easy deployment and lightweight configuration in gathering logs from your web applications for behavioral analytics use-cases.
+Apache UserALE.js is part of the [Apache Flagon Project](http://flagon.incubator.apache.org/). It is a client side instrumentation library written in JavaScript designed for easy deployment and lightweight configuration in gathering logs from your web applications for user behavioral analytics.
 
-Once included in your project, Apache UserALE.js provides comprehensive logging capabilities capturing every event on every element rendered in your DOM.
+Once included in your project, Apache UserALE.js provides a comprehensive behavioral logging capability, capturing every event on every element rendered in your DOM.
 
 Additional documentation and a demonstration can be found at the [Apache Flagon website](http://flagon.incubator.apache.org/userale/).
 
