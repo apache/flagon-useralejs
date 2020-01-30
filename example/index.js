@@ -15,13 +15,15 @@
  *
  * the 'options' API allows you to dynamically change UserALE.js params and set meta data values
  * pass in variables or properties into the options object, such as from sessionStorage or localStorage
+ * NOTE: logDetails is set to true (default:false), this will log key strokes, inputs, and change events
+ * (be careful of your form data and auth workflows!)
  */
 const changeMe = "me";
 window.userale.options({
-    "userId": changeMe,
-    "version": "next",
-    "logDetails": false,
-    "sessionID": "this one"
+    'userId': changeMe,
+    'logDetails': true,
+    'sessionID': 'this one',
+    'toolName': 'Apache UserALE.js Example (Custom)'
 });
 
 /**Filter API
@@ -49,7 +51,7 @@ document.addEventListener('click', function(e){
         window.userale.map(function (log) {
             return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
         });
-        window.userale.packageLog(e, window.userale.details(window.userale.options(),'click'));
+        window.userale.packageLog(e, window.userale.details(window.userale.options(),e.type));
         /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
          * the callback may be applied to other events of the same class (e.g., click) */
         window.userale.map();
@@ -84,18 +86,19 @@ document.addEventListener('change', function(e) {
         window.userale.log({
             target: window.userale.getSelector(e.target),
             path: window.userale.buildPath(e),
+            clientTime: Date.now(),
             type: e.type,
             logType: 'custom',
             userAction: false,
-            details: 'I can make this log look like anything I want',
-            customField1: 'foo',
-            customField2: 'bar',
+            details: {'foo': 'bar', 'bar': 'foo'},
+            customField1: 'I can make this log look like anything I want',
+            customField2: 'foo',
             userId: window.userale.options().userId,
             toolVersion: window.userale.options().version,
             toolName: window.userale.options().toolName,
             useraleVersion: window.userale.options().useraleVersion,
             sessionID: window.userale.options().sessionID,
-            customLabel: "(custom) Log Example"
+            customLabel: "Custom Log Example"
         });
     }
 });
@@ -115,7 +118,7 @@ document.addEventListener('change', function(e){
             }
         });
         /**You can also use the details function to package additional log meta data, or add custom details*/
-        window.userale.packageLog(e, window.userale.details(window.userale.options(),'change'));
+        window.userale.packageLog(e, window.userale.details(window.userale.options(),e.type));
     } else {
         return false
     }
@@ -130,7 +133,7 @@ document.addEventListener('change', function(e) {
             customLabel: 'packageCustomLog Example',
             customField1: 'foo',
             customField2: 'bar'},
-            function(){return 'add additional details here!'},
+            function(){return {'foo': 'bar', 'bar': 'foo'}},
             true
             );
     } else {

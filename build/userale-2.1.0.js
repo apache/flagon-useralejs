@@ -73,8 +73,8 @@
     settings.userFromParams = get('data-user-from-params') || null;
     settings.time = timeStampScale(document.createEvent('CustomEvent'));
     settings.sessionID = get('data-session') || sessionId;
-    settings.authHeader = get ('data-auth') || null;
-    settings.custIndex = get ('data-index') || null;
+    settings.authHeader = get('data-auth') || null;
+    settings.custIndex = get('data-index') || null;
     return settings;
   }
 
@@ -443,7 +443,7 @@
   }
 
   /**
-   * Transforms the provided event into a log and appends it to the log container.
+   * Transforms the provided HTML event into a log and appends it to the log queue.
    * @param  {Object} e         The event to be logged.
    * @param  {Function} detailFcn The function to extract additional log parameters from the event.
    * @return {boolean}           Whether the event was logged.
@@ -481,7 +481,7 @@
       'toolVersion' : config.version,
       'toolName' : config.toolName,
       'useraleVersion': config.useraleVersion,
-      'sessionID': config.sessionID
+      'sessionID': config.sessionID,
     };
 
     if ((typeof filterHandler === 'function') && !filterHandler(log)) {
@@ -498,7 +498,7 @@
   }
 
   /**
-   * Packages the provided customLog to include standard meta data and appends it to the log container.
+   * Packages the provided customLog to include standard meta data and appends it to the log queue.
    * @param  {Object} customLog        The behavior to be logged.
    * @param  {Function} detailFcn     The function to extract additional log parameters from the event.
    * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
@@ -514,15 +514,12 @@
           details = detailFcn();
       }
 
-      var timeFields = extractTimeFields(Date.now());
-
       var metaData = {
           'pageUrl': window.location.href,
           'pageTitle': document.title,
           'pageReferrer': document.referrer,
           'browser': detectBrowser$1(),
-          'clientTime' : timeFields.milli,
-          'microTime' : timeFields.micro,
+          'clientTime' : Date.now(),
           'scrnRes' : getSreenRes(),
           'logType': 'custom',
           'userAction' : userAction,

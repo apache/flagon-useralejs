@@ -106,7 +106,7 @@ export function packageLog(e, detailFcn) {
     'toolVersion' : config.version,
     'toolName' : config.toolName,
     'useraleVersion': config.useraleVersion,
-    'sessionID': config.sessionID
+    'sessionID': config.sessionID,
   };
 
   if ((typeof filterHandler === 'function') && !filterHandler(log)) {
@@ -139,15 +139,12 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         details = detailFcn();
     }
 
-    var timeFields = extractTimeFields(Date.now());
-
     var metaData = {
         'pageUrl': window.location.href,
         'pageTitle': document.title,
         'pageReferrer': document.referrer,
         'browser': detectBrowser(),
-        'clientTime' : timeFields.milli,
-        'microTime' : timeFields.micro,
+        'clientTime' : Date.now(),
         'scrnRes' : getSreenRes(),
         'logType': 'custom',
         'userAction' : userAction,

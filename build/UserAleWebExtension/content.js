@@ -99,8 +99,8 @@ function getInitialSettings() {
   settings.userFromParams = get('data-user-from-params') || null;
   settings.time = timeStampScale(document.createEvent('CustomEvent'));
   settings.sessionID = get('data-session') || sessionId;
-  settings.authHeader = get ('data-auth') || null;
-  settings.custIndex = get ('data-index') || null;
+  settings.authHeader = get('data-auth') || null;
+  settings.custIndex = get('data-index') || null;
   return settings;
 }
 
@@ -461,7 +461,7 @@ function initPackager(newLogs, newConfig) {
 }
 
 /**
- * Transforms the provided event into a log and appends it to the log container.
+ * Transforms the provided HTML event into a log and appends it to the log queue.
  * @param  {Object} e         The event to be logged.
  * @param  {Function} detailFcn The function to extract additional log parameters from the event.
  * @return {boolean}           Whether the event was logged.
@@ -499,7 +499,7 @@ function packageLog(e, detailFcn) {
     'toolVersion' : config.version,
     'toolName' : config.toolName,
     'useraleVersion': config.useraleVersion,
-    'sessionID': config.sessionID
+    'sessionID': config.sessionID,
   };
 
   if ((typeof filterHandler === 'function') && !filterHandler(log)) {
