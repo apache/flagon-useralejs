@@ -18,7 +18,7 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 [Configure](https://github.com/apache/incubator-flagon-useralejs#configure)  
 [Usage](https://github.com/apache/incubator-flagon-useralejs#usage)  
 [Examples](https://github.com/apache/incubator-flagon-useralejs#examples)   
-[Indexing, Storing, and Visualizing Logs](https://github.com/apache/indexing-and-storage)
+[Indexing, Storing, and Visualizing Logs](https://github.com/apache/incubator-flagon-userale#indexing-storing-and-visualizing-logs)  
 [Modifying Source](https://github.com/apache/incubator-flagon-useralejs#modifying-source)   
 [Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
 [License](https://github.com/apache/incubator-flagon-useralejs#license)
