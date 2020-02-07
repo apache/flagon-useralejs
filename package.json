@@ -34,7 +34,7 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://issues.apache.org/jira/browse/FLAGON"
+    "url": "https://github.com/apache/incubator-flagon-useralejs/issues"
   },
   "homepage": "http://flagon.incubator.apache.org",
   "engines": {

@@ -10,9 +10,7 @@ This directory provides
 
 Ensure that you have [node.js](https://nodejs.org/) installed.
 
-You will need to clone the [UserALE.js repository](https://github.com/apache/incubator-flagon-useralejs) and `npm install` install dev dependencies to run the Example Utility.
-
-Please see the [Prerequsites](https://github.com/apache/incubator-flagon-useralejs#prerequsites) for additional details.
+You will need to clone the [UserALE.js repository](https://github.com/apache/incubator-flagon-useralejs) and follow [Installation directions](https://github.com/apache/incubator-flagon-useralejs#installation).
 
 ## Using the Example Page 
 
@@ -120,4 +118,4 @@ Find them in `/logs` under the top level flagon-userale dir. A new log file will
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
