@@ -1,6 +1,53 @@
 Changelog
 =========
+Apache Flagon UserALE.js (Incubating) 2.1.0 (2020-02-07)
+-------------------------------
+* Release Notes - Flagon - Version UserALE.js 2.1.0
+* [Release Report](https://issues.apache.org/jira/secure/ReleaseNote.jspa?version=12345442&styleName=Text&projectId=12320621&Create=Create&atl_token=A5KQ-2QAV-T4JA-FDED_8301b4e9c1c91354ea85ab02c89ec979db077d9a_lin)
 
+* Sub-task
+    * [FLAGON-440] - create sendOnRefresh function in sendlog
+    * [FLAGON-441] - utilize sessionStorage for sessionId so that sessionId isn't cleared until the tab is closed.
+    * [FLAGON-442] - Update documentation for how to pass local storage, cookie data to sessionId
+    * [FLAGON-451] - Update unit tests to accommodate session storage features
+
+* Bug
+    * [FLAGON-341] - Web Extension Produces Duplicate Logs
+    * [FLAGON-431] - Killing nodemon example server throws lifecycle error on node.js v12.7.0
+    * [FLAGON-483] - userale.log & userale.packageCustomLog logs are not being indexed by ES
+    * [FLAGON-486] - toolName does not populate in logs
+
+* New Feature
+    * [FLAGON-435] - track usage across multi-tab applications via script tag was: TabID to attach handlers
+    * [FLAGON-436] - Print Screen Resolution
+
+* Improvement
+    * [FLAGON-434] - capture what is submitted via forms
+    * [FLAGON-443] - Add Options API Example to UserALE.js Example
+    * [FLAGON-478] - Update index.html to provide instructions for generating certain kinds of logs
+    * [FLAGON-479] - update readme for package manager/compiler deployment example
+
+* Test
+    * [FLAGON-472] - test userale.js on node v > 13
+    * [FLAGON-480] - Test Browser Plugin Behavior with UMD userale format
+    * [FLAGON-481] - update top level readme for new Package loader deployment instructions
+    * [FLAGON-484] - confirm that 'require' method works as well as 'import' for webpack example
+    * [FLAGON-485] - Add prototype .asf.yaml file
+    * [FLAGON-487] - test data-version in script and options params
+
+* Task
+    * [FLAGON-454] - Update eslint-utils to remove critical vulnerability in gulp-eslint v5.0
+    * [FLAGON-455] - Integrate forms example into index.html
+    * [FLAGON-456] - Develop npm example for including UserALE.js
+    * [FLAGON-457] - Remove 'useraction' field from logstream
+    * [FLAGON-467] - Add (custom) Log API examples
+    * [FLAGON-468] - expose PackageLog and supporting functions to aide in custom logging
+    * [FLAGON-469] - Need "meta" package function to add meta data to non HTML events
+    * [FLAGON-470] - Expose event object in Package Log to allow users to add, extract properties to events
+    * [FLAGON-471] - SetRequestHeader should include an Authorization option
+    * [FLAGON-473] - update packagefile for new version and engines
+    * [FLAGON-475] - Print Browser Types, Version
+    
 Apache Flagon UserALE.js (Incubating) 2.0.2 (2019-08-06)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.0.2
