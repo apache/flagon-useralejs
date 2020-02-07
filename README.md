@@ -13,12 +13,12 @@ Once included in your project, Apache UserALE.js provides a comprehensive behavi
 Additional documentation and a demonstration can be found at the [Apache Flagon website](http://flagon.incubator.apache.org/userale/).
 
 ### Table of Contents
-[What's New](https://github.com/apache/incubator-flagon-useralejs#whats-new-in-version-202)  
+[What's New](https://github.com/apache/incubator-flagon-useralejs#whats-new-in-version-210)  
 [Installation](https://github.com/apache/incubator-flagon-useralejs#installation)  
 [Configure](https://github.com/apache/incubator-flagon-useralejs#configure)  
 [Usage](https://github.com/apache/incubator-flagon-useralejs#usage)  
-[Examples](https://github.com/apache/incubator-flagon-useralejs#examples)  
-[Indexing and Storage](https://github.com/apache/indexing-and-storage)
+[Examples](https://github.com/apache/incubator-flagon-useralejs#examples)   
+[Indexing, Storing, and Visualizing Logs](https://github.com/apache/indexing-and-storage)
 [Modifying Source](https://github.com/apache/incubator-flagon-useralejs#modifying-source)   
 [Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
 [License](https://github.com/apache/incubator-flagon-useralejs#license)
@@ -31,7 +31,7 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 - Added support for logging from HTML Forms
 - Added SessionId persistence via SessionStorage
 - Exposes a wide range of functions to support custom logging with UserALE.js
-- Added support for passing Auth-headers via log pipeline to back-end
+- Added support for passing auth-headers via log pipeline to back-end
 - Added additional log fields: browser type and version, inner width/height (for heatmaps)
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
@@ -61,7 +61,7 @@ repositories:
 <script src="./node_modules/flagon-userale/build/userale-2.1.0.min.js"></script>
 ```
 
-If you include UserALE.js as a `script-tag`, consider installing via npm as a development dependency, instead:
+If you include UserALE.js as a `script-tag`, consider installing via npm as a development dependency:
 
 ```html
 npm install --save-dev flagon-userale
@@ -251,9 +251,9 @@ Again, see [Usage](https://github.com/apache/incubator-flagon-useralejs#usage) f
 
 You can find additional examples on our [website](http://flagon.incubator.apache.org/docs/useralejs/API/).
 
-## Indexing and Storing Logs
+## Indexing, Storing and Visualizing Logs
 
-We recommend Elastic products, specifically an [ELK cluster](https://github.com/apache/incubator-flagon-useralejs#examples), for indexing and storing logs in productions. 
+We recommend Elastic products, specifically an [ELK cluster](https://www.elastic.co/what-is/elk-stack), for indexing and storing logs in productions. 
 
 You can find a 'sand-box' ELK build, configuration files, and visualization/dashboards tailored for UserALE.js in the [Apache Flagon parent repository](https://github.com/apache/incubator-flagon/tree/master/docker).
 
@@ -288,15 +288,16 @@ We use gulp-mocha for unit tests. The results will print to your terminal:
   45 passing (954ms)
   1 pending
 ```
-Any failing tests will also be logged in the terminal. If there are failing tests, please consider [submitting an issue report via JIRA](https://issues.apache.org/jira/browse/FLAGON) or adding a note [in GitHub](https://github.com/apache/incubator-flagon-useralejs/projects/1).
+Any failing tests will also be logged in the terminal. If there are failing tests, please consider [submitting an issue report](https://github.com/apache/incubator-flagon-useralejs/issues).
 
+For more guidance on modifying Flagon UserALE src code, check out [the guide on our website](http://flagon.incubator.apache.org/docs/useralejs/modifying/).
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report via JIRA](https://issues.apache.org/jira/browse/FLAGON) or adding a note [in GitHub](https://github.com/apache/incubator-flagon-useralejs/projects/1) for problems you encounter. Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+Contributions are welcome!  Simply [submit an issue report](https://github.com/apache/incubator-flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
 
 Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
 ## License
 
-Apache Flagon UserALE.js is provided under Apache License version 2.0. See LICENSE and NOTICE files at MASTER for more details.
+Apache Flagon UserALE.js is provided under Apache License version 2.0. See [LICENSE](https://github.com/apache/incubator-flagon-useralejs/blob/master/LICENSE) and [NOTICE](https://github.com/apache/incubator-flagon-useralejs/blob/master/NOTICE) files at MASTER for more details.
