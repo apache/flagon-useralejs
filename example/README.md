@@ -6,6 +6,9 @@ This directory provides
  * a means of viewing log event structure within a simple UserALE logging server;
  * a means of testing UserALE.js API functions within a simple HTML Webpage. 
 
+If you are interested in examples for a **module** deployment methodology, see the README in the [/webpack examples directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/webpackUserAleExample). For details about our web extension, see 
+our [UserALE.js WebExtension documentation](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension).
+
 ## Prerequisites
 
 Ensure that you have [node.js](https://nodejs.org/) installed.

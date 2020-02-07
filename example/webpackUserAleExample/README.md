@@ -17,7 +17,7 @@ You will need to `npm install` the [flagon-userale](https://www.npmjs.com/packag
 
 From `./example/webpackUserAleExample` directory, `npm install` dependencies to run this Example Utility. Note that the UserALE.js Webpack Example has it's own package.json file, that is separate from the larger `flagon-userale` package.
 
-Please see the [Prerequsites](https://github.com/apache/incubator-flagon-useralejs#prerequsites) for additional details.
+Please follow [Installation directions](https://github.com/apache/incubator-flagon-useralejs#installation) if you run into issues.
 
 ## Using the Example Page 
 
@@ -133,4 +133,4 @@ See the [Flagon website](http://flagon.incubator.apache.org/) for additional doc
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://issues.apache.org/jira/browse/FLAGON) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
