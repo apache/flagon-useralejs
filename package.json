@@ -38,7 +38,7 @@
   },
   "homepage": "http://flagon.incubator.apache.org",
   "engines": {
-    "node": "10.10.0 || 11.10.0 - 12.7.0 || 13.3.0",
+    "node": "10.10.0 || 11.10.0 - 12.7.0 || >=14.0.0",
     "npm": "6.4.1 || 6.7.0 - 6.10.0 || 6.13.1"
   },
   "devDependencies": {
