@@ -39,7 +39,7 @@
   "homepage": "http://flagon.incubator.apache.org",
   "engines": {
     "node": "10.10.0 || 11.10.0 - 12.7.0 || >=14.0.0",
-    "npm": "6.4.1 || 6.7.0 - 6.10.0 || 6.13.1"
+    "npm": "6.4.1 || 6.7.0 - 6.10.0 || >=6.14.4"
   },
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.0",
