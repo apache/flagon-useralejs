@@ -26,7 +26,7 @@ var commonjs = require('rollup-plugin-commonjs');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var mocha = require('gulp-mocha');
-var babel = require('babel-register');
+var babel = require('@babel/register');
 var license = require('rollup-plugin-license');
 var jsonModify = require('gulp-json-modify');
 var filter = require('gulp-filter');
@@ -178,7 +178,7 @@ gulp.task('lint', function() {
 gulp.task('test', gulp.series(['build', 'lint'], function() {
   return gulp.src(['test/**/*_spec.js'], { read : false })
     .pipe(mocha({
-      require: ['babel-core/register']
+      require: ['@babel/register']
     }))
     .on('error', function(err) {
       log.error(err);

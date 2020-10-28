@@ -44,8 +44,9 @@
   "devDependencies": {
     "@rollup/plugin-json": "^4.0.0",
     "@rollup/plugin-node-resolve": "^6.0.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/register": "^7.12.1",
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
     "composer": "^4.1.0",
