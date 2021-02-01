@@ -1,8 +1,8 @@
 {
   "name": "flagon-userale",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
-  "main": "build/userale-2.1.0.js",
+  "main": "build/userale-2.1.1.js",
   "scripts": {
     "pretest": "gulp lint",
     "test": "gulp test",
@@ -38,15 +38,15 @@
   },
   "homepage": "http://flagon.incubator.apache.org",
   "engines": {
-    "node": "10.10.0 || 11.10.0 - 12.7.0 || >=14.0.0",
-    "npm": "6.4.1 || 6.7.0 - 6.10.0 || >=6.14.4"
+    "node": "10.10.0 || 11.10.0 - 12.20.1 || >=13.7.0",
+    "npm": "6.4.1 || 6.7.0 - 6.12.1 || >=6.13.4"
   },
   "devDependencies": {
-    "@rollup/plugin-json": "^4.0.0",
-    "@rollup/plugin-node-resolve": "^6.0.0",
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/register": "^7.12.1",
+    "@rollup/plugin-json": "^4.0.0",
+    "@rollup/plugin-node-resolve": "^6.0.0",
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
     "composer": "^4.1.0",
@@ -58,7 +58,7 @@
     "gulp-eslint": "^6.0.0",
     "gulp-filter": "^5.0.0",
     "gulp-json-modify": "^1.0.2",
-    "gulp-mocha": "^6.0.0",
+    "gulp-mocha": "^7.0.2",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.4",
     "gulp-uglify": "^3.0.1",
@@ -69,7 +69,7 @@
     "pump": "^3.0.0",
     "rollup": "^1.27.14",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-license": "^0.13.0",
+    "rollup-plugin-license": "^2.2.0",
     "sinon": "^7.3.2",
     "uglify-es": "^3.3.9"
   }

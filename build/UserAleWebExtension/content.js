@@ -19,10 +19,10 @@
 
 // these are default values, which can be overridden by the user on the options page
 var userAleHost = 'http://localhost:8000';
-var userAleScript = 'userale-2.1.0.min.js';
+var userAleScript = 'userale-2.1.1.min.js';
 var toolUser = 'nobody';
 var toolName = 'test_app';
-var toolVersion = '2.1.0';
+var toolVersion = '2.1.1';
 
 /* eslint-enable */
 
@@ -48,7 +48,7 @@ var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
-var version = "2.1.0";
+var version = "2.1.1";
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
