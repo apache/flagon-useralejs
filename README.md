@@ -1,8 +1,8 @@
 # Apache Flagon UserALE.js (Incubating)
 
-[![Build Status](https://builds.apache.org/job/useralejs-ci/badge/icon?style=flat)](https://builds.apache.org/job/useralejs-ci?)
+![Node.js CI](https://github.com/apache/incubator-flagon-useralejs/workflows/Node.js%20CI/badge.svg)
 ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/flagon-userale)
-![Maintenance](https://img.shields.io/maintenance/yes/2020)
+![Maintenance](https://img.shields.io/maintenance/yes/2021)
 ![npm](https://img.shields.io/npm/v/flagon-userale)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
