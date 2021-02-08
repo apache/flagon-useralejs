@@ -22,7 +22,7 @@
   (global = global || self, factory(global.userale = {}));
 }(this, (function (exports) { 'use strict';
 
-  var version = "2.1.0";
+  var version = "2.1.1";
 
   /*
    * Licensed to the Apache Software Foundation (ASF) under one or more
