@@ -19,7 +19,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.userale = {}));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.userale = {}));
 }(this, (function (exports) { 'use strict';
 
   var version = "2.1.1";
@@ -367,13 +367,13 @@
   });
 
   unwrapExports(detectBrowser);
-  var detectBrowser_1 = detectBrowser.BrowserInfo;
-  var detectBrowser_2 = detectBrowser.NodeInfo;
-  var detectBrowser_3 = detectBrowser.BotInfo;
+  detectBrowser.BrowserInfo;
+  detectBrowser.NodeInfo;
+  detectBrowser.BotInfo;
   var detectBrowser_4 = detectBrowser.detect;
-  var detectBrowser_5 = detectBrowser.parseUserAgent;
-  var detectBrowser_6 = detectBrowser.detectOS;
-  var detectBrowser_7 = detectBrowser.getNodeVersion;
+  detectBrowser.parseUserAgent;
+  detectBrowser.detectOS;
+  detectBrowser.getNodeVersion;
 
   /*
    * Licensed to the Apache Software Foundation (ASF) under one or more

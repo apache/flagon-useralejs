@@ -70,7 +70,7 @@ if (chrome) {
 
 // creates a Future for retrieval of the named keys
 // the value specified is the default value if one doesn't exist in the storage
-let store = browser.storage.local.get({
+browser.storage.local.get({
   userAleHost: userAleHost,
   userAleScript: userAleScript,
   toolUser: toolUser,

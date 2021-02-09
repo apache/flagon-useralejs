@@ -287,13 +287,13 @@ function createVersionParts(count) {
 });
 
 unwrapExports(detectBrowser);
-var detectBrowser_1 = detectBrowser.BrowserInfo;
-var detectBrowser_2 = detectBrowser.NodeInfo;
-var detectBrowser_3 = detectBrowser.BotInfo;
+detectBrowser.BrowserInfo;
+detectBrowser.NodeInfo;
+detectBrowser.BotInfo;
 var detectBrowser_4 = detectBrowser.detect;
-var detectBrowser_5 = detectBrowser.parseUserAgent;
-var detectBrowser_6 = detectBrowser.detectOS;
-var detectBrowser_7 = detectBrowser.getNodeVersion;
+detectBrowser.parseUserAgent;
+detectBrowser.detectOS;
+detectBrowser.getNodeVersion;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -311,7 +311,7 @@ var detectBrowser_7 = detectBrowser.getNodeVersion;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var browser = detectBrowser_4();
+detectBrowser_4();
 
 /**
  * Extract the millisecond and microsecond portions of a timestamp.
@@ -458,7 +458,7 @@ function sendLogs(logs, config, retries) {
 // the 'chrome' global instead. Let's map it to browser so we don't have
 // to have if-conditions all over the place.
 
-var browser$1 = browser$1 || chrome;
+var browser = browser || chrome;
 var logs = [];
 var config = {
   autostart: true,
@@ -477,9 +477,9 @@ var getTimestamp = ((typeof performance !== 'undefined') && (typeof performance.
   ? function () { return performance.now() + performance.timing.navigationStart; }
   : Date.now;
 
-browser$1.storage.local.set({ sessionId: sessionId });
+browser.storage.local.set({ sessionId: sessionId });
 
-var store = browser$1.storage.local.get({
+browser.storage.local.get({
   userAleHost: userAleHost,
   userAleScript: userAleScript,
   toolUser: toolUser,
@@ -499,9 +499,9 @@ function storeCallback(item) {
 }
 
 function dispatchTabMessage(message) {
-  browser$1.tabs.query({}, function (tabs) {
+  browser.tabs.query({}, function (tabs) {
     tabs.forEach(function (tab) {
-      browser$1.tabs.sendMessage(tab.id, message);
+      browser.tabs.sendMessage(tab.id, message);
     });
   });
 }
@@ -527,7 +527,7 @@ function packageBrowserLog(type, logDetail) {
   });
 }
 
-browser$1.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     case CONFIG_CHANGE:
       (function () {
@@ -554,7 +554,7 @@ browser$1.runtime.onMessage.addListener(function (message) {
 });
 
 function getTabDetailById(tabId, onReady) {
-  browser$1.tabs.get(tabId, function (tab) {
+  browser.tabs.get(tabId, function (tab) {
     onReady({
       active: tab.active,
       audible: tab.audible,
@@ -571,13 +571,13 @@ function getTabDetailById(tabId, onReady) {
   });
 }
 
-browser$1.tabs.onActivated.addListener(function (e) {
+browser.tabs.onActivated.addListener(function (e) {
   getTabDetailById(e.tabId, function (detail) {
     packageBrowserLog('tabs.onActivated', detail);
   });
 });
 
-browser$1.tabs.onCreated.addListener(function (tab, e) {
+browser.tabs.onCreated.addListener(function (tab, e) {
   packageBrowserLog('tabs.onCreated', {
     active: tab.active,
     audible: tab.audible,
@@ -593,23 +593,23 @@ browser$1.tabs.onCreated.addListener(function (tab, e) {
   });
 });
 
-browser$1.tabs.onDetached.addListener(function (tabId) {
+browser.tabs.onDetached.addListener(function (tabId) {
   getTabDetailById(tabId, function (detail) {
     packageBrowserLog('tabs.onDetached', detail);
   });
 });
 
-browser$1.tabs.onMoved.addListener(function (tabId) {
+browser.tabs.onMoved.addListener(function (tabId) {
   getTabDetailById(tabId, function (detail) {
     packageBrowserLog('tabs.onMoved', detail);
   });
 });
 
-browser$1.tabs.onRemoved.addListener(function (tabId) {
+browser.tabs.onRemoved.addListener(function (tabId) {
   packageBrowserLog('tabs.onRemoved', { tabId: tabId });
 });
 
-browser$1.tabs.onZoomChange.addListener(function (e) {
+browser.tabs.onZoomChange.addListener(function (e) {
   getTabDetailById(e.tabId, function (detail) {
     packageBrowserLog('tabs.onZoomChange', Object.assign({}, {
       oldZoomFactor: e.oldZoomFactor,

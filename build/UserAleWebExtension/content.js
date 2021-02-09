@@ -393,13 +393,13 @@ function createVersionParts(count) {
 });
 
 unwrapExports(detectBrowser);
-var detectBrowser_1 = detectBrowser.BrowserInfo;
-var detectBrowser_2 = detectBrowser.NodeInfo;
-var detectBrowser_3 = detectBrowser.BotInfo;
+detectBrowser.BrowserInfo;
+detectBrowser.NodeInfo;
+detectBrowser.BotInfo;
 var detectBrowser_4 = detectBrowser.detect;
-var detectBrowser_5 = detectBrowser.parseUserAgent;
-var detectBrowser_6 = detectBrowser.detectOS;
-var detectBrowser_7 = detectBrowser.getNodeVersion;
+detectBrowser.parseUserAgent;
+detectBrowser.detectOS;
+detectBrowser.getNodeVersion;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -1029,7 +1029,7 @@ var browser$1 = browser$1 || chrome;
 
 // creates a Future for retrieval of the named keys
 // the value specified is the default value if one doesn't exist in the storage
-let store = browser$1.storage.local.get({
+browser$1.storage.local.get({
   sessionId: null,
   userAleHost: userAleHost,
   userAleScript: userAleScript,
