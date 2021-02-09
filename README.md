@@ -296,3 +296,15 @@ Join the conversation: tell us your needs, wishes, and interests by joining our 
 ## License
 
 Apache Flagon UserALE.js is provided under Apache License version 2.0. See [LICENSE](https://github.com/apache/incubator-flagon-useralejs/blob/master/LICENSE) and [NOTICE](https://github.com/apache/incubator-flagon-useralejs/blob/master/NOTICE) files at MASTER for more details.
+
+## Disclaimer
+
+Apache Flagon is an effort undergoing incubation at The Apache Software Foundation (ASF),
+sponsored by the Apache Incubator project. Incubation is required of all newly accepted
+projects until a further review indicates that the infrastructure, communications, and
+decision making process have stabilized in a manner consistent with other successful
+ASF projects. While incubation status is not necessarily a reflection of the
+completeness or stability of the code, it does indicate that the project has yet to be
+fully endorsed by the ASF.
+
+A copy of this disclaimer can also be found in [UserALE's source repository](https://github.com/apache/incubator-flagon-useralejs/blob/master/DISCLAIMER).
