@@ -26,7 +26,7 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 ## What's New in Version 2.1.1 (unreleased)?
 
 - Minor updates to resolve extant vulnerabilities in dependency tree
-- ...
+- Minor updates to update deprecated downstream dev dependencies
 - ...
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.

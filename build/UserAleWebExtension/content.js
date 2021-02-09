@@ -208,34 +208,44 @@ function getUserIdFromParams(param) {
   }
 }
 
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
+var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
         for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
             r[k] = a[j];
     return r;
 };
-
 var BrowserInfo = /** @class */ (function () {
     function BrowserInfo(name, version, os) {
         this.name = name;
         this.version = version;
         this.os = os;
+        this.type = 'browser';
     }
     return BrowserInfo;
 }());
 var NodeInfo = /** @class */ (function () {
     function NodeInfo(version) {
         this.version = version;
+        this.type = 'node';
         this.name = 'node';
         this.os = process.platform;
     }
     return NodeInfo;
 }());
+var SearchBotDeviceInfo = /** @class */ (function () {
+    function SearchBotDeviceInfo(name, version, os, bot) {
+        this.name = name;
+        this.version = version;
+        this.os = os;
+        this.bot = bot;
+        this.type = 'bot-device';
+    }
+    return SearchBotDeviceInfo;
+}());
 var BotInfo = /** @class */ (function () {
     function BotInfo() {
+        this.type = 'bot';
         this.bot = true; // NOTE: deprecated test name instead
         this.name = 'bot';
         this.version = null;
@@ -243,22 +253,30 @@ var BotInfo = /** @class */ (function () {
     }
     return BotInfo;
 }());
+var ReactNativeInfo = /** @class */ (function () {
+    function ReactNativeInfo() {
+        this.type = 'react-native';
+        this.name = 'react-native';
+        this.version = null;
+        this.os = null;
+    }
+    return ReactNativeInfo;
+}());
 // tslint:disable-next-line:max-line-length
 var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
-var SEARCHBOT_OS_REGEX = /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/;
+var SEARCHBOT_OS_REGEX = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
 var REQUIRED_VERSION_PARTS = 3;
 var userAgentRules = [
     ['aol', /AOLShield\/([0-9\._]+)/],
     ['edge', /Edge\/([0-9\._]+)/],
     ['edge-ios', /EdgiOS\/([0-9\._]+)/],
     ['yandexbrowser', /YaBrowser\/([0-9\._]+)/],
-    ['vivaldi', /Vivaldi\/([0-9\.]+)/],
     ['kakaotalk', /KAKAOTALK\s([0-9\.]+)/],
     ['samsung', /SamsungBrowser\/([0-9\.]+)/],
     ['silk', /\bSilk\/([0-9._-]+)\b/],
     ['miui', /MiuiBrowser\/([0-9\.]+)$/],
     ['beaker', /BeakerBrowser\/([0-9\.]+)/],
-    ['edge-chromium', /Edg\/([0-9\.]+)/],
+    ['edge-chromium', /EdgA?\/([0-9\.]+)/],
     [
         'chromium-webview',
         /(?!Chrom.*OPR)wv\).*Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/,
@@ -310,24 +328,27 @@ var operatingSystemRules = [
     ['QNX', /QNX/],
     ['BeOS', /BeOS/],
     ['OS/2', /OS\/2/],
-    ['Search Bot', SEARCHBOT_OS_REGEX],
 ];
 function detect(userAgent) {
     if (!!userAgent) {
         return parseUserAgent(userAgent);
+    }
+    if (typeof document === 'undefined' &&
+        typeof navigator !== 'undefined' &&
+        navigator.product === 'ReactNative') {
+        return new ReactNativeInfo();
     }
     if (typeof navigator !== 'undefined') {
         return parseUserAgent(navigator.userAgent);
     }
     return getNodeVersion();
 }
-var detect_1 = detect;
-function parseUserAgent(ua) {
+function matchUserAgent(ua) {
     // opted for using reduce here rather than Array#first with a regex.test call
     // this is primarily because using the reduce we only perform the regex
     // execution once rather than once for the test and for the exec again below
     // probably something that needs to be benchmarked though
-    var matchedRule = ua !== '' &&
+    return (ua !== '' &&
         userAgentRules.reduce(function (matched, _a) {
             var browser = _a[0], regex = _a[1];
             if (matched) {
@@ -335,7 +356,10 @@ function parseUserAgent(ua) {
             }
             var uaMatch = regex.exec(ua);
             return !!uaMatch && [browser, uaMatch];
-        }, false);
+        }, false));
+}
+function parseUserAgent(ua) {
+    var matchedRule = matchUserAgent(ua);
     if (!matchedRule) {
         return null;
     }
@@ -352,12 +376,18 @@ function parseUserAgent(ua) {
     else {
         versionParts = [];
     }
-    return new BrowserInfo(name, versionParts.join('.'), detectOS(ua));
+    var version = versionParts.join('.');
+    var os = detectOS(ua);
+    var searchBotMatch = SEARCHBOT_OS_REGEX.exec(ua);
+    if (searchBotMatch && searchBotMatch[1]) {
+        return new SearchBotDeviceInfo(name, version, os, searchBotMatch[1]);
+    }
+    return new BrowserInfo(name, version, os);
 }
 function detectOS(ua) {
     for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
         var _a = operatingSystemRules[ii], os = _a[0], regex = _a[1];
-        var match = regex.test(ua);
+        var match = regex.exec(ua);
         if (match) {
             return os;
         }
@@ -392,7 +422,7 @@ function createVersionParts(count) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var browser = detect_1();
+var browser = detect();
 
 var logs;
 var config;
