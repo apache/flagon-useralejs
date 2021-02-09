@@ -210,15 +210,6 @@ function getUserIdFromParams(param) {
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-}
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var detectBrowser = createCommonjsModule(function (module, exports) {
 var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
     for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
     for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -226,7 +217,7 @@ var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || functi
             r[k] = a[j];
     return r;
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+
 var BrowserInfo = /** @class */ (function () {
     function BrowserInfo(name, version, os) {
         this.name = name;
@@ -235,7 +226,6 @@ var BrowserInfo = /** @class */ (function () {
     }
     return BrowserInfo;
 }());
-exports.BrowserInfo = BrowserInfo;
 var NodeInfo = /** @class */ (function () {
     function NodeInfo(version) {
         this.version = version;
@@ -244,7 +234,6 @@ var NodeInfo = /** @class */ (function () {
     }
     return NodeInfo;
 }());
-exports.NodeInfo = NodeInfo;
 var BotInfo = /** @class */ (function () {
     function BotInfo() {
         this.bot = true; // NOTE: deprecated test name instead
@@ -254,7 +243,6 @@ var BotInfo = /** @class */ (function () {
     }
     return BotInfo;
 }());
-exports.BotInfo = BotInfo;
 // tslint:disable-next-line:max-line-length
 var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
 var SEARCHBOT_OS_REGEX = /(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp)|(MSNBot)|(Ask Jeeves\/Teoma)|(ia_archiver)/;
@@ -333,7 +321,7 @@ function detect(userAgent) {
     }
     return getNodeVersion();
 }
-exports.detect = detect;
+var detect_1 = detect;
 function parseUserAgent(ua) {
     // opted for using reduce here rather than Array#first with a regex.test call
     // this is primarily because using the reduce we only perform the regex
@@ -366,7 +354,6 @@ function parseUserAgent(ua) {
     }
     return new BrowserInfo(name, versionParts.join('.'), detectOS(ua));
 }
-exports.parseUserAgent = parseUserAgent;
 function detectOS(ua) {
     for (var ii = 0, count = operatingSystemRules.length; ii < count; ii++) {
         var _a = operatingSystemRules[ii], os = _a[0], regex = _a[1];
@@ -377,12 +364,10 @@ function detectOS(ua) {
     }
     return null;
 }
-exports.detectOS = detectOS;
 function getNodeVersion() {
     var isNode = typeof process !== 'undefined' && process.version;
     return isNode ? new NodeInfo(process.version.slice(1)) : null;
 }
-exports.getNodeVersion = getNodeVersion;
 function createVersionParts(count) {
     var output = [];
     for (var ii = 0; ii < count; ii++) {
@@ -390,16 +375,6 @@ function createVersionParts(count) {
     }
     return output;
 }
-});
-
-unwrapExports(detectBrowser);
-detectBrowser.BrowserInfo;
-detectBrowser.NodeInfo;
-detectBrowser.BotInfo;
-var detectBrowser_4 = detectBrowser.detect;
-detectBrowser.parseUserAgent;
-detectBrowser.detectOS;
-detectBrowser.getNodeVersion;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -417,7 +392,7 @@ detectBrowser.getNodeVersion;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var browser = detectBrowser_4();
+var browser = detect_1();
 
 var logs;
 var config;
@@ -486,7 +461,7 @@ function packageLog(e, detailFcn) {
     'pageUrl': window.location.href,
     'pageTitle': document.title,
     'pageReferrer': document.referrer,
-    'browser': detectBrowser$1(),
+    'browser': detectBrowser(),
     'clientTime' : timeFields.milli,
     'microTime' : timeFields.micro,
     'location' : getLocation(e),
@@ -558,7 +533,7 @@ function packageIntervalLog(e) {
             'pageUrl': window.location.href,
             'pageTitle': document.title,
             'pageReferrer': document.referrer,
-            'browser': detectBrowser$1(),
+            'browser': detectBrowser(),
             'count': intervalCounter,
             'duration': timestamp - intervalTimer,  // microseconds
             'startTime': intervalTimer,
@@ -678,7 +653,7 @@ function selectorizePath(path) {
   return pathSelectors;
 }
 
-function detectBrowser$1() {
+function detectBrowser() {
     return {'browser': browser.name, 'version': browser.version};
 }
 
