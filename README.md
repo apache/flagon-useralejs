@@ -12,7 +12,7 @@ Once included in your project, Apache UserALE.js provides a comprehensive behavi
 
 Additional documentation and a demonstration can be found at the [Apache Flagon website](http://flagon.incubator.apache.org/userale/).
 
-###Quickstart Guide
+### Quickstart Guide
 
 1. Include UserALE.js in your project as either a [module or script tag](https://github.com/apache/incubator-flagon-useralejs#installation)
 1. Set up a logging end-point. Try our [example server utility](https://github.com/apache/incubator-flagon-useralejs/tree/master/example#capturing-logs-using-the-logging-server) or try out our [Elasticsearch (ELK) stack example](https://github.com/apache/incubator-flagon/tree/master/docker).
