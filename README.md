@@ -12,7 +12,14 @@ Once included in your project, Apache UserALE.js provides a comprehensive behavi
 
 Additional documentation and a demonstration can be found at the [Apache Flagon website](http://flagon.incubator.apache.org/userale/).
 
-### Table of Contents
+###Quickstart Guide
+
+1.
+1.
+1.
+
+
+## Table of Contents
 [What's New](https://github.com/apache/incubator-flagon-useralejs#whats-new-in-version-210)  
 [Installation](https://github.com/apache/incubator-flagon-useralejs#installation)  
 [Configure](https://github.com/apache/incubator-flagon-useralejs#configure)  
@@ -27,7 +34,9 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 
 - Minor updates to resolve extant vulnerabilities in dependency tree
 - Minor updates to update deprecated downstream dev dependencies
-- ...
+- Minor updates to build pipelines to accommodate dependency updates
+- Minor changes to documentation
+- Minor QOL upgrades to UserALE.js repository (CI, Dependabot)
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
 
