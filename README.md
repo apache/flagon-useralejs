@@ -12,7 +12,15 @@ Once included in your project, Apache UserALE.js provides a comprehensive behavi
 
 Additional documentation and a demonstration can be found at the [Apache Flagon website](http://flagon.incubator.apache.org/userale/).
 
-### Table of Contents
+###Quickstart Guide
+
+1. Include UserALE.js in your project as either a [module or script tag](https://github.com/apache/incubator-flagon-useralejs#installation)
+1. Set up a logging end-point. Try our [example server utility](https://github.com/apache/incubator-flagon-useralejs/tree/master/example#capturing-logs-using-the-logging-server) or try out our [Elasticsearch (ELK) stack example](https://github.com/apache/incubator-flagon/tree/master/docker).
+1. Configure [UserALE.js settings](https://github.com/apache/incubator-flagon-useralejs#configure) using our API, including where to POST logs to (port:8000 for UserALE example or port:8100 of ELK/Logstash)
+1. Further explore the [UserALE.js API](https://github.com/apache/incubator-flagon-useralejs#usage) to customize your log feed, add filters, custom logs, and modify logs themselves. Explore a few [examples](https://github.com/apache/incubator-flagon-useralejs#examples) here and a wider set in our [example utility](https://github.com/apache/incubator-flagon-useralejs/blob/master/example/webpackUserAleExample/index.js).
+1. Visualize and analyze your logs. See our sample [kibana dahsboards](https://github.com/apache/incubator-flagon/tree/master/docker#single-node-example-container) for behavioral analytics.
+
+## Table of Contents
 [What's New](https://github.com/apache/incubator-flagon-useralejs#whats-new-in-version-210)  
 [Installation](https://github.com/apache/incubator-flagon-useralejs#installation)  
 [Configure](https://github.com/apache/incubator-flagon-useralejs#configure)  
@@ -26,8 +34,10 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 ## What's New in Version 2.1.1 (unreleased)?
 
 - Minor updates to resolve extant vulnerabilities in dependency tree
-- ...
-- ...
+- Minor updates to update deprecated downstream dev dependencies
+- Minor updates to build pipelines to accommodate dependency updates
+- Minor changes to documentation
+- Minor QOL upgrades to UserALE.js repository (CI, Dependabot)
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
 
@@ -39,7 +49,7 @@ Either through cloning our [source repo](https://github.com/apache/incubator-fla
 npm install flagon-userale
 ```
 
-To include UserALE.js in your project, include as a `module`:
+To include UserALE.js as an object in your project, include as a `module`:
 
 ```html
 import * as userale from 'flagon-userale';
@@ -48,6 +58,7 @@ or
 
 const userale = require('flagon-userale');
 ```
+Our [webpack example](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/webpackUserAleExample) illustrates this use-case.
 
 You can also include UserALE.js as a `script-tag`. A pre-built version of the userale script is included in our package and
 repositories:
@@ -55,6 +66,7 @@ repositories:
 ```html
 <script src="./node_modules/flagon-userale/build/userale-2.1.0.min.js"></script>
 ```
+Our [script tag example](https://github.com/apache/incubator-flagon-useralejs/tree/master/example) illustrates this use-case
 
 If you include UserALE.js as a `script-tag`, consider installing via npm as a development dependency:
 
@@ -296,3 +308,15 @@ Join the conversation: tell us your needs, wishes, and interests by joining our 
 ## License
 
 Apache Flagon UserALE.js is provided under Apache License version 2.0. See [LICENSE](https://github.com/apache/incubator-flagon-useralejs/blob/master/LICENSE) and [NOTICE](https://github.com/apache/incubator-flagon-useralejs/blob/master/NOTICE) files at MASTER for more details.
+
+## Disclaimer
+
+Apache Flagon is an effort undergoing incubation at The Apache Software Foundation (ASF),
+sponsored by the Apache Incubator project. Incubation is required of all newly accepted
+projects until a further review indicates that the infrastructure, communications, and
+decision making process have stabilized in a manner consistent with other successful
+ASF projects. While incubation status is not necessarily a reflection of the
+completeness or stability of the code, it does indicate that the project has yet to be
+fully endorsed by the ASF.
+
+A copy of this disclaimer can also be found in [UserALE's source repository](https://github.com/apache/incubator-flagon-useralejs/blob/master/DISCLAIMER).

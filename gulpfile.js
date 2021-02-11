@@ -21,8 +21,8 @@ var eslint = require('gulp-eslint');
 var log = require('gulplog');
 var rollup = require('rollup').rollup;
 var json = require('@rollup/plugin-json');
-var resolve = require('@rollup/plugin-node-resolve');
-var commonjs = require('rollup-plugin-commonjs');
+const {nodeResolve} = require('@rollup/plugin-node-resolve');
+var commonjs = require('@rollup/plugin-commonjs');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var mocha = require('gulp-mocha');
@@ -65,7 +65,7 @@ gulp.task('rollup', function() {
               '\n@preserved'
         }),
         json(),
-        resolve(),
+        nodeResolve(),
         commonjs()
     ]
   })
@@ -85,7 +85,7 @@ gulp.task('rollup-web-ext-content', function() {
     input : 'src/' + userAleWebExtDirName + '/content.js',
     plugins : [
       json(),
-      resolve(),
+      nodeResolve(),
       commonjs()
     ]
   })
@@ -104,7 +104,7 @@ gulp.task('rollup-web-ext-background', function() {
     input : 'src/' + userAleWebExtDirName + '/background.js',
     plugins : [
       json(),
-      resolve(),
+      nodeResolve(),
       commonjs()
     ]
   })
@@ -123,7 +123,7 @@ gulp.task('rollup-web-ext-options', function() {
     input : 'src/' + userAleWebExtDirName + '/options.js',
     plugins : [
       json(),
-      resolve(),
+      nodeResolve(),
       commonjs()
     ]
   })
