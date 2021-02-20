@@ -1,5 +1,15 @@
 Changelog
 =========
+Apache Flagon UserALE.js (Incubating) 2.1.1 (2021-02-20)
+-------------------------------
+* Release Notes - Flagon - Version UserALE.js 2.1.1
+* [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/3)
+    * Minor updates to resolve extant vulnerabilities in dependency tree
+    * Minor updates to update deprecated downstream dev dependencies
+    * Minor updates to build pipelines to accommodate dependency updates
+    * Minor changes to documentation
+    * Minor QOL upgrades to UserALE.js repository (CI, Dependabot)
+
 Apache Flagon UserALE.js (Incubating) 2.1.0 (2020-02-07)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.1.0

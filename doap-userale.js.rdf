@@ -29,28 +29,28 @@
         <asfext:pmc rdf:resource="http://flagon.incubator.apache.org" />
         <shortdesc>UserALE.js is the UserALE client for DOM and JavaScript-based applications.</shortdesc>
         <description>UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.</description>
-        <bug-database rdf:resource="https://issues.apache.org/jira/browse/FLAGON" />
-        <mailing-list rdf:resource="https://cwiki.apache.org/confluence/x/whTiAw" />
-        <download-page rdf:resource="https://cwiki.apache.org/confluence/x/whTiAw" />
+        <bug-database rdf:resource="https://github.com/apache/incubator-flagon-useralejs/issues" />
+        <mailing-list rdf:resource="dev@flagon.apache.org" />
+        <download-page rdf:resource="http://flagon.incubator.apache.org/releases/" />
         <programming-language>Javascript</programming-language>
         <category rdf:resource="https://projects.apache.org/projects.html?category#Library" />
         <release>
             <Version>
                 <name>2.1.1 release</name>
-                <created>2020-02-11</created>
+                <created>2020-02-20</created>
                 <revision>2.1.1</revision>
             </Version>
         </release>
         <repository>
-            <SVNRepository>
-                <location rdf:resource="https://git-wip-us.apache.org/repos/asf/incubator-flagon-useralejs.git"/>
+            <GITRepository>
+                <location rdf:resource="https://gitbox.apache.org/repos/asf/incubator-flagon-useralejs.git"/>
                 <browse rdf:resource="https://github.com/apache/incubator-flagon-useralejs"/>
-            </SVNRepository>
+            </GITRepository>
         </repository>
         <maintainer>
             <foaf:Person>
-                <foaf:name>Flagon Development Team</foaf:name>
-                <foaf:mbox rdf:resource="mailto:dev@flagon.incubator.apache.org"/>
+                <foaf:name>Joshua Poore</foaf:name>
+                <foaf:mbox rdf:resource="mailto:poorejc@apache.org"/>
             </foaf:Person>
         </maintainer>
     </Project>

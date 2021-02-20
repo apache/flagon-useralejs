@@ -301,7 +301,7 @@ For more guidance on modifying Flagon UserALE src code, check out [the guide on 
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://github.com/apache/incubator-flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
 
 Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
