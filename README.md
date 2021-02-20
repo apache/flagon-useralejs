@@ -33,6 +33,7 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 
 ## What's New in Version 2.1.1?
 
+- Fixes bug in SessionID creation at initial PageLoad
 - Update to Node.js/NPM Engine support (tested 12.x, 13.x, 14.x, 15.x)
 - Minor updates to resolve extant vulnerabilities in dependency tree
 - Minor updates to update deprecated downstream dev dependencies
