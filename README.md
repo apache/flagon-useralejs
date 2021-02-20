@@ -31,8 +31,9 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 [Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
 [License](https://github.com/apache/incubator-flagon-useralejs#license)
 
-## What's New in Version 2.1.1 (unreleased)?
+## What's New in Version 2.1.1?
 
+- Update to Node.js/NPM Engine support (tested 12.x, 13.x, 14.x, 15.x)
 - Minor updates to resolve extant vulnerabilities in dependency tree
 - Minor updates to update deprecated downstream dev dependencies
 - Minor updates to build pipelines to accommodate dependency updates
@@ -301,7 +302,7 @@ For more guidance on modifying Flagon UserALE src code, check out [the guide on 
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue report](https://github.com/apache/incubator-flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
 
 Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
