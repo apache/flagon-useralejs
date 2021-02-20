@@ -32,7 +32,6 @@ userale.options({
     'url': 'http://localhost:8000/',
     'version': '2.1.1',
     'logDetails': true,
-    'sessionID': 'this one',
     'toolName': 'Apache UserALE.js Example (Custom)'
 });
 
