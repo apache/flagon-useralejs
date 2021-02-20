@@ -61,7 +61,7 @@ export function getInitialSettings() {
 export function getSessionId(sessionKey, value){
   if (window.sessionStorage.getItem(sessionKey) === null) {
     window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
-    return JSON.stringify(value);
+    return value;
   }
 
   return JSON.parse(window.sessionStorage.getItem(sessionKey));
