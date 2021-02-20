@@ -31,7 +31,7 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 [Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
 [License](https://github.com/apache/incubator-flagon-useralejs#license)
 
-## What's New in Version 2.1.1 (unreleased)?
+## What's New in Version 2.1.1?
 
 - Update to Node.js/NPM Engine support (tested 12.x, 13.x, 14.x, 15.x)
 - Minor updates to resolve extant vulnerabilities in dependency tree
