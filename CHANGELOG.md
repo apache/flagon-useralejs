@@ -4,6 +4,7 @@ Apache Flagon UserALE.js (Incubating) 2.1.1 (2021-02-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.1.1
 * [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/3)
+    * Update to Node.js/NPM Engine support (tested 12.x, 13.x, 14.x, 15.x)
     * Minor updates to resolve extant vulnerabilities in dependency tree
     * Minor updates to update deprecated downstream dev dependencies
     * Minor updates to build pipelines to accommodate dependency updates
