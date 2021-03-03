@@ -14,54 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import jsdom from 'jsdom';
-import fs from 'fs';
+import {JSDOM} from 'jsdom';
 import Storage from 'dom-storage';
 
-import { version } from '../package.json';
-
-let scriptContent = null;
-
-export function resourceLoader(res, callback) {
-  if (scriptContent === null) {
-    scriptContent = fs.readFileSync(`build/userale-${version}.min.js`).toString();
-  }
-
-  const timeout = setTimeout(() => {
-    callback(null, scriptContent);
-  }, 0);
-
-  return {
-    abort : function() {
-      clearTimeout(timeout);
-      callback(new Error('Request canceled by user.'));
-    },
-  }
+export async function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export function createEnv(html, doneCallback, extraConfig) {
-  const extra = (typeof extraConfig === 'undefined') ? {} : extraConfig;
-  const virtualConsole = jsdom.createVirtualConsole();
-  virtualConsole.sendTo(console);
-
-  return jsdom.env(Object.assign({}, {
-    html: html,
-    url: 'http://localhost:8080',
-    features : {
-      FetchExternalResources : ['script'],
-      ProcessExternalResources : ['script']
-    },
-    resourceLoader,
-    created: (err, window) => {
-      if (err) {
-        throw err;
-      }
-
-      window.sessionStorage = new Storage(null, { strict: true });
-      window.localStorage = new Storage(null, { strict: true });
-
-    },
-    done: doneCallback,
-    virtualConsole,
-  }, extraConfig));
+export async function createEnvFromFile(fileName, extraConfig = {}) {
+    const dom = await JSDOM.fromFile(__dirname + '/' + fileName, {
+        runScripts: 'dangerously',
+        resources: 'usable',
+        beforeParse: (window) => {
+            Object.defineProperty(window, 'localStorage', {value: new Storage(null, {strict: true})})
+            Object.defineProperty(window, 'sessionStorage', { value: new Storage(null, {strict: true})})
+        },
+        ...extraConfig
+    })
+    await sleep(100) // wait for external scripts to load
+    return dom;
 }

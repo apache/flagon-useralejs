@@ -14,90 +14,76 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { expect } from 'chai';
+import {expect} from 'chai';
 import jsdom from 'jsdom';
 import fs from 'fs';
 
-import { createEnv } from './testUtils';
+import {createEnvFromFile} from './testUtils';
 
 describe('Userale API', () => {
-  const url = 'file://' + __dirname + '/main.html';
-  const html = fs.readFileSync(__dirname + '/main.html');
-  const features = {
-    FetchExternalResources : ['script'],
-    ProcessExternalResources : ['script']
-  };
-
-  it('provides configs', (done) => {
-    createEnv(html, (err, window) => {
-      const config = window.userale.options();
-      expect(config).to.be.an('object');
-      expect(config).to.have.all.keys([
-        'on',
-        'useraleVersion',
-        'autostart',
-        'url',
-        'transmitInterval',
-        'logCountThreshold',
-        'userId',
-        'sessionID',
-        'version',
-        'logDetails',
-        'resolution',
-        'toolName',
-        'userFromParams',
-        'time',
-        'authHeader',
-        'custIndex'
-      ]);
-      window.close();
-      done();
+    const htmlFileName = 'main.html'
+    it('provides configs',  async () => {
+        const dom = await createEnvFromFile(htmlFileName)
+        const config = dom.window.userale.options();
+        expect(config).to.be.an('object');
+        expect(config).to.have.all.keys([
+            'on',
+            'useraleVersion',
+            'autostart',
+            'url',
+            'transmitInterval',
+            'logCountThreshold',
+            'userId',
+            'sessionID',
+            'version',
+            'logDetails',
+            'resolution',
+            'toolName',
+            'userFromParams',
+            'time',
+            'authHeader',
+            'custIndex'
+        ]);
+        dom.window.close();
     });
-  });
 
-  it('edits configs', (done) => {
-    createEnv(html, (err, window) => {
-      const config = window.userale.options();
-      const interval = config.transmitInterval;
-      window.userale.options({
-        transmitInterval : interval + 10
-      });
-      const newConfig = window.userale.options();
+    it('edits configs', async () => {
+        const dom = await createEnvFromFile(htmlFileName)
+        const config = dom.window.userale.options();
+        const interval = config.transmitInterval;
+        dom.window.userale.options({
+            transmitInterval: interval + 10
+        });
+        const newConfig = dom.window.userale.options();
 
-      expect(newConfig.transmitInterval).to.equal(interval + 10);
-      window.close();
-      done();
+        expect(newConfig.transmitInterval).to.equal(interval + 10);
+        dom.window.close();
     });
-  });
 
-  it('starts + stops', (done) => {
-    createEnv(html, (err, window) => {
-      setTimeout(() => {
-        const { userale } = window;
-        expect(userale.options().on).to.equal(true);
+    it('starts + stops', async () => {
+        const dom = await createEnvFromFile(htmlFileName)
+        setTimeout(() => {
+            const {userale} = dom.window;
+            expect(userale.options().on).to.equal(true);
 
-        userale.stop();
-        expect(userale.options().on).to.equal(false);
+            userale.stop();
+            expect(userale.options().on).to.equal(false);
 
-        userale.start();
-        expect(userale.options().on).to.equal(true);
+            userale.start();
+            expect(userale.options().on).to.equal(true);
 
-        window.close();
-        done();
-      }, 200);
+            dom.window.close();
+        }, 200);
     });
-  });
 
-  it('sends custom logs', (done) => {
-    createEnv(html, (err, window) => {
-      const { userale } = window;
+    it('sends custom logs', async () => {
+        const dom = await createEnvFromFile(htmlFileName)
+        const {userale} = dom.window;
 
-      expect(userale.log({})).to.equal(true);
-      expect(userale.log()).to.equal(false);
-      expect(userale.log(null)).to.equal(false);
+        expect(userale.log({})).to.equal(true);
+        expect(userale.log()).to.equal(false);
+        expect(userale.log(null)).to.equal(false);
 
-      window.close();
-      done();
+        dom.window.close();
     });
-  });
 });
