@@ -290,17 +290,15 @@ describe('packageLogs', () => {
             element.id = 'bar';
             expect(getSelector(element)).to.equal('div#bar.baz');
         });
-    });
+        it('identifies window', () => {
+            new JSDOM(``)
+            expect(getSelector(window)).to.equal('Window');
+        });
 
-    it('identifies window', () => {
-        new JSDOM(``)
-        expect(getSelector(window)).to.equal('Window');
+        it('handles a non-null unknown value', () => {
+            expect(getSelector('foo')).to.equal('Unknown');
+        });
     });
-
-    it('handles a non-null unknown value', () => {
-        expect(getSelector('foo')).to.equal('Unknown');
-    });
-
 
     describe('buildPath', () => {
         it('builds a path', () => {

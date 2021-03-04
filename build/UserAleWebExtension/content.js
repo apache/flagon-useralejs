@@ -684,7 +684,10 @@ function selectorizePath(path) {
 }
 
 function detectBrowser() {
-    return {'browser': browser.name, 'version': browser.version};
+    return {
+        'browser': browser ? browser.name : '',
+        'version': browser ? browser.version : ''
+    };
 }
 
 /*
