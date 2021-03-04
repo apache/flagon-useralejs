@@ -19,7 +19,7 @@ import {JSDOM} from 'jsdom';
 import 'global-jsdom/register'
 import {
     packageLog, initPackager, getLocation, getSelector, buildPath, selectorizePath,
-    extractTimeFields, filterHandler, mapHandler, setLogFilter, setLogMapper, logs,
+    extractTimeFields, filterHandler, mapHandler, setLogFilter, setLogMapper, logs, packagePageLoadLog,
 } from '../src/packageLogs';
 
 describe('packageLogs', () => {
@@ -177,6 +177,12 @@ describe('packageLogs', () => {
 
             packageLog(evt);
             expect(logs.length).to.equal(2);
+        });
+
+        it('logs page load time', () => {
+            initPackager([], {on: true});
+            expect(packagePageLoadLog(3)).to.equal(true);
+            expect(logs.pop()).to.contain({pageLoadTime: 3, type: 'pageLoad'})
         });
     });
 

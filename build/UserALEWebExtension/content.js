@@ -605,6 +605,34 @@ function packageIntervalLog(e) {
 
     return true;
 }
+/**
+ * Creates a log to be sent when a new page is loaded and sends it to the log queue.
+ * @return {boolean}           Whether the event was logged.
+ */
+function packagePageLoadLog(pageLoadTimeMs) {
+    if (!config.on) {
+        return false;
+    }
+
+    var log = {
+        'pageUrl': window.location.href,
+        'pageTitle': document.title,
+        'pageReferrer': document.referrer,
+        'browser': detectBrowser(),
+        'scrnRes' : getSreenRes(),
+        'userId' : config.userId,
+        'toolVersion' : config.version,
+        'toolName' : config.toolName,
+        'type': 'pageLoad',
+        'useraleVersion': config.useraleVersion,
+        'sessionID': config.sessionID,
+        'pageLoadTime': pageLoadTimeMs
+    };
+
+    logs.push(log);
+
+    return true;
+}
 
 /**
  * Extracts coordinate information from the event
@@ -961,8 +989,17 @@ function attachHandlers(config) {
  * limitations under the License.
  */
 
+<<<<<<< HEAD:build/UserAleWebExtension/content.js
 var config = {};
 var logs = [];
+=======
+var config$1 = {};
+var logs$1 = [];
+var startLoadTimestamp = Date.now();
+var endLoadTimestamp;
+window.onload = function() { endLoadTimestamp = Date.now(); };
+
+>>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
 var started = false;
 
 
@@ -973,8 +1010,13 @@ config.useraleVersion = version;
 configure(config, getInitialSettings());
 initPackager(logs, config);
 
+<<<<<<< HEAD:build/UserAleWebExtension/content.js
 if (config.autostart) {
   setup(config);
+=======
+if (config$1.autostart) {
+    setup(config$1);
+>>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
 }
 
 /**
@@ -983,6 +1025,7 @@ if (config.autostart) {
  * @param  {Object} config Configuration settings for the logger
  */
 function setup(config) {
+<<<<<<< HEAD:build/UserAleWebExtension/content.js
   if (!started) {
     setTimeout(function() {
       var state = document.readyState;
@@ -996,6 +1039,22 @@ function setup(config) {
       }
     }, 100);
   }
+=======
+    if (!started) {
+        setTimeout(function () {
+            var state = document.readyState;
+
+            if (state === 'interactive' || state === 'complete') {
+                attachHandlers(config);
+                initSender(logs$1, config);
+                started = config.on = true;
+                packagePageLoadLog(endLoadTimestamp - startLoadTimestamp);
+            } else {
+                setup(config);
+            }
+        }, 100);
+    }
+>>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
 }
 
 /**
@@ -1005,11 +1064,19 @@ function setup(config) {
  * @return {Object}           Returns the updated configuration.
  */
 function options(newConfig) {
+<<<<<<< HEAD:build/UserAleWebExtension/content.js
   if (newConfig !== undefined) {
     configure(config, newConfig);
   }
 
   return config;
+=======
+    if (newConfig !== undefined) {
+        configure(config$1, newConfig);
+    }
+
+    return config$1;
+>>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
 }
 
 /*
