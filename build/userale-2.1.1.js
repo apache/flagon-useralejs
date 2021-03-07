@@ -22,7 +22,7 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.userale = {}));
 }(this, (function (exports) { 'use strict';
 
-  var version = "2.1.1";
+  var version$1 = "2.1.1";
 
   /*
    * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -398,8 +398,8 @@
    */
   var browser = detect();
 
-  var logs;
-  var config;
+  var logs$1;
+  var config$1;
 
   // Interval Logging Globals
   var intervalID;
@@ -435,8 +435,8 @@
    * @param  {Object} newConfig Configuration to use while logging.
    */
   function initPackager(newLogs, newConfig) {
-    logs = newLogs;
-    config = newConfig;
+    logs$1 = newLogs;
+    config$1 = newConfig;
     filterHandler = null;
     mapHandler = null;
     intervalID = null;
@@ -454,7 +454,7 @@
    * @return {boolean}           Whether the event was logged.
    */
   function packageLog(e, detailFcn) {
-    if (!config.on) {
+    if (!config$1.on) {
       return false;
     }
 
@@ -464,7 +464,7 @@
     }
 
     var timeFields = extractTimeFields(
-      (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
+      (e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now()
     );
 
     var log = {
@@ -482,11 +482,11 @@
       'logType': 'raw',
       'userAction' : true,
       'details' : details,
-      'userId' : config.userId,
-      'toolVersion' : config.version,
-      'toolName' : config.toolName,
-      'useraleVersion': config.useraleVersion,
-      'sessionID': config.sessionID,
+      'userId' : config$1.userId,
+      'toolVersion' : config$1.version,
+      'toolName' : config$1.toolName,
+      'useraleVersion': config$1.useraleVersion,
+      'sessionID': config$1.sessionID,
     };
 
     if ((typeof filterHandler === 'function') && !filterHandler(log)) {
@@ -497,7 +497,7 @@
       log = mapHandler(log, e);
     }
 
-    logs.push(log);
+    logs$1.push(log);
 
     return true;
   }
@@ -510,7 +510,7 @@
    * @return {boolean}           Whether the event was logged.
    */
   function packageCustomLog(customLog, detailFcn, userAction) {
-      if (!config.on) {
+      if (!config$1.on) {
           return false;
       }
 
@@ -529,11 +529,11 @@
           'logType': 'custom',
           'userAction' : userAction,
           'details' : details,
-          'userId' : config.userId,
-          'toolVersion' : config.version,
-          'toolName' : config.toolName,
-          'useraleVersion': config.useraleVersion,
-          'sessionID': config.sessionID
+          'userId' : config$1.userId,
+          'toolVersion' : config$1.version,
+          'toolName' : config$1.toolName,
+          'useraleVersion': config$1.useraleVersion,
+          'sessionID': config$1.sessionID
       };
 
       var log = Object.assign(metaData, customLog);
@@ -546,7 +546,7 @@
           log = mapHandler(log);
       }
 
-      logs.push(log);
+      logs$1.push(log);
 
       return true;
   }
@@ -573,7 +573,7 @@
       var target = getSelector(e.target);
       var path = buildPath(e);
       var type = e.type;
-      var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now());
+      var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now());
 
       // Init - this should only happen once on initialization
       if (intervalID == null) {
@@ -604,11 +604,11 @@
               'targetChange': intervalID !== target,
               'typeChange': intervalType !== type,
               'userAction': false,
-              'userId': config.userId,
-              'toolVersion': config.version,
-              'toolName': config.toolName,
-              'useraleVersion': config.useraleVersion,
-              'sessionID': config.sessionID
+              'userId': config$1.userId,
+              'toolVersion': config$1.version,
+              'toolName': config$1.toolName,
+              'useraleVersion': config$1.useraleVersion,
+              'sessionID': config$1.sessionID
           };
 
           if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
@@ -619,7 +619,7 @@
             intervalLog = mapHandler(intervalLog, e);
           }
 
-          logs.push(intervalLog);
+          logs$1.push(intervalLog);
 
           // Reset
           intervalID = target;
@@ -995,7 +995,7 @@
     Object.keys(refreshEvents).forEach(function(ev) {
       document.addEventListener(ev, function(e) {
         packageLog(e, events[ev]);
-        sendOnRefresh(logs,config);
+        sendOnRefresh(logs$1,config);
       }, true);
     });
 
@@ -1025,20 +1025,20 @@
    * limitations under the License.
    */
 
-  var config$1 = {};
-  var logs$1 = [];
+  var config = {};
+  var logs = [];
   exports.started = false;
 
 
   // Start up Userale
-  config$1.on = false;
-  config$1.useraleVersion = version;
+  config.on = false;
+  config.useraleVersion = version$1;
 
-  configure(config$1, getInitialSettings());
-  initPackager(logs$1, config$1);
+  configure(config, getInitialSettings());
+  initPackager(logs, config);
 
-  if (config$1.autostart) {
-    setup(config$1);
+  if (config.autostart) {
+    setup(config);
   }
 
   /**
@@ -1053,7 +1053,7 @@
 
         if (state === 'interactive' || state === 'complete') {
           attachHandlers(config);
-          initSender(logs$1, config);
+          initSender(logs, config);
           exports.started = config.on = true;
         } else {
           setup(config);
@@ -1064,7 +1064,7 @@
 
 
   // Export the Userale API
-  var version$1 = version;
+  var version = version$1;
 
   /**
    * Used to start the logging process if the
@@ -1072,17 +1072,17 @@
    */
   function start() {
     if (!exports.started) {
-      setup(config$1);
+      setup(config);
     }
 
-    config$1.on = true;
+    config.on = true;
   }
 
   /**
    * Halts the logging process. Logs will no longer be sent.
    */
   function stop() {
-    config$1.on = false;
+    config.on = false;
   }
 
   /**
@@ -1093,10 +1093,10 @@
    */
   function options(newConfig) {
     if (newConfig !== undefined) {
-      configure(config$1, newConfig);
+      configure(config, newConfig);
     }
 
-    return config$1;
+    return config;
   }
 
   /**
@@ -1106,7 +1106,7 @@
    */
   function log(customLog) {
     if (customLog !== null && typeof customLog === 'object') {
-      logs$1.push(customLog);
+      logs.push(customLog);
       return true;
     } else {
       return false;
@@ -1124,7 +1124,7 @@
   exports.packageLog = packageLog;
   exports.start = start;
   exports.stop = stop;
-  exports.version = version$1;
+  exports.version = version;
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
