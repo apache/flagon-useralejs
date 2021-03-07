@@ -22,9 +22,6 @@ updates:
       interval: "weekly"
     #run dependency checks against test branch, should lead Master branch
     target-branch: "test"
-    ignore:
-    # ignore jsdom--will be moved to other testing framework
-      - dependency-name: "jsdom"
     labels:
       - "maintenance"
     reviewers:
