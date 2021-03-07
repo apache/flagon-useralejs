@@ -422,10 +422,10 @@ function createVersionParts(count) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var browser = detect();
+var browser$1 = detect();
 
-var logs;
-var config;
+var logs$1;
+var config$1;
 
 // Interval Logging Globals
 var intervalID;
@@ -453,8 +453,8 @@ function setLogFilter(callback) {
  * @param  {Object} newConfig Configuration to use while logging.
  */
 function initPackager(newLogs, newConfig) {
-  logs = newLogs;
-  config = newConfig;
+  logs$1 = newLogs;
+  config$1 = newConfig;
   filterHandler = null;
   mapHandler = null;
   intervalID = null;
@@ -472,7 +472,7 @@ function initPackager(newLogs, newConfig) {
  * @return {boolean}           Whether the event was logged.
  */
 function packageLog(e, detailFcn) {
-  if (!config.on) {
+  if (!config$1.on) {
     return false;
   }
 
@@ -482,7 +482,7 @@ function packageLog(e, detailFcn) {
   }
 
   var timeFields = extractTimeFields(
-    (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
+    (e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now()
   );
 
   var log = {
@@ -500,11 +500,11 @@ function packageLog(e, detailFcn) {
     'logType': 'raw',
     'userAction' : true,
     'details' : details,
-    'userId' : config.userId,
-    'toolVersion' : config.version,
-    'toolName' : config.toolName,
-    'useraleVersion': config.useraleVersion,
-    'sessionID': config.sessionID,
+    'userId' : config$1.userId,
+    'toolVersion' : config$1.version,
+    'toolName' : config$1.toolName,
+    'useraleVersion': config$1.useraleVersion,
+    'sessionID': config$1.sessionID,
   };
 
   if ((typeof filterHandler === 'function') && !filterHandler(log)) {
@@ -515,7 +515,7 @@ function packageLog(e, detailFcn) {
     log = mapHandler(log, e);
   }
 
-  logs.push(log);
+  logs$1.push(log);
 
   return true;
 }
@@ -542,7 +542,7 @@ function packageIntervalLog(e) {
     var target = getSelector(e.target);
     var path = buildPath(e);
     var type = e.type;
-    var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now());
+    var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now());
 
     // Init - this should only happen once on initialization
     if (intervalID == null) {
@@ -573,11 +573,11 @@ function packageIntervalLog(e) {
             'targetChange': intervalID !== target,
             'typeChange': intervalType !== type,
             'userAction': false,
-            'userId': config.userId,
-            'toolVersion': config.version,
-            'toolName': config.toolName,
-            'useraleVersion': config.useraleVersion,
-            'sessionID': config.sessionID
+            'userId': config$1.userId,
+            'toolVersion': config$1.version,
+            'toolName': config$1.toolName,
+            'useraleVersion': config$1.useraleVersion,
+            'sessionID': config$1.sessionID
         };
 
         if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
@@ -588,7 +588,7 @@ function packageIntervalLog(e) {
           intervalLog = mapHandler(intervalLog, e);
         }
 
-        logs.push(intervalLog);
+        logs$1.push(intervalLog);
 
         // Reset
         intervalID = target;
@@ -685,8 +685,8 @@ function selectorizePath(path) {
 
 function detectBrowser() {
     return {
-        'browser': browser ? browser.name : '',
-        'version': browser ? browser.version : ''
+        'browser': browser$1 ? browser$1.name : '',
+        'version': browser$1 ? browser$1.version : ''
     };
 }
 
@@ -931,7 +931,7 @@ function attachHandlers(config) {
   Object.keys(refreshEvents).forEach(function(ev) {
     document.addEventListener(ev, function(e) {
       packageLog(e, events[ev]);
-      sendOnRefresh(logs,config);
+      sendOnRefresh(logs$1,config);
     }, true);
   });
 
@@ -961,20 +961,20 @@ function attachHandlers(config) {
  * limitations under the License.
  */
 
-var config$1 = {};
-var logs$1 = [];
+var config = {};
+var logs = [];
 var started = false;
 
 
 // Start up Userale
-config$1.on = false;
-config$1.useraleVersion = version;
+config.on = false;
+config.useraleVersion = version;
 
-configure(config$1, getInitialSettings());
-initPackager(logs$1, config$1);
+configure(config, getInitialSettings());
+initPackager(logs, config);
 
-if (config$1.autostart) {
-  setup(config$1);
+if (config.autostart) {
+  setup(config);
 }
 
 /**
@@ -989,7 +989,7 @@ function setup(config) {
 
       if (state === 'interactive' || state === 'complete') {
         attachHandlers(config);
-        initSender(logs$1, config);
+        initSender(logs, config);
         started = config.on = true;
       } else {
         setup(config);
@@ -1006,10 +1006,10 @@ function setup(config) {
  */
 function options(newConfig) {
   if (newConfig !== undefined) {
-    configure(config$1, newConfig);
+    configure(config, newConfig);
   }
 
-  return config$1;
+  return config;
 }
 
 /*
@@ -1033,11 +1033,11 @@ function options(newConfig) {
 // the 'chrome' global instead. Let's map it to browser so we don't have
 // to have if-conditions all over the place.
 
-var browser$1 = browser$1 || chrome;
+var browser = browser || chrome;
 
 // creates a Future for retrieval of the named keys
 // the value specified is the default value if one doesn't exist in the storage
-browser$1.storage.local.get({
+browser.storage.local.get({
   sessionId: null,
   userAleHost: userAleHost,
   userAleScript: userAleScript,
@@ -1057,7 +1057,7 @@ function storeCallback(item) {
 }
 
 function queueLog(log) {
-  browser$1.runtime.sendMessage({ type: ADD_LOG, payload: log });
+  browser.runtime.sendMessage({ type: ADD_LOG, payload: log });
 }
 
 function injectScript(config) {
@@ -1071,7 +1071,7 @@ function injectScript(config) {
   });
 }
 
-browser$1.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message) {
   if (message.type === CONFIG_CHANGE) {
     options({
       url: message.payload.userAleHost,
