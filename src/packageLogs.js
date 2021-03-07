@@ -256,34 +256,6 @@ export function packageIntervalLog(e) {
 
     return true;
 }
-/**
- * Creates a log to be sent when a new page is loaded and sends it to the log queue.
- * @return {boolean}           Whether the event was logged.
- */
-export function packagePageLoadLog(pageLoadTimeMs) {
-    if (!config.on) {
-        return false;
-    }
-
-    var log = {
-        'pageUrl': window.location.href,
-        'pageTitle': document.title,
-        'pageReferrer': document.referrer,
-        'browser': detectBrowser(),
-        'scrnRes' : getSreenRes(),
-        'userId' : config.userId,
-        'toolVersion' : config.version,
-        'toolName' : config.toolName,
-        'type': 'pageLoad',
-        'useraleVersion': config.useraleVersion,
-        'sessionID': config.sessionID,
-        'pageLoadTime': pageLoadTimeMs
-    };
-
-    logs.push(log);
-
-    return true;
-}
 
 /**
  * Extracts coordinate information from the event

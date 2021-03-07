@@ -1027,6 +1027,12 @@
 
   var config = {};
   var logs = [];
+  var startLoadTimestamp = Date.now();
+  var endLoadTimestamp;
+  window.onload = function () {
+      endLoadTimestamp = Date.now();
+  };
+
   exports.started = false;
 
 
@@ -1038,7 +1044,7 @@
   initPackager(logs, config);
 
   if (config.autostart) {
-    setup(config);
+      setup(config);
   }
 
   /**
@@ -1047,19 +1053,20 @@
    * @param  {Object} config Configuration settings for the logger
    */
   function setup(config) {
-    if (!exports.started) {
-      setTimeout(function() {
-        var state = document.readyState;
+      if (!exports.started) {
+          setTimeout(function () {
+              var state = document.readyState;
 
-        if (state === 'interactive' || state === 'complete') {
-          attachHandlers(config);
-          initSender(logs, config);
-          exports.started = config.on = true;
-        } else {
-          setup(config);
-        }
-      }, 100);
-    }
+              if (state === 'interactive' || state === 'complete') {
+                  attachHandlers(config);
+                  initSender(logs, config);
+                  exports.started = config.on = true;
+                  packageCustomLog({pageLoadTime: endLoadTimestamp - startLoadTimestamp}, () => {},false);
+              } else {
+                  setup(config);
+              }
+          }, 100);
+      }
   }
 
 
@@ -1071,18 +1078,18 @@
    * autostart configuration option is set to false.
    */
   function start() {
-    if (!exports.started) {
-      setup(config);
-    }
+      if (!exports.started) {
+          setup(config);
+      }
 
-    config.on = true;
+      config.on = true;
   }
 
   /**
    * Halts the logging process. Logs will no longer be sent.
    */
   function stop() {
-    config.on = false;
+      config.on = false;
   }
 
   /**
@@ -1092,11 +1099,11 @@
    * @return {Object}           Returns the updated configuration.
    */
   function options(newConfig) {
-    if (newConfig !== undefined) {
-      configure(config, newConfig);
-    }
+      if (newConfig !== undefined) {
+          configure(config, newConfig);
+      }
 
-    return config;
+      return config;
   }
 
   /**
@@ -1105,12 +1112,12 @@
    * @return {boolean}          Whether the operation succeeded.
    */
   function log(customLog) {
-    if (customLog !== null && typeof customLog === 'object') {
-      logs.push(customLog);
-      return true;
-    } else {
-      return false;
-    }
+      if (customLog !== null && typeof customLog === 'object') {
+          logs.push(customLog);
+          return true;
+      } else {
+          return false;
+      }
   }
 
   exports.buildPath = buildPath;

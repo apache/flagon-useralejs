@@ -521,6 +521,55 @@ function packageLog(e, detailFcn) {
 }
 
 /**
+ * Packages the provided customLog to include standard meta data and appends it to the log queue.
+ * @param  {Object} customLog        The behavior to be logged.
+ * @param  {Function} detailFcn     The function to extract additional log parameters from the event.
+ * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
+ * @return {boolean}           Whether the event was logged.
+ */
+function packageCustomLog(customLog, detailFcn, userAction) {
+    if (!config$1.on) {
+        return false;
+    }
+
+    var details = null;
+    if (detailFcn) {
+        details = detailFcn();
+    }
+
+    var metaData = {
+        'pageUrl': window.location.href,
+        'pageTitle': document.title,
+        'pageReferrer': document.referrer,
+        'browser': detectBrowser(),
+        'clientTime' : Date.now(),
+        'scrnRes' : getSreenRes(),
+        'logType': 'custom',
+        'userAction' : userAction,
+        'details' : details,
+        'userId' : config$1.userId,
+        'toolVersion' : config$1.version,
+        'toolName' : config$1.toolName,
+        'useraleVersion': config$1.useraleVersion,
+        'sessionID': config$1.sessionID
+    };
+
+    var log = Object.assign(metaData, customLog);
+
+    if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+        return false;
+    }
+
+    if (typeof mapHandler === 'function') {
+        log = mapHandler(log);
+    }
+
+    logs$1.push(log);
+
+    return true;
+}
+
+/**
  * Extract the millisecond and microsecond portions of a timestamp.
  * @param  {Number} timeStamp The timestamp to split into millisecond and microsecond fields.
  * @return {Object}           An object containing the millisecond
@@ -602,34 +651,6 @@ function packageIntervalLog(e) {
     if (intervalID == target && intervalType == type) {
         intervalCounter = intervalCounter + 1;
     }
-
-    return true;
-}
-/**
- * Creates a log to be sent when a new page is loaded and sends it to the log queue.
- * @return {boolean}           Whether the event was logged.
- */
-function packagePageLoadLog(pageLoadTimeMs) {
-    if (!config.on) {
-        return false;
-    }
-
-    var log = {
-        'pageUrl': window.location.href,
-        'pageTitle': document.title,
-        'pageReferrer': document.referrer,
-        'browser': detectBrowser(),
-        'scrnRes' : getSreenRes(),
-        'userId' : config.userId,
-        'toolVersion' : config.version,
-        'toolName' : config.toolName,
-        'type': 'pageLoad',
-        'useraleVersion': config.useraleVersion,
-        'sessionID': config.sessionID,
-        'pageLoadTime': pageLoadTimeMs
-    };
-
-    logs.push(log);
 
     return true;
 }
@@ -989,17 +1010,14 @@ function attachHandlers(config) {
  * limitations under the License.
  */
 
-<<<<<<< HEAD:build/UserAleWebExtension/content.js
 var config = {};
 var logs = [];
-=======
-var config$1 = {};
-var logs$1 = [];
 var startLoadTimestamp = Date.now();
 var endLoadTimestamp;
-window.onload = function() { endLoadTimestamp = Date.now(); };
+window.onload = function () {
+    endLoadTimestamp = Date.now();
+};
 
->>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
 var started = false;
 
 
@@ -1010,13 +1028,8 @@ config.useraleVersion = version;
 configure(config, getInitialSettings());
 initPackager(logs, config);
 
-<<<<<<< HEAD:build/UserAleWebExtension/content.js
 if (config.autostart) {
-  setup(config);
-=======
-if (config$1.autostart) {
-    setup(config$1);
->>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
+    setup(config);
 }
 
 /**
@@ -1025,36 +1038,20 @@ if (config$1.autostart) {
  * @param  {Object} config Configuration settings for the logger
  */
 function setup(config) {
-<<<<<<< HEAD:build/UserAleWebExtension/content.js
-  if (!started) {
-    setTimeout(function() {
-      var state = document.readyState;
-
-      if (state === 'interactive' || state === 'complete') {
-        attachHandlers(config);
-        initSender(logs, config);
-        started = config.on = true;
-      } else {
-        setup(config);
-      }
-    }, 100);
-  }
-=======
     if (!started) {
         setTimeout(function () {
             var state = document.readyState;
 
             if (state === 'interactive' || state === 'complete') {
                 attachHandlers(config);
-                initSender(logs$1, config);
+                initSender(logs, config);
                 started = config.on = true;
-                packagePageLoadLog(endLoadTimestamp - startLoadTimestamp);
+                packageCustomLog({pageLoadTime: endLoadTimestamp - startLoadTimestamp}, () => {},false);
             } else {
                 setup(config);
             }
         }, 100);
     }
->>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
 }
 
 /**
@@ -1064,19 +1061,11 @@ function setup(config) {
  * @return {Object}           Returns the updated configuration.
  */
 function options(newConfig) {
-<<<<<<< HEAD:build/UserAleWebExtension/content.js
-  if (newConfig !== undefined) {
-    configure(config, newConfig);
-  }
-
-  return config;
-=======
     if (newConfig !== undefined) {
-        configure(config$1, newConfig);
+        configure(config, newConfig);
     }
 
-    return config$1;
->>>>>>> 71a981e... [FLAGON-330] adds page load log containing page load time:build/UserALEWebExtension/content.js
+    return config;
 }
 
 /*

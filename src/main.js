@@ -19,14 +19,16 @@ import {version as userAleVersion} from '../package.json';
 import {getInitialSettings} from './getInitialSettings.js';
 import {configure} from './configure.js';
 import {attachHandlers} from './attachHandlers.js';
-import {initPackager, packagePageLoadLog} from './packageLogs.js';
+import {initPackager, packageCustomLog} from './packageLogs.js';
 import {initSender} from './sendLogs.js';
 
 var config = {};
 var logs = [];
 var startLoadTimestamp = Date.now()
 var endLoadTimestamp
-window.onload = function() { endLoadTimestamp = Date.now() }
+window.onload = function () {
+    endLoadTimestamp = Date.now()
+}
 
 export var started = false;
 export {defineCustomDetails as details} from './attachHandlers.js';
@@ -65,7 +67,7 @@ function setup(config) {
                 attachHandlers(config);
                 initSender(logs, config);
                 started = config.on = true;
-                packagePageLoadLog(endLoadTimestamp - startLoadTimestamp)
+                packageCustomLog({pageLoadTime: endLoadTimestamp - startLoadTimestamp}, () => {},false)
             } else {
                 setup(config);
             }
