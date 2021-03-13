@@ -18,8 +18,18 @@ import {expect} from 'chai';
 import {JSDOM} from 'jsdom';
 import 'global-jsdom/register'
 import {
-    packageLog, initPackager, getLocation, getSelector, buildPath, selectorizePath,
-    extractTimeFields, filterHandler, mapHandler, setLogFilter, setLogMapper, logs,
+    buildPath,
+    extractTimeFields,
+    filterHandler,
+    getLocation,
+    getSelector,
+    initPackager,
+    logs,
+    mapHandler,
+    packageLog,
+    selectorizePath,
+    setLogFilter,
+    setLogMapper,
 } from '../src/packageLogs';
 
 describe('packageLogs', () => {

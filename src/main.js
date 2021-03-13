@@ -15,25 +15,31 @@
  * limitations under the License.
  */
 
-import { version as userAleVersion } from '../package.json';
-import { getInitialSettings } from './getInitialSettings.js';
-import { configure } from './configure.js';
-import { attachHandlers } from './attachHandlers.js';
-import { initPackager } from './packageLogs.js';
-import { initSender } from './sendLogs.js';
+import {version as userAleVersion} from '../package.json';
+import {getInitialSettings} from './getInitialSettings.js';
+import {configure} from './configure.js';
+import {attachHandlers} from './attachHandlers.js';
+import {initPackager, packageCustomLog} from './packageLogs.js';
+import {initSender} from './sendLogs.js';
 
 var config = {};
 var logs = [];
+var startLoadTimestamp = Date.now()
+var endLoadTimestamp
+window.onload = function () {
+    endLoadTimestamp = Date.now()
+}
+
 export var started = false;
-export { defineCustomDetails as details} from './attachHandlers.js';
+export {defineCustomDetails as details} from './attachHandlers.js';
 export {
-  setLogMapper as map,
-  setLogFilter as filter,
-  packageLog as packageLog,
-  packageCustomLog as packageCustomLog,
-  getSelector as getSelector,
-  buildPath as buildPath,
-  } from './packageLogs.js';
+    setLogMapper as map,
+    setLogFilter as filter,
+    packageLog as packageLog,
+    packageCustomLog as packageCustomLog,
+    getSelector as getSelector,
+    buildPath as buildPath,
+} from './packageLogs.js';
 
 
 // Start up Userale
@@ -44,7 +50,7 @@ configure(config, getInitialSettings());
 initPackager(logs, config);
 
 if (config.autostart) {
-  setup(config);
+    setup(config);
 }
 
 /**
@@ -53,19 +59,20 @@ if (config.autostart) {
  * @param  {Object} config Configuration settings for the logger
  */
 function setup(config) {
-  if (!started) {
-    setTimeout(function() {
-      var state = document.readyState;
+    if (!started) {
+        setTimeout(function () {
+            var state = document.readyState;
 
-      if (state === 'interactive' || state === 'complete') {
-        attachHandlers(config);
-        initSender(logs, config);
-        started = config.on = true;
-      } else {
-        setup(config);
-      }
-    }, 100);
-  }
+            if (state === 'interactive' || state === 'complete') {
+                attachHandlers(config);
+                initSender(logs, config);
+                started = config.on = true;
+                packageCustomLog({pageLoadTime: endLoadTimestamp - startLoadTimestamp}, () => {},false)
+            } else {
+                setup(config);
+            }
+        }, 100);
+    }
 }
 
 
@@ -77,18 +84,18 @@ export var version = userAleVersion;
  * autostart configuration option is set to false.
  */
 export function start() {
-  if (!started) {
-    setup(config);
-  }
+    if (!started) {
+        setup(config);
+    }
 
-  config.on = true;
+    config.on = true;
 }
 
 /**
  * Halts the logging process. Logs will no longer be sent.
  */
 export function stop() {
-  config.on = false;
+    config.on = false;
 }
 
 /**
@@ -98,11 +105,11 @@ export function stop() {
  * @return {Object}           Returns the updated configuration.
  */
 export function options(newConfig) {
-  if (newConfig !== undefined) {
-    configure(config, newConfig);
-  }
+    if (newConfig !== undefined) {
+        configure(config, newConfig);
+    }
 
-  return config;
+    return config;
 }
 
 /**
@@ -111,10 +118,10 @@ export function options(newConfig) {
  * @return {boolean}          Whether the operation succeeded.
  */
 export function log(customLog) {
-  if (customLog !== null && typeof customLog === 'object') {
-    logs.push(customLog);
-    return true;
-  } else {
-    return false;
-  }
+    if (customLog !== null && typeof customLog === 'object') {
+        logs.push(customLog);
+        return true;
+    } else {
+        return false;
+    }
 }

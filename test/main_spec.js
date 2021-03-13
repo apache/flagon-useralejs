@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 import {expect} from 'chai';
-import jsdom from 'jsdom';
-import fs from 'fs';
-
 import {createEnvFromFile} from './testUtils';
 
 describe('Userale API', () => {

@@ -521,6 +521,55 @@ function packageLog(e, detailFcn) {
 }
 
 /**
+ * Packages the provided customLog to include standard meta data and appends it to the log queue.
+ * @param  {Object} customLog        The behavior to be logged.
+ * @param  {Function} detailFcn     The function to extract additional log parameters from the event.
+ * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
+ * @return {boolean}           Whether the event was logged.
+ */
+function packageCustomLog(customLog, detailFcn, userAction) {
+    if (!config$1.on) {
+        return false;
+    }
+
+    var details = null;
+    if (detailFcn) {
+        details = detailFcn();
+    }
+
+    var metaData = {
+        'pageUrl': window.location.href,
+        'pageTitle': document.title,
+        'pageReferrer': document.referrer,
+        'browser': detectBrowser(),
+        'clientTime' : Date.now(),
+        'scrnRes' : getSreenRes(),
+        'logType': 'custom',
+        'userAction' : userAction,
+        'details' : details,
+        'userId' : config$1.userId,
+        'toolVersion' : config$1.version,
+        'toolName' : config$1.toolName,
+        'useraleVersion': config$1.useraleVersion,
+        'sessionID': config$1.sessionID
+    };
+
+    var log = Object.assign(metaData, customLog);
+
+    if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+        return false;
+    }
+
+    if (typeof mapHandler === 'function') {
+        log = mapHandler(log);
+    }
+
+    logs$1.push(log);
+
+    return true;
+}
+
+/**
  * Extract the millisecond and microsecond portions of a timestamp.
  * @param  {Number} timeStamp The timestamp to split into millisecond and microsecond fields.
  * @return {Object}           An object containing the millisecond
@@ -963,6 +1012,12 @@ function attachHandlers(config) {
 
 var config = {};
 var logs = [];
+var startLoadTimestamp = Date.now();
+var endLoadTimestamp;
+window.onload = function () {
+    endLoadTimestamp = Date.now();
+};
+
 var started = false;
 
 
@@ -974,7 +1029,7 @@ configure(config, getInitialSettings());
 initPackager(logs, config);
 
 if (config.autostart) {
-  setup(config);
+    setup(config);
 }
 
 /**
@@ -983,19 +1038,20 @@ if (config.autostart) {
  * @param  {Object} config Configuration settings for the logger
  */
 function setup(config) {
-  if (!started) {
-    setTimeout(function() {
-      var state = document.readyState;
+    if (!started) {
+        setTimeout(function () {
+            var state = document.readyState;
 
-      if (state === 'interactive' || state === 'complete') {
-        attachHandlers(config);
-        initSender(logs, config);
-        started = config.on = true;
-      } else {
-        setup(config);
-      }
-    }, 100);
-  }
+            if (state === 'interactive' || state === 'complete') {
+                attachHandlers(config);
+                initSender(logs, config);
+                started = config.on = true;
+                packageCustomLog({pageLoadTime: endLoadTimestamp - startLoadTimestamp}, () => {},false);
+            } else {
+                setup(config);
+            }
+        }, 100);
+    }
 }
 
 /**
@@ -1005,11 +1061,11 @@ function setup(config) {
  * @return {Object}           Returns the updated configuration.
  */
 function options(newConfig) {
-  if (newConfig !== undefined) {
-    configure(config, newConfig);
-  }
+    if (newConfig !== undefined) {
+        configure(config, newConfig);
+    }
 
-  return config;
+    return config;
 }
 
 /*

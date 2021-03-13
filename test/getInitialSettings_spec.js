@@ -77,7 +77,7 @@ describe('getInitialSettings', () => {
 
         it('grabs user id from params', async () => {
             const dom = await createEnvFromFile('getInitialSettings_userParam.html', {
-                url: 'file://' + '.' + '?user=fakeuser'
+                url: 'file://' + __dirname + '../' + '?user=fakeuser'
             });
             const config = dom.window.userale.options();
             expect(config.userId).to.equal('fakeuser');
