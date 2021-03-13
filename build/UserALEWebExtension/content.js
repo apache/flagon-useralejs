@@ -1046,7 +1046,11 @@ function setup(config) {
                 attachHandlers(config);
                 initSender(logs, config);
                 started = config.on = true;
-                packageCustomLog({pageLoadTime: endLoadTimestamp - startLoadTimestamp}, () => {},false);
+                packageCustomLog({
+                    type: 'load',
+                    logType: 'raw',
+                    pageLoadTime: endLoadTimestamp - startLoadTimestamp
+                    }, () => {},false);
             } else {
                 setup(config);
             }
