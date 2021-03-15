@@ -4,3 +4,4 @@
 /.git/*
 npm-debug.log
 DS_store
+cypress
