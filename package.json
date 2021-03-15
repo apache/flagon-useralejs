@@ -5,10 +5,13 @@
   "main": "build/userale-2.1.1.js",
   "scripts": {
     "pretest": "gulp lint",
-    "test": "gulp test",
+    "test": "gulp test && npm run journey:ci",
     "build": "gulp build",
     "clean": "gulp clean",
     "dev": "gulp dev",
+    "journey": "cypress run",
+    "journey:debug": "cypress open",
+    "journey:ci": "start-server-and-test 'node example/server.js' 8000 journey",
     "example:watch": "nodemon -w ./example example/server.js"
   },
   "repository": {
@@ -52,6 +55,7 @@
     "body-parser": "^1.19.0",
     "chai": "^4.3.0",
     "composer": "^4.1.0",
+    "cypress": "^6.6.0",
     "del": "^6.0.0",
     "detect-browser": "^5.2.0",
     "dom-storage": "^2.1.0",
@@ -72,6 +76,7 @@
     "rollup": "^2.40.0",
     "rollup-plugin-license": "^2.2.0",
     "sinon": "^9.2.4",
+    "start-server-and-test": "^1.12.0",
     "uglify-es": "^3.3.9"
   }
 }
