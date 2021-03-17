@@ -75,14 +75,18 @@ export function sendOnRefresh(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 export function sendOnClose(logs, config) {
-  if (!config.on) {
+/** if (!config.on) {
     return;
-  }
-
-  if (navigator.sendBeacon) {
-    window.addEventListener('unload', function() {
+ } */
+document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden' && logs.length > 0) {
       navigator.sendBeacon(config.url, JSON.stringify(logs));
-    });
+    }
+  });
+/**
+    if (navigator.sendBeacon) {
+    window.addEventListener('unload', function() {
+      ;
   } else {
     window.addEventListener('beforeunload', function() {
       if (logs.length > 0) {
@@ -90,6 +94,7 @@ export function sendOnClose(logs, config) {
       }
     })
   }
+*/
 }
 
 /**
