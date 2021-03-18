@@ -1,0 +1,46 @@
+<html>
+<head>
+    <script
+            src="../../build/userale-2.1.1.min.js"
+            data-url=""
+            data-tool="Apache UserALE.js Example"
+            data-threshold="1"
+            data-interval="100"
+    ></script>
+</head>
+<body>
+<div class="new-feature-button">
+    <button>New Feature</button>
+</div>
+<div>
+    <input class="new-feature-checkbox" type="checkbox">
+</div>
+</body>
+<script>
+    window.userale.filter(log => ['click', 'change'].includes(log.type))
+
+    // Method 1
+    document.addEventListener('click', function (e) {
+        if (e.target.innerHTML === 'New Feature') {
+            window.userale.map(log => ({...log, logType: 'custom', customLabel: 'New Feature'}));
+            window.userale.packageLog(e, window.userale.details(window.userale.options(), e.type));
+            window.userale.map();
+        } else {
+            return false
+        }
+    });
+
+    // Method 2
+    document.addEventListener('change', function (e) {
+        if (e.target.className === 'new-feature-checkbox') {
+            window.userale.packageCustomLog({
+                type: 'change',
+                customLabel: 'New Feature',
+                customField1: 'New Checkbox',
+            }, () => ({customDetails: Date.now()}), true);
+        } else {
+            return false
+        }
+    });
+</script>
+</html>
