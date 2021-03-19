@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
-import { logs } from './packageLogs';
 import { packageLog } from './packageLogs.js';
 import { packageIntervalLog} from './packageLogs';
-import { sendOnRefresh } from "./sendLogs";
 
 // @todo var>let
 var events;
@@ -150,7 +148,6 @@ export function attachHandlers(config) {
   Object.keys(refreshEvents).forEach(function(ev) {
     document.addEventListener(ev, function(e) {
       packageLog(e, events[ev]);
-      sendOnRefresh(logs,config);
     }, true);
   });
 

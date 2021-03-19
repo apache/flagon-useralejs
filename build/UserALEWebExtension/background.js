@@ -396,6 +396,7 @@ function sendOnClose(logs, config) {
 document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'hidden' && logs.length > 0) {
       navigator.sendBeacon(config.url, JSON.stringify(logs));
+      logs.splice(0); // Clear array reference (no reassignment)
     }
   });
 /**
