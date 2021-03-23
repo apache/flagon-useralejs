@@ -41,7 +41,7 @@
    * limitations under the License.
    */
 
-   var sessionId = null;
+  let sessionId = null;
 
   /**
    * Extracts the initial configuration settings from the
@@ -49,33 +49,35 @@
    * @return {Object} The extracted configuration object
    */
   function getInitialSettings() {
-    var settings = {};
+      const settings = {};
 
-    if (sessionId === null) {
-      sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
-    }
+      if (sessionId === null) {
+          sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
+      }
 
-    var script = document.currentScript || (function () {
-      var scripts = document.getElementsByTagName('script');
-      return scripts[scripts.length - 1];
-    })();
+      const script = document.currentScript || (function () {
+          const scripts = document.getElementsByTagName('script');
+          return scripts[scripts.length - 1];
+      })();
 
-    var get = script ? script.getAttribute.bind(script) : function() { return null; };
-    settings.autostart = get('data-autostart') === 'false' ? false : true;
-    settings.url = get('data-url') || 'http://localhost:8000';
-    settings.transmitInterval = +get('data-interval') || 5000;
-    settings.logCountThreshold = +get('data-threshold') || 5;
-    settings.userId = get('data-user') || null;
-    settings.version = get('data-version') || null;
-    settings.logDetails = get('data-log-details') === 'true' ? true : false;
-    settings.resolution = +get('data-resolution') || 500;
-    settings.toolName = get('data-tool') || null;
-    settings.userFromParams = get('data-user-from-params') || null;
-    settings.time = timeStampScale(document.createEvent('CustomEvent'));
-    settings.sessionID = get('data-session') || sessionId;
-    settings.authHeader = get('data-auth') || null;
-    settings.custIndex = get('data-index') || null;
-    return settings;
+      const get = script ? script.getAttribute.bind(script) : function () {
+          return null;
+      };
+      settings.autostart = get('data-autostart') === 'false' ? false : true;
+      settings.url = get('data-url') || 'http://localhost:8000';
+      settings.transmitInterval = +get('data-interval') || 5000;
+      settings.logCountThreshold = +get('data-threshold') || 5;
+      settings.userId = get('data-user') || null;
+      settings.version = get('data-version') || null;
+      settings.logDetails = get('data-log-details') === 'true' ? true : false;
+      settings.resolution = +get('data-resolution') || 500;
+      settings.toolName = get('data-tool') || null;
+      settings.userFromParams = get('data-user-from-params') || null;
+      settings.time = timeStampScale(document.createEvent('CustomEvent'));
+      settings.sessionID = get('data-session') || sessionId;
+      settings.authHeader = get('data-auth') || null;
+      settings.custIndex = get('data-index') || null;
+      return settings;
   }
 
   /**
@@ -84,13 +86,13 @@
    * from refreshing the current user session
    *
    */
-  function getSessionId(sessionKey, value){
-    if (window.sessionStorage.getItem(sessionKey) === null) {
-      window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
-      return value;
-    }
+  function getSessionId(sessionKey, value) {
+      if (window.sessionStorage.getItem(sessionKey) === null) {
+          window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
+          return value;
+      }
 
-    return JSON.parse(window.sessionStorage.getItem(sessionKey));
+      return JSON.parse(window.sessionStorage.getItem(sessionKey));
   }
 
 
@@ -100,34 +102,36 @@
    * @return {timeStampScale~tsScaler}   The timestamp normalizing function.
    */
   function timeStampScale(e) {
-    if (e.timeStamp && e.timeStamp > 0) {
-      var delta = Date.now() - e.timeStamp;
-      /**
-       * Returns a timestamp depending on various browser quirks.
-       * @param  {?Number} ts A timestamp to use for normalization.
-       * @return {Number} A normalized timestamp.
-       */
-      var tsScaler;
+      let tsScaler;
+      if (e.timeStamp && e.timeStamp > 0) {
+          const delta = Date.now() - e.timeStamp;
+          /**
+           * Returns a timestamp depending on various browser quirks.
+           * @param  {?Number} ts A timestamp to use for normalization.
+           * @return {Number} A normalized timestamp.
+           */
 
-      if (delta < 0) {
-        tsScaler = function () {
-          return e.timeStamp / 1000;
-        };
-      } else if (delta > e.timeStamp) {
-        var navStart = performance.timing.navigationStart;
-        tsScaler = function (ts) {
-          return ts + navStart;
-        };
+          if (delta < 0) {
+              tsScaler = function () {
+                  return e.timeStamp / 1000;
+              };
+          } else if (delta > e.timeStamp) {
+              const navStart = performance.timing.navigationStart;
+              tsScaler = function (ts) {
+                  return ts + navStart;
+              };
+          } else {
+              tsScaler = function (ts) {
+                  return ts;
+              };
+          }
       } else {
-        tsScaler = function (ts) {
-          return ts;
-        };
+          tsScaler = function () {
+              return Date.now();
+          };
       }
-    } else {
-      tsScaler = function () { return Date.now(); };
-    }
 
-    return tsScaler;
+      return tsScaler;
   }
 
   /*
@@ -156,7 +160,7 @@
   function configure(config, newConfig) {
     Object.keys(newConfig).forEach(function(option) {
       if (option === 'userFromParams') {
-        var userId = getUserIdFromParams(newConfig[option]);
+        const userId = getUserIdFromParams(newConfig[option]);
         if (userId) {
           config.userId = userId;
         }
@@ -171,9 +175,9 @@
    * @return {string|null}       The extracted/decoded userid, or null if none is found.
    */
   function getUserIdFromParams(param) {
-    var userField = param;
-    var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
-    var results = window.location.href.match(regex);
+    const userField = param;
+    const regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
+    const results = window.location.href.match(regex);
 
     if (results && results[2]) {
       return decodeURIComponent(results[2].replace(/\+/g, ' '));
@@ -396,21 +400,21 @@
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
-  var browser = detect();
+  const browser = detect();
 
-  var logs$1;
-  var config$1;
+  let logs$1;
+  let config$1;
 
   // Interval Logging Globals
-  var intervalID;
-  var intervalType;
-  var intervalPath;
-  var intervalTimer;
-  var intervalCounter;
-  var intervalLog;
+  let intervalID;
+  let intervalType;
+  let intervalPath;
+  let intervalTimer;
+  let intervalCounter;
+  let intervalLog;
 
-  var filterHandler = null;
-  var mapHandler = null;
+  let filterHandler = null;
+  let mapHandler = null;
 
   /**
    * Assigns a handler to filter logs out of the queue.
@@ -458,16 +462,16 @@
       return false;
     }
 
-    var details = null;
+    let details = null;
     if (detailFcn) {
       details = detailFcn(e);
     }
 
-    var timeFields = extractTimeFields(
+    const timeFields = extractTimeFields(
       (e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now()
     );
 
-    var log = {
+    let log = {
       'target' : getSelector(e.target),
       'path' : buildPath(e),
       'pageUrl': window.location.href,
@@ -514,12 +518,12 @@
           return false;
       }
 
-      var details = null;
+      let details = null;
       if (detailFcn) {
           details = detailFcn();
       }
 
-      var metaData = {
+      const metaData = {
           'pageUrl': window.location.href,
           'pageTitle': document.title,
           'pageReferrer': document.referrer,
@@ -536,7 +540,7 @@
           'sessionID': config$1.sessionID
       };
 
-      var log = Object.assign(metaData, customLog);
+      let log = Object.assign(metaData, customLog);
 
       if ((typeof filterHandler === 'function') && !filterHandler(log)) {
           return false;
@@ -570,10 +574,10 @@
    * @return boolean
    */
   function packageIntervalLog(e) {
-      var target = getSelector(e.target);
-      var path = buildPath(e);
-      var type = e.type;
-      var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now());
+      const target = getSelector(e.target);
+      const path = buildPath(e);
+      const type = e.type;
+      const timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now());
 
       // Init - this should only happen once on initialization
       if (intervalID == null) {
@@ -684,11 +688,11 @@
    * @return {HTMLElement[]}   Array of elements, starting at the event target, ending at the root element.
    */
   function buildPath(e) {
-    var path = [];
+    let path = [];
     if (e.path) {
       path = e.path;
     } else {
-      var ele = e.target;
+      let ele = e.target;
       while(ele) {
         path.push(ele);
         ele = ele.parentElement;
@@ -704,9 +708,9 @@
    * @return {string[]}      Array of string CSS selectors.
    */
   function selectorizePath(path) {
-    var i = 0;
-    var pathEle;
-    var pathSelectors = [];
+    let i = 0;
+    let pathEle;
+    const pathSelectors = [];
     while (pathEle = path[i]) {
       pathSelectors.push(getSelector(pathEle));
       ++i;
@@ -738,7 +742,7 @@
    * limitations under the License.
    */
 
-  var sendIntervalId = null;
+  let sendIntervalId = null;
 
   /**
    * Initializes the log queue processors.
@@ -825,10 +829,10 @@
 
   // @todo expose config object to sendLogs replate url with config.url
   function sendLogs(logs, config, retries) {
-    var req = new XMLHttpRequest();
+    const req = new XMLHttpRequest();
 
     // @todo setRequestHeader for Auth
-    var data = JSON.stringify(logs);
+    const data = JSON.stringify(logs);
 
     req.open('POST', config.url);
     if (config.authHeader) {
@@ -865,14 +869,13 @@
    * limitations under the License.
    */
 
-  // @todo var>let
-  var events;
-  var bufferBools;
-  var bufferedEvents;
+  let events;
+  let bufferBools;
+  let bufferedEvents;
   //@todo: Investigate drag events and their behavior
-  var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
-  var refreshEvents;
-  var windowEvents = ['load', 'blur', 'focus'];
+  const intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+  let refreshEvents;
+  const windowEvents = ['load', 'blur', 'focus'];
 
   /**
    * Maps an event to an object containing useful information.
@@ -937,7 +940,7 @@
     // Events list
     // Keys are event types
     // Values are functions that return details object if applicable
-    var eventType = {
+    const eventType = {
       'click' : extractMouseEvent,
       'dblclick' : extractMouseEvent,
       'mousedown' : extractMouseEvent,
@@ -1025,10 +1028,10 @@
    * limitations under the License.
    */
 
-  var config = {};
-  var logs = [];
-  var startLoadTimestamp = Date.now();
-  var endLoadTimestamp;
+  const config = {};
+  const logs = [];
+  const startLoadTimestamp = Date.now();
+  let endLoadTimestamp;
   window.onload = function () {
       endLoadTimestamp = Date.now();
   };
@@ -1055,7 +1058,7 @@
   function setup(config) {
       if (!exports.started) {
           setTimeout(function () {
-              var state = document.readyState;
+              const state = document.readyState;
 
               if (state === 'interactive' || state === 'complete') {
                   attachHandlers(config);
@@ -1075,7 +1078,7 @@
 
 
   // Export the Userale API
-  var version = version$1;
+  const version = version$1;
 
   /**
    * Used to start the logging process if the
