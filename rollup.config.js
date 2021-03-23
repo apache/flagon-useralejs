@@ -8,6 +8,7 @@ import {version} from './package.json';
 
 const srcWebExtensionDir = 'src/UserALEWebExtension/'
 const buildWebExtensionDir = 'build/UserALEWebExtension/'
+const {babel: rollupBabel} = require('@rollup/plugin-babel');
 
 const banner = 'Licensed to the Apache Software Foundation (ASF) under one or more\n' +
     'contributor license agreements.  See the NOTICE file distributed with\n' +
@@ -40,7 +41,12 @@ export default [
                 plugins: [terser()]
             }
         ],
-        plugins: [license({banner}), json(), nodeResolve(), commonjs()]
+        plugins: [license({banner}), json(), nodeResolve(), commonjs({include: /node_modules/}),
+            rollupBabel({
+                babelHelpers: "runtime",
+                exclude: /node_modules/,
+                plugins: ["@babel/plugin-transform-block-scoping"]
+            })]
     },
     ...['content.js', 'background.js', 'options.js'].map(fileName => ({
         input: srcWebExtensionDir + fileName,
@@ -56,6 +62,12 @@ export default [
                 {src: srcWebExtensionDir + 'optionsPage.html', dest: buildWebExtensionDir}
             ],
             copyOnce: true
-        }), json(), nodeResolve(), commonjs()]
+        }), json(), nodeResolve(), commonjs({include: /node_modules/}),
+            rollupBabel({
+                babelHelpers: "runtime",
+                exclude: /node_modules/,
+                plugins: ["@babel/plugin-transform-block-scoping"]
+            })
+        ]
     }))
 ];

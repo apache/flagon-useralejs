@@ -16,14 +16,12 @@
 */
 
 /* eslint-disable */
-
 // these are default values, which can be overridden by the user on the options page
 var userAleHost = 'http://localhost:8000';
 var userAleScript = 'userale-2.1.1.min.js';
 var toolUser = 'nobody';
 var toolName = 'test_app';
 var toolVersion = '2.1.1';
-
 /* eslint-enable */
 
 /*
@@ -42,9 +40,7 @@ var toolVersion = '2.1.1';
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 var prefix = 'USERALE_';
-
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
@@ -64,13 +60,12 @@ var ADD_LOG = prefix + 'ADD_LOG';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 /**
  * Creates a function to normalize the timestamp of the provided event.
  * @param  {Object} e An event containing a timeStamp property.
  * @return {timeStampScale~tsScaler}   The timestamp normalizing function.
  */
+
 function timeStampScale(e) {
   if (e.timeStamp && e.timeStamp > 0) {
     var delta = Date.now() - e.timeStamp;
@@ -79,24 +74,28 @@ function timeStampScale(e) {
      * @param  {?Number} ts A timestamp to use for normalization.
      * @return {Number} A normalized timestamp.
      */
+
     var tsScaler;
 
     if (delta < 0) {
-      tsScaler = function () {
+      tsScaler = function tsScaler() {
         return e.timeStamp / 1000;
       };
     } else if (delta > e.timeStamp) {
       var navStart = performance.timing.navigationStart;
-      tsScaler = function (ts) {
+
+      tsScaler = function tsScaler(ts) {
         return ts + navStart;
       };
     } else {
-      tsScaler = function (ts) {
+      tsScaler = function tsScaler(ts) {
         return ts;
       };
     }
   } else {
-    tsScaler = function () { return Date.now(); };
+    tsScaler = function tsScaler() {
+      return Date.now();
+    };
   }
 
   return tsScaler;
@@ -317,17 +316,17 @@ function createVersionParts(count) {
  * limitations under the License.
  */
 detect();
-
 /**
  * Extract the millisecond and microsecond portions of a timestamp.
  * @param  {Number} timeStamp The timestamp to split into millisecond and microsecond fields.
  * @return {Object}           An object containing the millisecond
  *                            and microsecond portions of the timestamp.
  */
+
 function extractTimeFields(timeStamp) {
   return {
     milli: Math.floor(timeStamp),
-    micro: Number((timeStamp % 1).toFixed(3)),
+    micro: Number((timeStamp % 1).toFixed(3))
   };
 }
 
@@ -347,14 +346,13 @@ function extractTimeFields(timeStamp) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 var sendIntervalId = null;
-
 /**
  * Initializes the log queue processors.
  * @param  {Array} logs   Array of logs to append to.
  * @param  {Object} config Configuration object to use when logging.
  */
+
 function initSender(logs, config) {
   if (sendIntervalId !== null) {
     clearInterval(sendIntervalId);
@@ -363,7 +361,6 @@ function initSender(logs, config) {
   sendIntervalId = sendOnInterval(logs, config);
   sendOnClose(logs, config);
 }
-
 /**
  * Checks the provided log array on an interval, flushing the logs
  * if the queue has reached the threshold specified by the provided config.
@@ -371,42 +368,43 @@ function initSender(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  * @return {Number}        The newly created interval id.
  */
+
 function sendOnInterval(logs, config) {
-  return setInterval(function() {
+  return setInterval(function () {
     if (!config.on) {
       return;
     }
 
     if (logs.length >= config.logCountThreshold) {
       sendLogs(logs.slice(0), config, 0); // Send a copy
+
       logs.splice(0); // Clear array reference (no reassignment)
     }
   }, config.transmitInterval);
 }
-
 /**
  * Attempts to flush the remaining logs when the window is closed.
  * @param  {Array} logs   Array of logs to be flushed.
  * @param  {Object} config Configuration object to be read from.
  */
+
 function sendOnClose(logs, config) {
   if (!config.on) {
     return;
   }
 
   if (navigator.sendBeacon) {
-    window.addEventListener('unload', function() {
+    window.addEventListener('unload', function () {
       navigator.sendBeacon(config.url, JSON.stringify(logs));
     });
   } else {
-    window.addEventListener('beforeunload', function() {
+    window.addEventListener('beforeunload', function () {
       if (logs.length > 0) {
         sendLogs(logs, config, 1);
       }
     });
   }
 }
-
 /**
  * Sends the provided array of logs to the specified url,
  * retrying the request up to the specified number of retries.
@@ -414,22 +412,21 @@ function sendOnClose(logs, config) {
  * @param  {string} config     configuration parameters (e.g., to extract URL from & send the POST request to).
  * @param  {Number} retries Maximum number of attempts to send the logs.
  */
-
 // @todo expose config object to sendLogs replate url with config.url
+
 function sendLogs(logs, config, retries) {
-  var req = new XMLHttpRequest();
+  var req = new XMLHttpRequest(); // @todo setRequestHeader for Auth
 
-  // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
-
   req.open('POST', config.url);
+
   if (config.authHeader) {
     req.setRequestHeader('Authorization', config.authHeader);
   }
 
   req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
-  req.onreadystatechange = function() {
+  req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status !== 200) {
       if (retries > 0) {
         sendLogs(logs, config, retries--);
@@ -456,9 +453,6 @@ function sendLogs(logs, config, retries) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-// inherent dependency on globals.js, loaded by the webext
-
 // browser is defined in firefox, but not in chrome. In chrome, they use
 // the 'chrome' global instead. Let's map it to browser so we don't have
 // to have if-conditions all over the place.
@@ -474,24 +468,23 @@ var config = {
   version: null,
   resolution: 500,
   time: timeStampScale({}),
-  on: true,
+  on: true
 };
 var sessionId = 'session_' + Date.now();
-
-var getTimestamp = ((typeof performance !== 'undefined') && (typeof performance.now !== 'undefined'))
-  ? function () { return performance.now() + performance.timing.navigationStart; }
-  : Date.now;
-
-browser.storage.local.set({ sessionId: sessionId });
-
+var getTimestamp = typeof performance !== 'undefined' && typeof performance.now !== 'undefined' ? function () {
+  return performance.now() + performance.timing.navigationStart;
+} : Date.now;
+browser.storage.local.set({
+  sessionId: sessionId
+});
 browser.storage.local.get({
   userAleHost: userAleHost,
   userAleScript: userAleScript,
   toolUser: toolUser,
   toolName: toolName,
-  toolVersion: toolVersion,
+  toolVersion: toolVersion
 }, storeCallback);
-        
+
 function storeCallback(item) {
   config = Object.assign({}, config, {
     url: item.userAleHost,
@@ -513,22 +506,21 @@ function dispatchTabMessage(message) {
 
 function packageBrowserLog(type, logDetail) {
   var timeFields = extractTimeFields(getTimestamp());
-
   logs.push({
-    'target' : null,
-    'path' : null,
-    'clientTime' : timeFields.milli,
-    'microTime' : timeFields.micro,
-    'location' : null,
-    'type' : 'browser.' + type,
+    'target': null,
+    'path': null,
+    'clientTime': timeFields.milli,
+    'microTime': timeFields.micro,
+    'location': null,
+    'type': 'browser.' + type,
     'logType': 'raw',
-    'userAction' : true,
-    'details' : logDetail,
-    'userId' : toolUser,
+    'userAction': true,
+    'details': logDetail,
+    'userId': toolUser,
     'toolVersion': null,
     'toolName': null,
     'useraleVersion': null,
-    'sessionID': sessionId,
+    'sessionID': sessionId
   });
 }
 
@@ -545,12 +537,14 @@ browser.runtime.onMessage.addListener(function (message) {
         initSender(logs, updatedConfig);
         dispatchTabMessage(message);
       })();
+
       break;
 
     case ADD_LOG:
       (function () {
         logs.push(message.payload);
       })();
+
       break;
 
     default:
@@ -571,7 +565,7 @@ function getTabDetailById(tabId, onReady) {
       tabId: tab.id,
       title: tab.title,
       url: tab.url,
-      windowId: tab.windowId,
+      windowId: tab.windowId
     });
   });
 }
@@ -581,7 +575,6 @@ browser.tabs.onActivated.addListener(function (e) {
     packageBrowserLog('tabs.onActivated', detail);
   });
 });
-
 browser.tabs.onCreated.addListener(function (tab, e) {
   packageBrowserLog('tabs.onCreated', {
     active: tab.active,
@@ -594,35 +587,32 @@ browser.tabs.onCreated.addListener(function (tab, e) {
     tabId: tab.id,
     title: tab.title,
     url: tab.url,
-    windowId: tab.windowId,
+    windowId: tab.windowId
   });
 });
-
 browser.tabs.onDetached.addListener(function (tabId) {
   getTabDetailById(tabId, function (detail) {
     packageBrowserLog('tabs.onDetached', detail);
   });
 });
-
 browser.tabs.onMoved.addListener(function (tabId) {
   getTabDetailById(tabId, function (detail) {
     packageBrowserLog('tabs.onMoved', detail);
   });
 });
-
 browser.tabs.onRemoved.addListener(function (tabId) {
-  packageBrowserLog('tabs.onRemoved', { tabId: tabId });
+  packageBrowserLog('tabs.onRemoved', {
+    tabId: tabId
+  });
 });
-
 browser.tabs.onZoomChange.addListener(function (e) {
   getTabDetailById(e.tabId, function (detail) {
     packageBrowserLog('tabs.onZoomChange', Object.assign({}, {
       oldZoomFactor: e.oldZoomFactor,
-      newZoomFactor: e.newZoomFactor,
+      newZoomFactor: e.newZoomFactor
     }, detail));
   });
 });
-
 /*
  eslint-enable
  */
