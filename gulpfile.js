@@ -36,6 +36,7 @@ var version = require('./package.json').version;
 var uglifyjs = require('uglify-es');
 var userale = 'userale-' + version;
 var userAleWebExtDirName = 'UserALEWebExtension';
+const {babel: rollupBabel} = require('@rollup/plugin-babel');
 
 // Clean build directory
 gulp.task('clean', function() {
@@ -66,7 +67,8 @@ gulp.task('rollup', function() {
         }),
         json(),
         nodeResolve(),
-        commonjs()
+        commonjs({ include: /node_modules/ }),
+        rollupBabel({ babelHelpers: "runtime", exclude: /node_modules/, plugins: ["@babel/plugin-transform-block-scoping"] }),
     ]
   })
   .then(function(bundle) {
