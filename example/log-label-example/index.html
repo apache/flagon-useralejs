@@ -1,0 +1,46 @@
+<html>
+<head>
+    <script
+            src="../../build/userale-2.1.1.min.js"
+            data-url=""
+            data-tool="Apache UserALE.js Example"
+            data-threshold="1"
+            data-interval="100"
+    ></script>
+</head>
+<body>
+<div class="new-feature-button">
+    <button>New Feature</button>
+</div>
+<div>
+    <input type="checkbox" onchange="document.dispatchEvent(new Event('customEvent'))">
+</div>
+</body>
+<script>
+    window.userale.filter(log => ['click', 'customEvent'].includes(log.type))
+
+    // Example 1
+    window.userale.map((log, e) => {
+        // determine whether we want to add custom labels to the log
+        if (e && e.target.innerHTML !== 'New Feature') {
+            return log; // normal logging
+        }
+        // if the event occurred on the New Feature, add custom labeling
+        return {
+            ...log,
+            customLabel: 'New Feature',
+            logType: 'custom',
+        };
+    });
+
+    // Example 2
+    document.addEventListener('customEvent', function (e) {
+            window.userale.packageCustomLog({
+                type: 'customEvent',
+                customLabel: 'custom label',
+                customField1: 'custom field',
+            }, () => ({customDetails: Date.now()}), true);
+        }
+    );
+</script>
+</html>
