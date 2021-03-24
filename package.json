@@ -11,7 +11,8 @@
     "dev": "gulp dev",
     "journey": "cypress run",
     "journey:debug": "cypress open",
-    "journey:ci": "start-server-and-test 'node example/server.js' 8000 journey",
+    "journey:ci": "start-server-and-test example:run 8000 journey",
+    "example:run": "node example/server.js",
     "example:watch": "nodemon -w ./example example/server.js"
   },
   "repository": {
