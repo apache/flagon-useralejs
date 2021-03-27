@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var sendIntervalId = null;
+let sendIntervalId = null;
 
 /**
  * Initializes the log queue processors.
@@ -102,10 +102,10 @@ export function sendOnClose(logs, config) {
 
 // @todo expose config object to sendLogs replate url with config.url
 export function sendLogs(logs, config, retries) {
-  var req = new XMLHttpRequest();
+  const req = new XMLHttpRequest();
 
   // @todo setRequestHeader for Auth
-  var data = JSON.stringify(logs);
+  const data = JSON.stringify(logs);
 
   req.open('POST', config.url);
   if (config.authHeader) {

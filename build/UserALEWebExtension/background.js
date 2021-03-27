@@ -72,34 +72,36 @@ var ADD_LOG = prefix + 'ADD_LOG';
  * @return {timeStampScale~tsScaler}   The timestamp normalizing function.
  */
 function timeStampScale(e) {
-  if (e.timeStamp && e.timeStamp > 0) {
-    var delta = Date.now() - e.timeStamp;
-    /**
-     * Returns a timestamp depending on various browser quirks.
-     * @param  {?Number} ts A timestamp to use for normalization.
-     * @return {Number} A normalized timestamp.
-     */
-    var tsScaler;
+    let tsScaler;
+    if (e.timeStamp && e.timeStamp > 0) {
+        const delta = Date.now() - e.timeStamp;
+        /**
+         * Returns a timestamp depending on various browser quirks.
+         * @param  {?Number} ts A timestamp to use for normalization.
+         * @return {Number} A normalized timestamp.
+         */
 
-    if (delta < 0) {
-      tsScaler = function () {
-        return e.timeStamp / 1000;
-      };
-    } else if (delta > e.timeStamp) {
-      var navStart = performance.timing.navigationStart;
-      tsScaler = function (ts) {
-        return ts + navStart;
-      };
+        if (delta < 0) {
+            tsScaler = function () {
+                return e.timeStamp / 1000;
+            };
+        } else if (delta > e.timeStamp) {
+            const navStart = performance.timing.navigationStart;
+            tsScaler = function (ts) {
+                return ts + navStart;
+            };
+        } else {
+            tsScaler = function (ts) {
+                return ts;
+            };
+        }
     } else {
-      tsScaler = function (ts) {
-        return ts;
-      };
+        tsScaler = function () {
+            return Date.now();
+        };
     }
-  } else {
-    tsScaler = function () { return Date.now(); };
-  }
 
-  return tsScaler;
+    return tsScaler;
 }
 
 var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
@@ -348,7 +350,7 @@ function extractTimeFields(timeStamp) {
  * limitations under the License.
  */
 
-var sendIntervalId = null;
+let sendIntervalId = null;
 
 /**
  * Initializes the log queue processors.
@@ -417,10 +419,10 @@ function sendOnClose(logs, config) {
 
 // @todo expose config object to sendLogs replate url with config.url
 function sendLogs(logs, config, retries) {
-  var req = new XMLHttpRequest();
+  const req = new XMLHttpRequest();
 
   // @todo setRequestHeader for Auth
-  var data = JSON.stringify(logs);
+  const data = JSON.stringify(logs);
 
   req.open('POST', config.url);
   if (config.authHeader) {
