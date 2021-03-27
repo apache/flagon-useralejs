@@ -24,7 +24,7 @@
 export function configure(config, newConfig) {
   Object.keys(newConfig).forEach(function(option) {
     if (option === 'userFromParams') {
-      var userId = getUserIdFromParams(newConfig[option]);
+      const userId = getUserIdFromParams(newConfig[option]);
       if (userId) {
         config.userId = userId;
       }
@@ -39,9 +39,9 @@ export function configure(config, newConfig) {
  * @return {string|null}       The extracted/decoded userid, or null if none is found.
  */
 export function getUserIdFromParams(param) {
-  var userField = param;
-  var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
-  var results = window.location.href.match(regex);
+  const userField = param;
+  const regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
+  const results = window.location.href.match(regex);
 
   if (results && results[2]) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
