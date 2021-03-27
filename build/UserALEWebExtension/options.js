@@ -16,14 +16,12 @@
 */
 
 /* eslint-disable */
-
 // these are default values, which can be overridden by the user on the options page
 var userAleHost = 'http://localhost:8000';
 var userAleScript = 'userale-2.1.1.min.js';
 var toolUser = 'nobody';
 var toolName = 'test_app';
 var toolVersion = '2.1.1';
-
 /* eslint-enable */
 
 /*
@@ -42,9 +40,7 @@ var toolVersion = '2.1.1';
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 var prefix = 'USERALE_';
-
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 
 /*
@@ -66,16 +62,16 @@ var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 
 if (chrome) {
   browser = chrome;
-}
-
-// creates a Future for retrieval of the named keys
+} // creates a Future for retrieval of the named keys
 // the value specified is the default value if one doesn't exist in the storage
+
+
 browser.storage.local.get({
   userAleHost: userAleHost,
   userAleScript: userAleScript,
   toolUser: toolUser,
   toolName: toolName,
-  toolVersion: toolVersion,
+  toolVersion: toolVersion
 }, storeCallback);
 
 function storeCallback(item) {
@@ -87,21 +83,21 @@ function storeCallback(item) {
 }
 
 function saveOptions(e) {
-  const updatedConfig = {
+  var updatedConfig = {
     userAleHost: document.getElementById("host").value,
     userAleScript: document.getElementById("clientScript").value,
     toolUser: document.getElementById("toolUser").value,
     toolName: document.getElementById("toolName").value,
-    toolVersion: document.getElementById("toolVersion").value,
+    toolVersion: document.getElementById("toolVersion").value
   };
-
   browser.storage.local.set(updatedConfig);
-
-  browser.runtime.sendMessage({ type: CONFIG_CHANGE, payload: updatedConfig });
+  browser.runtime.sendMessage({
+    type: CONFIG_CHANGE,
+    payload: updatedConfig
+  });
 }
 
-document.addEventListener("submit", function() {
+document.addEventListener("submit", function () {
   saveOptions();
 });
-
 /* eslint-enable */
