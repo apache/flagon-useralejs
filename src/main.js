@@ -22,15 +22,15 @@ import {attachHandlers} from './attachHandlers.js';
 import {initPackager, packageCustomLog} from './packageLogs.js';
 import {initSender} from './sendLogs.js';
 
-var config = {};
-var logs = [];
-var startLoadTimestamp = Date.now()
-var endLoadTimestamp
+const config = {};
+const logs = [];
+const startLoadTimestamp = Date.now()
+let endLoadTimestamp
 window.onload = function () {
     endLoadTimestamp = Date.now()
 }
 
-export var started = false;
+export let started = false;
 export {defineCustomDetails as details} from './attachHandlers.js';
 export {
     setLogMapper as map,
@@ -61,7 +61,7 @@ if (config.autostart) {
 function setup(config) {
     if (!started) {
         setTimeout(function () {
-            var state = document.readyState;
+            const state = document.readyState;
 
             if (state === 'interactive' || state === 'complete') {
                 attachHandlers(config);
@@ -81,7 +81,7 @@ function setup(config) {
 
 
 // Export the Userale API
-export var version = userAleVersion;
+export const version = userAleVersion;
 
 /**
  * Used to start the logging process if the

@@ -22,6 +22,22 @@
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.userale = {}));
 }(this, (function (exports) { 'use strict';
 
+  function _typeof(obj) {
+    "@babel/helpers - typeof";
+
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+      _typeof = function _typeof(obj) {
+        return typeof obj;
+      };
+    } else {
+      _typeof = function _typeof(obj) {
+        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+      };
+    }
+
+    return _typeof(obj);
+  }
+
   var version$1 = "2.1.1";
 
   /*
@@ -40,14 +56,13 @@
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
-
-   var sessionId = null;
-
+  var sessionId = null;
   /**
    * Extracts the initial configuration settings from the
    * currently executing script tag.
    * @return {Object} The extracted configuration object
    */
+
   function getInitialSettings() {
     var settings = {};
 
@@ -55,12 +70,14 @@
       sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
     }
 
-    var script = document.currentScript || (function () {
+    var script = document.currentScript || function () {
       var scripts = document.getElementsByTagName('script');
       return scripts[scripts.length - 1];
-    })();
+    }();
 
-    var get = script ? script.getAttribute.bind(script) : function() { return null; };
+    var get = script ? script.getAttribute.bind(script) : function () {
+      return null;
+    };
     settings.autostart = get('data-autostart') === 'false' ? false : true;
     settings.url = get('data-url') || 'http://localhost:8000';
     settings.transmitInterval = +get('data-interval') || 5000;
@@ -77,14 +94,14 @@
     settings.custIndex = get('data-index') || null;
     return settings;
   }
-
   /**
    * defines sessionId, stores it in sessionStorage, checks to see if there is a sessionId in
    * storage when script is started. This prevents events like 'submit', which refresh page data
    * from refreshing the current user session
    *
    */
-  function getSessionId(sessionKey, value){
+
+  function getSessionId(sessionKey, value) {
     if (window.sessionStorage.getItem(sessionKey) === null) {
       window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
       return value;
@@ -92,14 +109,15 @@
 
     return JSON.parse(window.sessionStorage.getItem(sessionKey));
   }
-
-
   /**
    * Creates a function to normalize the timestamp of the provided event.
    * @param  {Object} e An event containing a timeStamp property.
    * @return {timeStampScale~tsScaler}   The timestamp normalizing function.
    */
+
   function timeStampScale(e) {
+    var tsScaler;
+
     if (e.timeStamp && e.timeStamp > 0) {
       var delta = Date.now() - e.timeStamp;
       /**
@@ -107,24 +125,26 @@
        * @param  {?Number} ts A timestamp to use for normalization.
        * @return {Number} A normalized timestamp.
        */
-      var tsScaler;
 
       if (delta < 0) {
-        tsScaler = function () {
+        tsScaler = function tsScaler() {
           return e.timeStamp / 1000;
         };
       } else if (delta > e.timeStamp) {
         var navStart = performance.timing.navigationStart;
-        tsScaler = function (ts) {
+
+        tsScaler = function tsScaler(ts) {
           return ts + navStart;
         };
       } else {
-        tsScaler = function (ts) {
+        tsScaler = function tsScaler(ts) {
           return ts;
         };
       }
     } else {
-      tsScaler = function () { return Date.now(); };
+      tsScaler = function tsScaler() {
+        return Date.now();
+      };
     }
 
     return tsScaler;
@@ -154,22 +174,24 @@
    * @param  {Object} newConfig Configuration object to merge into the current config.
    */
   function configure(config, newConfig) {
-    Object.keys(newConfig).forEach(function(option) {
+    Object.keys(newConfig).forEach(function (option) {
       if (option === 'userFromParams') {
         var userId = getUserIdFromParams(newConfig[option]);
+
         if (userId) {
           config.userId = userId;
         }
       }
+
       config[option] = newConfig[option];
     });
   }
-
   /**
    * Attempts to extract the userid from the query parameters of the URL.
    * @param  {string} param The name of the query parameter containing the userid.
    * @return {string|null}       The extracted/decoded userid, or null if none is found.
    */
+
   function getUserIdFromParams(param) {
     var userField = param;
     var regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
@@ -397,43 +419,39 @@
    * limitations under the License.
    */
   var browser = detect();
-
   var logs$1;
-  var config$1;
+  var config$1; // Interval Logging Globals
 
-  // Interval Logging Globals
   var intervalID;
   var intervalType;
   var intervalPath;
   var intervalTimer;
   var intervalCounter;
   var intervalLog;
-
   var filterHandler = null;
   var mapHandler = null;
-
   /**
    * Assigns a handler to filter logs out of the queue.
    * @param  {Function} callback The handler to invoke when logging.
    */
+
   function setLogFilter(callback) {
     filterHandler = callback;
   }
-
   /**
    * Assigns a handler to transform logs from their default structure.
    * @param  {Function} callback The handler to invoke when logging.
    */
+
   function setLogMapper(callback) {
     mapHandler = callback;
   }
-
-
   /**
    * Assigns the config and log container to be used by the logging functions.
    * @param  {Array} newLogs   Log container.
    * @param  {Object} newConfig Configuration to use while logging.
    */
+
   function initPackager(newLogs, newConfig) {
     logs$1 = newLogs;
     config$1 = newConfig;
@@ -446,50 +464,48 @@
     intervalCounter = 0;
     intervalLog = null;
   }
-
   /**
    * Transforms the provided HTML event into a log and appends it to the log queue.
    * @param  {Object} e         The event to be logged.
    * @param  {Function} detailFcn The function to extract additional log parameters from the event.
    * @return {boolean}           Whether the event was logged.
    */
+
   function packageLog(e, detailFcn) {
     if (!config$1.on) {
       return false;
     }
 
     var details = null;
+
     if (detailFcn) {
       details = detailFcn(e);
     }
 
-    var timeFields = extractTimeFields(
-      (e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now()
-    );
-
+    var timeFields = extractTimeFields(e.timeStamp && e.timeStamp > 0 ? config$1.time(e.timeStamp) : Date.now());
     var log = {
-      'target' : getSelector(e.target),
-      'path' : buildPath(e),
+      'target': getSelector(e.target),
+      'path': buildPath(e),
       'pageUrl': window.location.href,
       'pageTitle': document.title,
       'pageReferrer': document.referrer,
       'browser': detectBrowser(),
-      'clientTime' : timeFields.milli,
-      'microTime' : timeFields.micro,
-      'location' : getLocation(e),
-      'scrnRes' : getSreenRes(),
-      'type' : e.type,
+      'clientTime': timeFields.milli,
+      'microTime': timeFields.micro,
+      'location': getLocation(e),
+      'scrnRes': getSreenRes(),
+      'type': e.type,
       'logType': 'raw',
-      'userAction' : true,
-      'details' : details,
-      'userId' : config$1.userId,
-      'toolVersion' : config$1.version,
-      'toolName' : config$1.toolName,
+      'userAction': true,
+      'details': details,
+      'userId': config$1.userId,
+      'toolVersion': config$1.version,
+      'toolName': config$1.toolName,
       'useraleVersion': config$1.useraleVersion,
-      'sessionID': config$1.sessionID,
+      'sessionID': config$1.sessionID
     };
 
-    if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+    if (typeof filterHandler === 'function' && !filterHandler(log)) {
       return false;
     }
 
@@ -498,10 +514,8 @@
     }
 
     logs$1.push(log);
-
     return true;
   }
-
   /**
    * Packages the provided customLog to include standard meta data and appends it to the log queue.
    * @param  {Object} customLog        The behavior to be logged.
@@ -509,187 +523,199 @@
    * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
    * @return {boolean}           Whether the event was logged.
    */
+
   function packageCustomLog(customLog, detailFcn, userAction) {
-      if (!config$1.on) {
-          return false;
-      }
+    if (!config$1.on) {
+      return false;
+    }
 
-      var details = null;
-      if (detailFcn) {
-          details = detailFcn();
-      }
+    var details = null;
 
-      var metaData = {
-          'pageUrl': window.location.href,
-          'pageTitle': document.title,
-          'pageReferrer': document.referrer,
-          'browser': detectBrowser(),
-          'clientTime' : Date.now(),
-          'scrnRes' : getSreenRes(),
-          'logType': 'custom',
-          'userAction' : userAction,
-          'details' : details,
-          'userId' : config$1.userId,
-          'toolVersion' : config$1.version,
-          'toolName' : config$1.toolName,
-          'useraleVersion': config$1.useraleVersion,
-          'sessionID': config$1.sessionID
-      };
+    if (detailFcn) {
+      details = detailFcn();
+    }
 
-      var log = Object.assign(metaData, customLog);
+    var metaData = {
+      'pageUrl': window.location.href,
+      'pageTitle': document.title,
+      'pageReferrer': document.referrer,
+      'browser': detectBrowser(),
+      'clientTime': Date.now(),
+      'scrnRes': getSreenRes(),
+      'logType': 'custom',
+      'userAction': userAction,
+      'details': details,
+      'userId': config$1.userId,
+      'toolVersion': config$1.version,
+      'toolName': config$1.toolName,
+      'useraleVersion': config$1.useraleVersion,
+      'sessionID': config$1.sessionID
+    };
+    var log = Object.assign(metaData, customLog);
 
-      if ((typeof filterHandler === 'function') && !filterHandler(log)) {
-          return false;
-      }
+    if (typeof filterHandler === 'function' && !filterHandler(log)) {
+      return false;
+    }
 
-      if (typeof mapHandler === 'function') {
-          log = mapHandler(log);
-      }
+    if (typeof mapHandler === 'function') {
+      log = mapHandler(log);
+    }
 
-      logs$1.push(log);
-
-      return true;
+    logs$1.push(log);
+    return true;
   }
-
   /**
    * Extract the millisecond and microsecond portions of a timestamp.
    * @param  {Number} timeStamp The timestamp to split into millisecond and microsecond fields.
    * @return {Object}           An object containing the millisecond
    *                            and microsecond portions of the timestamp.
    */
+
   function extractTimeFields(timeStamp) {
     return {
       milli: Math.floor(timeStamp),
-      micro: Number((timeStamp % 1).toFixed(3)),
+      micro: Number((timeStamp % 1).toFixed(3))
     };
   }
-
   /**
    * Track intervals and gather details about it.
    * @param {Object} e
    * @return boolean
    */
+
   function packageIntervalLog(e) {
-      var target = getSelector(e.target);
-      var path = buildPath(e);
-      var type = e.type;
-      var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config$1.time(e.timeStamp) : Date.now());
+    var target = getSelector(e.target);
+    var path = buildPath(e);
+    var type = e.type;
+    var timestamp = Math.floor(e.timeStamp && e.timeStamp > 0 ? config$1.time(e.timeStamp) : Date.now()); // Init - this should only happen once on initialization
 
-      // Init - this should only happen once on initialization
-      if (intervalID == null) {
-          intervalID = target;
-          intervalType = type;
-          intervalPath = path;
-          intervalTimer = timestamp;
-          intervalCounter = 0;
+    if (intervalID == null) {
+      intervalID = target;
+      intervalType = type;
+      intervalPath = path;
+      intervalTimer = timestamp;
+      intervalCounter = 0;
+    }
+
+    if (intervalID !== target || intervalType !== type) {
+      // When to create log? On transition end
+      // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
+      intervalLog = {
+        'target': intervalID,
+        'path': intervalPath,
+        'pageUrl': window.location.href,
+        'pageTitle': document.title,
+        'pageReferrer': document.referrer,
+        'browser': detectBrowser(),
+        'count': intervalCounter,
+        'duration': timestamp - intervalTimer,
+        // microseconds
+        'startTime': intervalTimer,
+        'endTime': timestamp,
+        'type': intervalType,
+        'logType': 'interval',
+        'targetChange': intervalID !== target,
+        'typeChange': intervalType !== type,
+        'userAction': false,
+        'userId': config$1.userId,
+        'toolVersion': config$1.version,
+        'toolName': config$1.toolName,
+        'useraleVersion': config$1.useraleVersion,
+        'sessionID': config$1.sessionID
+      };
+
+      if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
+        return false;
       }
 
-      if (intervalID !== target || intervalType !== type) {
-          // When to create log? On transition end
-          // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
-
-          intervalLog = {
-              'target': intervalID,
-              'path': intervalPath,
-              'pageUrl': window.location.href,
-              'pageTitle': document.title,
-              'pageReferrer': document.referrer,
-              'browser': detectBrowser(),
-              'count': intervalCounter,
-              'duration': timestamp - intervalTimer,  // microseconds
-              'startTime': intervalTimer,
-              'endTime': timestamp,
-              'type': intervalType,
-              'logType': 'interval',    
-              'targetChange': intervalID !== target,
-              'typeChange': intervalType !== type,
-              'userAction': false,
-              'userId': config$1.userId,
-              'toolVersion': config$1.version,
-              'toolName': config$1.toolName,
-              'useraleVersion': config$1.useraleVersion,
-              'sessionID': config$1.sessionID
-          };
-
-          if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
-            return false;
-          }
-
-          if (typeof mapHandler === 'function') {
-            intervalLog = mapHandler(intervalLog, e);
-          }
-
-          logs$1.push(intervalLog);
-
-          // Reset
-          intervalID = target;
-          intervalType = type;
-          intervalPath = path;
-          intervalTimer = timestamp;
-          intervalCounter = 0;
+      if (typeof mapHandler === 'function') {
+        intervalLog = mapHandler(intervalLog, e);
       }
 
-      // Interval is still occuring, just update counter
-      if (intervalID == target && intervalType == type) {
-          intervalCounter = intervalCounter + 1;
-      }
+      logs$1.push(intervalLog); // Reset
 
-      return true;
+      intervalID = target;
+      intervalType = type;
+      intervalPath = path;
+      intervalTimer = timestamp;
+      intervalCounter = 0;
+    } // Interval is still occuring, just update counter
+
+
+    if (intervalID == target && intervalType == type) {
+      intervalCounter = intervalCounter + 1;
+    }
+
+    return true;
   }
-
   /**
    * Extracts coordinate information from the event
    * depending on a few browser quirks.
    * @param  {Object} e The event to extract coordinate information from.
    * @return {Object}   An object containing nullable x and y coordinates for the event.
    */
+
   function getLocation(e) {
     if (e.pageX != null) {
-      return { 'x' : e.pageX, 'y' : e.pageY };
+      return {
+        'x': e.pageX,
+        'y': e.pageY
+      };
     } else if (e.clientX != null) {
-      return { 'x' : document.documentElement.scrollLeft + e.clientX, 'y' : document.documentElement.scrollTop + e.clientY };
+      return {
+        'x': document.documentElement.scrollLeft + e.clientX,
+        'y': document.documentElement.scrollTop + e.clientY
+      };
     } else {
-      return { 'x' : null, 'y' : null };
+      return {
+        'x': null,
+        'y': null
+      };
     }
   }
-
   /**
    * Extracts innerWidth and innerHeight to provide estimates of screen resolution
    * @return {Object} An object containing the innerWidth and InnerHeight
    */
-  function getSreenRes() {
-      return { 'width': window.innerWidth, 'height': window.innerHeight};
-  }
 
+  function getSreenRes() {
+    return {
+      'width': window.innerWidth,
+      'height': window.innerHeight
+    };
+  }
   /**
    * Builds a string CSS selector from the provided element
    * @param  {HTMLElement} ele The element from which the selector is built.
    * @return {string}     The CSS selector for the element, or Unknown if it can't be determined.
    */
+
   function getSelector(ele) {
     if (ele.localName) {
-      return ele.localName + (ele.id ? ('#' + ele.id) : '') + (ele.className ? ('.' + ele.className) : '');
+      return ele.localName + (ele.id ? '#' + ele.id : '') + (ele.className ? '.' + ele.className : '');
     } else if (ele.nodeName) {
-      return ele.nodeName + (ele.id ? ('#' + ele.id) : '') + (ele.className ? ('.' + ele.className) : '');
+      return ele.nodeName + (ele.id ? '#' + ele.id : '') + (ele.className ? '.' + ele.className : '');
     } else if (ele && ele.document && ele.location && ele.alert && ele.setInterval) {
       return "Window";
     } else {
       return "Unknown";
     }
   }
-
   /**
    * Builds an array of elements from the provided event target, to the root element.
    * @param  {Object} e Event from which the path should be built.
    * @return {HTMLElement[]}   Array of elements, starting at the event target, ending at the root element.
    */
+
   function buildPath(e) {
     var path = [];
+
     if (e.path) {
       path = e.path;
     } else {
       var ele = e.target;
-      while(ele) {
+
+      while (ele) {
         path.push(ele);
         ele = ele.parentElement;
       }
@@ -697,28 +723,29 @@
 
     return selectorizePath(path);
   }
-
   /**
    * Builds a CSS selector path from the provided list of elements.
    * @param  {HTMLElement[]} path Array of HTMLElements from which the path should be built.
    * @return {string[]}      Array of string CSS selectors.
    */
+
   function selectorizePath(path) {
     var i = 0;
     var pathEle;
     var pathSelectors = [];
+
     while (pathEle = path[i]) {
       pathSelectors.push(getSelector(pathEle));
       ++i;
     }
+
     return pathSelectors;
   }
-
   function detectBrowser() {
-      return {
-          'browser': browser ? browser.name : '',
-          'version': browser ? browser.version : ''
-      };
+    return {
+      'browser': browser ? browser.name : '',
+      'version': browser ? browser.version : ''
+    };
   }
 
   /*
@@ -737,14 +764,13 @@
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
-
   var sendIntervalId = null;
-
   /**
    * Initializes the log queue processors.
    * @param  {Array} logs   Array of logs to append to.
    * @param  {Object} config Configuration object to use when logging.
    */
+
   function initSender(logs, config) {
     if (sendIntervalId !== null) {
       clearInterval(sendIntervalId);
@@ -753,7 +779,6 @@
     sendIntervalId = sendOnInterval(logs, config);
     sendOnClose(logs, config);
   }
-
   /**
    * Checks the provided log array on an interval, flushing the logs
    * if the queue has reached the threshold specified by the provided config.
@@ -761,19 +786,20 @@
    * @param  {Object} config Configuration object to be read from.
    * @return {Number}        The newly created interval id.
    */
+
   function sendOnInterval(logs, config) {
-    return setInterval(function() {
+    return setInterval(function () {
       if (!config.on) {
         return;
       }
 
       if (logs.length >= config.logCountThreshold) {
         sendLogs(logs.slice(0), config, 0); // Send a copy
+
         logs.splice(0); // Clear array reference (no reassignment)
       }
     }, config.transmitInterval);
   }
-
   /**
    * Provides a simplified send function that can be called before events that would
    * refresh page can resolve so that log queue ('logs) can be shipped immediately. This
@@ -783,38 +809,39 @@
    * @param  {Array} logs   Array of logs to read from.
    * @param  {Object} config Configuration object to be read from.
    */
+
   function sendOnRefresh(logs, config) {
     if (!config.on) {
       return;
     }
+
     if (logs.length > 0) {
       sendLogs(logs, config, 1);
     }
   }
-
   /**
    * Attempts to flush the remaining logs when the window is closed.
    * @param  {Array} logs   Array of logs to be flushed.
    * @param  {Object} config Configuration object to be read from.
    */
+
   function sendOnClose(logs, config) {
     if (!config.on) {
       return;
     }
 
     if (navigator.sendBeacon) {
-      window.addEventListener('unload', function() {
+      window.addEventListener('unload', function () {
         navigator.sendBeacon(config.url, JSON.stringify(logs));
       });
     } else {
-      window.addEventListener('beforeunload', function() {
+      window.addEventListener('beforeunload', function () {
         if (logs.length > 0) {
           sendLogs(logs, config, 1);
         }
       });
     }
   }
-
   /**
    * Sends the provided array of logs to the specified url,
    * retrying the request up to the specified number of retries.
@@ -822,22 +849,21 @@
    * @param  {string} config     configuration parameters (e.g., to extract URL from & send the POST request to).
    * @param  {Number} retries Maximum number of attempts to send the logs.
    */
-
   // @todo expose config object to sendLogs replate url with config.url
+
   function sendLogs(logs, config, retries) {
-    var req = new XMLHttpRequest();
+    var req = new XMLHttpRequest(); // @todo setRequestHeader for Auth
 
-    // @todo setRequestHeader for Auth
     var data = JSON.stringify(logs);
-
     req.open('POST', config.url);
+
     if (config.authHeader) {
       req.setRequestHeader('Authorization', config.authHeader);
     }
 
     req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
 
-    req.onreadystatechange = function() {
+    req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status !== 200) {
         if (retries > 0) {
           sendLogs(logs, config, retries--);
@@ -864,264 +890,304 @@
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
-
-  // @todo var>let
   var events;
   var bufferBools;
-  var bufferedEvents;
-  //@todo: Investigate drag events and their behavior
+  var bufferedEvents; //@todo: Investigate drag events and their behavior
+
   var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
   var refreshEvents;
   var windowEvents = ['load', 'blur', 'focus'];
-
   /**
    * Maps an event to an object containing useful information.
    * @param  {Object} e Event to extract data from
    */
+
   function extractMouseEvent(e) {
     return {
-      'clicks' : e.detail,
-      'ctrl' : e.ctrlKey,
-      'alt' : e.altKey,
-      'shift' : e.shiftKey,
-      'meta' : e.metaKey,
-  //    'text' : e.target.innerHTML
+      'clicks': e.detail,
+      'ctrl': e.ctrlKey,
+      'alt': e.altKey,
+      'shift': e.shiftKey,
+      'meta': e.metaKey //    'text' : e.target.innerHTML
+
     };
   }
-
   /**
    * Defines the way information is extracted from various events.
    * Also defines which events we will listen to.
    * @param  {Object} config Configuration object to read from.
    */
+
   function defineDetails(config) {
     // Events list
     // Keys are event types
     // Values are functions that return details object if applicable
     events = {
-      'click' : extractMouseEvent,
-      'dblclick' : extractMouseEvent,
-      'mousedown' : extractMouseEvent,
-      'mouseup' : extractMouseEvent,
-      'focus' : null,
-      'blur' : null,
-      'input' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-      'change' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-      'dragstart' : null,
-      'dragend' : null,
-      'drag' : null,
-      'drop' : null,
-      'keydown' : config.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
-      'mouseover' : null
+      'click': extractMouseEvent,
+      'dblclick': extractMouseEvent,
+      'mousedown': extractMouseEvent,
+      'mouseup': extractMouseEvent,
+      'focus': null,
+      'blur': null,
+      'input': config.logDetails ? function (e) {
+        return {
+          'value': e.target.value
+        };
+      } : null,
+      'change': config.logDetails ? function (e) {
+        return {
+          'value': e.target.value
+        };
+      } : null,
+      'dragstart': null,
+      'dragend': null,
+      'drag': null,
+      'drop': null,
+      'keydown': config.logDetails ? function (e) {
+        return {
+          'key': e.keyCode,
+          'ctrl': e.ctrlKey,
+          'alt': e.altKey,
+          'shift': e.shiftKey,
+          'meta': e.metaKey
+        };
+      } : null,
+      'mouseover': null
     };
-
     bufferBools = {};
     bufferedEvents = {
-      'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
-      'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
-      'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
+      'wheel': function wheel(e) {
+        return {
+          'x': e.deltaX,
+          'y': e.deltaY,
+          'z': e.deltaZ
+        };
+      },
+      'scroll': function scroll() {
+        return {
+          'x': window.scrollX,
+          'y': window.scrollY
+        };
+      },
+      'resize': function resize() {
+        return {
+          'width': window.outerWidth,
+          'height': window.outerHeight
+        };
+      }
     };
-
     refreshEvents = {
-      'submit' : null
+      'submit': null
     };
   }
-
   /**
    * Defines the way information is extracted from various events.
    * Also defines which events we will listen to.
    * @param  {Object} options UserALE.js Configuration object to read from.
    * @param   {string}    type of html event (e.g., 'click', 'mouseover', etc.), such as passed to addEventListener methods.
    */
+
   function defineCustomDetails(options, type) {
     // Events list
     // Keys are event types
     // Values are functions that return details object if applicable
     var eventType = {
-      'click' : extractMouseEvent,
-      'dblclick' : extractMouseEvent,
-      'mousedown' : extractMouseEvent,
-      'mouseup' : extractMouseEvent,
-      'focus' : null,
-      'blur' : null,
-      'input' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-      'change' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-      'dragstart' : null,
-      'dragend' : null,
-      'drag' : null,
-      'drop' : null,
-      'keydown' : options.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
-      'mouseover' : null,
-      'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
-      'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
-      'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; },
-      'submit' : null
+      'click': extractMouseEvent,
+      'dblclick': extractMouseEvent,
+      'mousedown': extractMouseEvent,
+      'mouseup': extractMouseEvent,
+      'focus': null,
+      'blur': null,
+      'input': options.logDetails ? function (e) {
+        return {
+          'value': e.target.value
+        };
+      } : null,
+      'change': options.logDetails ? function (e) {
+        return {
+          'value': e.target.value
+        };
+      } : null,
+      'dragstart': null,
+      'dragend': null,
+      'drag': null,
+      'drop': null,
+      'keydown': options.logDetails ? function (e) {
+        return {
+          'key': e.keyCode,
+          'ctrl': e.ctrlKey,
+          'alt': e.altKey,
+          'shift': e.shiftKey,
+          'meta': e.metaKey
+        };
+      } : null,
+      'mouseover': null,
+      'wheel': function wheel(e) {
+        return {
+          'x': e.deltaX,
+          'y': e.deltaY,
+          'z': e.deltaZ
+        };
+      },
+      'scroll': function scroll() {
+        return {
+          'x': window.scrollX,
+          'y': window.scrollY
+        };
+      },
+      'resize': function resize() {
+        return {
+          'width': window.outerWidth,
+          'height': window.outerHeight
+        };
+      },
+      'submit': null
     };
     return eventType[type];
   }
-
   /**
    * Hooks the event handlers for each event type of interest.
    * @param  {Object} config Configuration object to use.
    * @return {boolean}        Whether the operation succeeded
    */
+
   function attachHandlers(config) {
     defineDetails(config);
-
-    Object.keys(events).forEach(function(ev) {
-      document.addEventListener(ev, function(e) {
+    Object.keys(events).forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
         packageLog(e, events[ev]);
       }, true);
     });
-
-    intervalEvents.forEach(function(ev) {
-      document.addEventListener(ev, function(e) {
-          packageIntervalLog(e);
+    intervalEvents.forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
+        packageIntervalLog(e);
       }, true);
     });
-
-    Object.keys(bufferedEvents).forEach(function(ev) {
+    Object.keys(bufferedEvents).forEach(function (ev) {
       bufferBools[ev] = true;
-
-      window.addEventListener(ev, function(e) {
+      window.addEventListener(ev, function (e) {
         if (bufferBools[ev]) {
           bufferBools[ev] = false;
           packageLog(e, bufferedEvents[ev]);
-          setTimeout(function() { bufferBools[ev] = true; }, config.resolution);
+          setTimeout(function () {
+            bufferBools[ev] = true;
+          }, config.resolution);
         }
       }, true);
     });
-
-    Object.keys(refreshEvents).forEach(function(ev) {
-      document.addEventListener(ev, function(e) {
+    Object.keys(refreshEvents).forEach(function (ev) {
+      document.addEventListener(ev, function (e) {
         packageLog(e, events[ev]);
-        sendOnRefresh(logs$1,config);
+        sendOnRefresh(logs$1, config);
       }, true);
     });
-
-    windowEvents.forEach(function(ev) {
-      window.addEventListener(ev, function(e) {
-        packageLog(e, function() { return { 'window' : true }; });
+    windowEvents.forEach(function (ev) {
+      window.addEventListener(ev, function (e) {
+        packageLog(e, function () {
+          return {
+            'window': true
+          };
+        });
       }, true);
     });
-
     return true;
   }
-
-  /*
-   * Licensed to the Apache Software Foundation (ASF) under one or more
-   * contributor license agreements.  See the NOTICE file distributed with
-   * this work for additional information regarding copyright ownership.
-   * The ASF licenses this file to You under the Apache License, Version 2.0
-   * (the "License"); you may not use this file except in compliance with
-   * the License.  You may obtain a copy of the License at
-   * 
-   *   http://www.apache.org/licenses/LICENSE-2.0
-   * 
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
 
   var config = {};
   var logs = [];
   var startLoadTimestamp = Date.now();
   var endLoadTimestamp;
+
   window.onload = function () {
-      endLoadTimestamp = Date.now();
+    endLoadTimestamp = Date.now();
   };
 
   exports.started = false;
 
-
-  // Start up Userale
   config.on = false;
   config.useraleVersion = version$1;
-
   configure(config, getInitialSettings());
   initPackager(logs, config);
 
   if (config.autostart) {
-      setup(config);
+    setup(config);
   }
-
   /**
    * Hooks the global event listener, and starts up the
    * logging interval.
    * @param  {Object} config Configuration settings for the logger
    */
+
+
   function setup(config) {
-      if (!exports.started) {
-          setTimeout(function () {
-              var state = document.readyState;
+    if (!exports.started) {
+      setTimeout(function () {
+        var state = document.readyState;
 
-              if (state === 'interactive' || state === 'complete') {
-                  attachHandlers(config);
-                  initSender(logs, config);
-                  exports.started = config.on = true;
-                  packageCustomLog({
-                      type: 'load',
-                      logType: 'raw',
-                      pageLoadTime: endLoadTimestamp - startLoadTimestamp
-                      }, () => {},false);
-              } else {
-                  setup(config);
-              }
-          }, 100);
-      }
-  }
+        if (state === 'interactive' || state === 'complete') {
+          attachHandlers(config);
+          initSender(logs, config);
+          exports.started = config.on = true;
+          packageCustomLog({
+            type: 'load',
+            logType: 'raw',
+            pageLoadTime: endLoadTimestamp - startLoadTimestamp
+          }, function () {}, false);
+        } else {
+          setup(config);
+        }
+      }, 100);
+    }
+  } // Export the Userale API
 
 
-  // Export the Userale API
   var version = version$1;
-
   /**
    * Used to start the logging process if the
    * autostart configuration option is set to false.
    */
+
   function start() {
-      if (!exports.started) {
-          setup(config);
-      }
+    if (!exports.started) {
+      setup(config);
+    }
 
-      config.on = true;
+    config.on = true;
   }
-
   /**
    * Halts the logging process. Logs will no longer be sent.
    */
-  function stop() {
-      config.on = false;
-  }
 
+  function stop() {
+    config.on = false;
+  }
   /**
    * Updates the current configuration
    * object with the provided values.
    * @param  {Object} newConfig The configuration options to use.
    * @return {Object}           Returns the updated configuration.
    */
+
   function options(newConfig) {
-      if (newConfig !== undefined) {
-          configure(config, newConfig);
-      }
+    if (newConfig !== undefined) {
+      configure(config, newConfig);
+    }
 
-      return config;
+    return config;
   }
-
   /**
    * Appends a log to the log queue.
    * @param  {Object} customLog The log to append.
    * @return {boolean}          Whether the operation succeeded.
    */
+
   function log(customLog) {
-      if (customLog !== null && typeof customLog === 'object') {
-          logs.push(customLog);
-          return true;
-      } else {
-          return false;
-      }
+    if (customLog !== null && _typeof(customLog) === 'object') {
+      logs.push(customLog);
+      return true;
+    } else {
+      return false;
+    }
   }
 
   exports.buildPath = buildPath;

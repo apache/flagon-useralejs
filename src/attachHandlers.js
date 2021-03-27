@@ -20,14 +20,13 @@ import { packageLog } from './packageLogs.js';
 import { packageIntervalLog} from './packageLogs';
 import { sendOnRefresh } from "./sendLogs";
 
-// @todo var>let
-var events;
-var bufferBools;
-var bufferedEvents;
+let events;
+let bufferBools;
+let bufferedEvents;
 //@todo: Investigate drag events and their behavior
-var intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
-var refreshEvents;
-var windowEvents = ['load', 'blur', 'focus'];
+const intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+let refreshEvents;
+const windowEvents = ['load', 'blur', 'focus'];
 
 /**
  * Maps an event to an object containing useful information.
@@ -92,7 +91,7 @@ export function defineCustomDetails(options, type) {
   // Events list
   // Keys are event types
   // Values are functions that return details object if applicable
-  var eventType = {
+  const eventType = {
     'click' : extractMouseEvent,
     'dblclick' : extractMouseEvent,
     'mousedown' : extractMouseEvent,

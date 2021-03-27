@@ -16,21 +16,21 @@
  */
 
 import { detect } from 'detect-browser';
-var browser = detect();
+const browser = detect();
 
-export var logs;
-var config;
+export let logs;
+let config;
 
 // Interval Logging Globals
-var intervalID;
-var intervalType;
-var intervalPath;
-var intervalTimer;
-var intervalCounter;
-var intervalLog;
+let intervalID;
+let intervalType;
+let intervalPath;
+let intervalTimer;
+let intervalCounter;
+let intervalLog;
 
-export var filterHandler = null;
-export var mapHandler = null;
+export let filterHandler = null;
+export let mapHandler = null;
 
 /**
  * Assigns a handler to filter logs out of the queue.
@@ -78,16 +78,16 @@ export function packageLog(e, detailFcn) {
     return false;
   }
 
-  var details = null;
+  let details = null;
   if (detailFcn) {
     details = detailFcn(e);
   }
 
-  var timeFields = extractTimeFields(
+  const timeFields = extractTimeFields(
     (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
   );
 
-  var log = {
+  let log = {
     'target' : getSelector(e.target),
     'path' : buildPath(e),
     'pageUrl': window.location.href,
@@ -134,12 +134,12 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         return false;
     }
 
-    var details = null;
+    let details = null;
     if (detailFcn) {
         details = detailFcn();
     }
 
-    var metaData = {
+    const metaData = {
         'pageUrl': window.location.href,
         'pageTitle': document.title,
         'pageReferrer': document.referrer,
@@ -156,7 +156,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'sessionID': config.sessionID
     };
 
-    var log = Object.assign(metaData, customLog);
+    let log = Object.assign(metaData, customLog);
 
     if ((typeof filterHandler === 'function') && !filterHandler(log)) {
         return false;
@@ -190,10 +190,10 @@ export function extractTimeFields(timeStamp) {
  * @return boolean
  */
 export function packageIntervalLog(e) {
-    var target = getSelector(e.target);
-    var path = buildPath(e);
-    var type = e.type;
-    var timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now());
+    const target = getSelector(e.target);
+    const path = buildPath(e);
+    const type = e.type;
+    const timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now());
 
     // Init - this should only happen once on initialization
     if (intervalID == null) {
@@ -304,11 +304,11 @@ export function getSelector(ele) {
  * @return {HTMLElement[]}   Array of elements, starting at the event target, ending at the root element.
  */
 export function buildPath(e) {
-  var path = [];
+  let path = [];
   if (e.path) {
     path = e.path;
   } else {
-    var ele = e.target
+    let ele = e.target
     while(ele) {
       path.push(ele);
       ele = ele.parentElement;
@@ -324,9 +324,9 @@ export function buildPath(e) {
  * @return {string[]}      Array of string CSS selectors.
  */
 export function selectorizePath(path) {
-  var i = 0;
-  var pathEle;
-  var pathSelectors = [];
+  let i = 0;
+  let pathEle;
+  const pathSelectors = [];
   while (pathEle = path[i]) {
     pathSelectors.push(getSelector(pathEle));
     ++i;
