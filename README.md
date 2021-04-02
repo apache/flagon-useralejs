@@ -66,7 +66,7 @@ You can also include UserALE.js as a `script-tag`. A pre-built version of the us
 repositories:
 
 ```html
-<script src="./node_modules/flagon-userale/build/userale-2.1.0.min.js"></script>
+<script src="./node_modules/flagon-userale/build/userale-2.1.1.min.js"></script>
 ```
 Our [script tag example](https://github.com/apache/incubator-flagon-useralejs/tree/master/example) illustrates this use-case
 
@@ -123,10 +123,10 @@ If you have included UserALE.js as a `script-tag` in your project, you can use H
 
 ```html
   <script
-          src="./node_modules/flagon-userale/build/userale-2.1.0.min.js"
+          src="./node_modules/flagon-userale/build/userale-2.1.1.min.js"
           data-url="http://localhost:8000/"
           data-user="example-user"
-          data-version="2.1.0"
+          data-version="2.1.1"
           data-tool="Apache UserALE.js Example"
   ></script>
 ```
