@@ -53,8 +53,10 @@ app.use(function (req, res, next) {
 });
 app.use(bodyParser.urlencoded({extended: true, limit: '100mb'}));
 app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser.text())
 app.use('/build', express.static(path.join(__dirname, '/../build')));
 app.set('view engine', 'jade');
+app.use('/', express.static(__dirname))
 
 
 app.get('/', function (req, res) {
@@ -62,8 +64,7 @@ app.get('/', function (req, res) {
 });
 
 app.post('/', function (req, res) {
-  console.log(req.body);
-
+  const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body
   var delimiter = ',\n\t';
 
   if (firstLog) {
@@ -74,7 +75,7 @@ app.post('/', function (req, res) {
   }
   
   var logLength = req.body.length - 1;
-  req.body.forEach(function (log, i) {
+  body.forEach(function (log, i) {
     if (i === logLength) {
       delimiter = '';
     }

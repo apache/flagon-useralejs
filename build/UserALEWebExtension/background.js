@@ -389,25 +389,10 @@ function sendOnInterval(logs, config) {
  */
 
 function sendOnClose(logs, config) {
-  /** if (!config.on) {
-      return;
-   } */
   window.addEventListener('pagehide', function () {
     navigator.sendBeacon(config.url, JSON.stringify(logs));
     logs.splice(0); // Clear array reference (no reassignment)
   });
-  /**
-      if (navigator.sendBeacon) {
-      window.addEventListener('unload', function() {
-        ;
-    } else {
-      window.addEventListener('beforeunload', function() {
-        if (logs.length > 0) {
-          sendLogs(logs, config, 1);
-        }
-      })
-    }
-  */
 }
 /**
  * Sends the provided array of logs to the specified url,
