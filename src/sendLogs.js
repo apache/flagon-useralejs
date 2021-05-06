@@ -57,9 +57,9 @@ export function sendOnInterval(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 export function sendOnClose(logs, config) {
-window.addEventListener('pagehide', function () {
-      navigator.sendBeacon(config.url, JSON.stringify(logs));
-      logs.splice(0); // Clear array reference (no reassignment)
+  window.addEventListener('pagehide', function () {
+    navigator.sendBeacon(config.url, JSON.stringify(logs));
+    logs.splice(0); // Clear array reference (no reassignment)
   });
 }
 

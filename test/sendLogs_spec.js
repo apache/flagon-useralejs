@@ -18,6 +18,7 @@ import {expect} from 'chai';
 import {JSDOM} from 'jsdom';
 import sinon from 'sinon';
 import {sendOnInterval, sendOnClose} from '../src/sendLogs';
+import 'global-jsdom/register'
 
 describe('sendLogs', () => {
     it('sends logs on an interval', (done) => {
@@ -90,57 +91,14 @@ describe('sendLogs', () => {
     });
 
     it('sends logs on page exit with navigator', () => {
-        const html = `<html><head></head><body></body></html>`;
-        const dom = new JSDOM(html)
-        const originalNavigator = global.navigator;
-        const originalWindow = global.window;
-        let called = false;
-        global.window = dom.window;
+        const sendBeaconSpy = sinon.spy()
         global.navigator = {
-            sendBeacon: () => {
-                called = true;
-            },
+            sendBeacon: sendBeaconSpy
         };
 
-        const evt = window.document.createEvent('CustomEvent');
-        evt.initEvent('unload', true, true);
         sendOnClose([{foo: 'bar'}], {on: true, url: 'test'});
-
-        window.dispatchEvent(evt);
-        window.close();
-
-        expect(called).to.equal(true);
-        global.window = originalWindow;
-        global.navigator = originalNavigator;
-    });
-    it('sends logs on page exit without navigator', () => {
-        const html = `<html><head></head><body></body></html>`;
-        const dom = new JSDOM(html)
-        const window = dom.window
-        const originalNavigator = global.navigator;
-        const originalXMLHttpRequest = global.XMLHttpRequest;
-        const originalWindow = global.window;
-        let requests = 0;
-        const xhr = sinon.useFakeXMLHttpRequest();
-        global.XMLHttpRequest = xhr;
-        global.window = window;
-        global.XMLHttpRequest = xhr;
-        global.navigator = {sendBeacon: false,};
-        xhr.onCreate = () => {
-            requests++;
-        };
-
-        const evt = window.document.createEvent('CustomEvent');
-        evt.initEvent('beforeunload', true, true);
-        sendOnClose([{foo: 'bar'}], {on: true, url: 'test'});
-
-        window.dispatchEvent(evt);
-        window.close();
-
-        expect(requests).to.equal(1);
-        global.window = originalWindow;
-        global.navigator = originalNavigator;
-        global.XMLHttpRequest = originalXMLHttpRequest;
+        global.window.dispatchEvent(new Event('pagehide'))
+        sinon.assert.calledOnce(sendBeaconSpy)
     });
 
     it('does not send logs on page exit if config is off', () => {
