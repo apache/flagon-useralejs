@@ -97,7 +97,7 @@ describe('sendLogs', () => {
         };
 
         sendOnClose([{foo: 'bar'}], {on: true, url: 'test'});
-        global.window.dispatchEvent(new Event('pagehide'))
+        global.window.dispatchEvent(new CustomEvent('pagehide'))
         sinon.assert.calledOnce(sendBeaconSpy)
     });
 
