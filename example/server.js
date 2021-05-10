@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-var express = require('express');
-var bodyParser = require('body-parser');
-var fs = require('fs');
-var path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
 
-var logDirectory = path.resolve(__dirname, '../logs');
-var logPath = path.resolve(logDirectory, 'logs_' + (new Date()).getTime() + '.json');
+const logDirectory = path.resolve(__dirname, '../logs');
+const logPath = path.resolve(logDirectory, 'logs_' + (new Date()).getTime() + '.json');
 
 try {
   fs.lstatSync(logDirectory);
@@ -29,13 +29,13 @@ try {
   fs.mkdirSync(logDirectory); // Create directory if it doesn't exist
 }
 
-var wStream = fs.createWriteStream(logPath);
+const wStream = fs.createWriteStream(logPath);
 wStream.on('open', function () {
   wStream.write('[');
 });
 
-var firstLog = true;
-var app = express();
+let firstLog = true;
+const app = express();
 
 app.set('port', process.env.PORT || 8000);
 app.use(function (req, res, next) {
@@ -54,6 +54,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({extended: true, limit: '100mb'}));
 app.use(bodyParser.json({limit: '100mb'}));
 app.use('/build', express.static(path.join(__dirname, '/../build')));
+app.use('/', express.static(__dirname));
 app.set('view engine', 'jade');
 
 
@@ -64,7 +65,7 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
   console.log(req.body);
 
-  var delimiter = ',\n\t';
+  let delimiter = ',\n\t';
 
   if (firstLog) {
     wStream.write('\n\t');
@@ -73,7 +74,7 @@ app.post('/', function (req, res) {
     wStream.write(delimiter);
   }
   
-  var logLength = req.body.length - 1;
+  const logLength = req.body.length - 1;
   req.body.forEach(function (log, i) {
     if (i === logLength) {
       delimiter = '';
