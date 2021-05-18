@@ -31,15 +31,15 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 [Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
 [License](https://github.com/apache/incubator-flagon-useralejs#license)
 
-## What's New in Version 2.1.1?
+## What's New in Version 2.2.0?
 
-- Fixes bug in SessionID creation at initial PageLoad
-- Update to Node.js/NPM Engine support (tested 12.x, 13.x, 14.x, 15.x)
-- Minor updates to resolve extant vulnerabilities in dependency tree
+- Fixes issue in SendOnClose that caused end-of-page-lifecyle events not to be logged
+- Modernizes build pipeline (now uses rollup instead of gulp)
+- Adds Cypress Journey testing framework
+- Modernizes Unit Testing Framework
+- Adds 'PageLoad' logs, with load time metrics
 - Minor updates to update deprecated downstream dev dependencies
-- Minor updates to build pipelines to accommodate dependency updates
-- Minor changes to documentation
-- Minor QOL upgrades to UserALE.js repository (CI, Dependabot)
+- Minor changes to documentation, updated examples
 
 See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
 
@@ -66,7 +66,7 @@ You can also include UserALE.js as a `script-tag`. A pre-built version of the us
 repositories:
 
 ```html
-<script src="./node_modules/flagon-userale/build/userale-2.1.1.min.js"></script>
+<script src="./node_modules/flagon-userale/build/userale-2.2.0.min.js"></script>
 ```
 Our [script tag example](https://github.com/apache/incubator-flagon-useralejs/tree/master/example) illustrates this use-case
 
@@ -123,10 +123,10 @@ If you have included UserALE.js as a `script-tag` in your project, you can use H
 
 ```html
   <script
-          src="./node_modules/flagon-userale/build/userale-2.1.1.min.js"
+          src="./node_modules/flagon-userale/build/userale-2.2.0.min.js"
           data-url="http://localhost:8000/"
           data-user="example-user"
-          data-version="2.1.1"
+          data-version="2.2.0"
           data-tool="Apache UserALE.js Example"
   ></script>
 ```
@@ -208,6 +208,8 @@ userale.map(function (log) {
         } 
       });
 ```
+
+(Additional examples illustrate [precision custom labeling](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/log-label-example), using a variety of functions.)
 
 Generate custom logs with `userale.log`:
 
