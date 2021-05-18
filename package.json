@@ -1,8 +1,8 @@
 {
   "name": "flagon-userale",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
-  "main": "build/userale-2.1.1.js",
+  "main": "build/userale-2.2.0.js",
   "scripts": {
     "lint": "eslint ./src --fix",
     "pretest": "npm run lint && npm run clean && npm run build",
@@ -34,7 +34,8 @@
     "Robert Foley",
     "Michelle Beard",
     "Alex Ford",
-    "Joshua C. Poore"
+    "Joshua C. Poore",
+    "Gedd Johnson"
   ],
   "license": "Apache-2.0",
   "bugs": {

@@ -44,7 +44,7 @@ var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
-var version = "2.1.1";
+var version = "2.2.0";
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

@@ -26,7 +26,8 @@
     "Clay Gimenez",
     "Robert Foley",
     "Michelle Beard",
-    "Alex Ford"
+    "Alex Ford",
+    "Gedd Johnson"
   ],
   "license": "Apache-2.0",
   "bugs": {
@@ -38,7 +39,7 @@
     "npm": "6.4.1 || 6.7.0 - 6.12.1 || >=6.13.4"
   },
   "dependencies": {
-    "flagon-userale": "^2.1.1"
+    "flagon-userale": "^2.2.0"
   },
   "devDependencies": {
     "webpack": "^5.23.0",

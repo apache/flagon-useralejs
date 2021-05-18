@@ -30,9 +30,11 @@ const changeMe = "me";
 userale.options({
     'userId': changeMe,
     'url': 'http://localhost:8000/',
-    'version': '2.1.1',
+    'version': '2.2.0',
     'logDetails': true,
-    'toolName': 'Apache UserALE.js Example (Custom)'
+    'toolName': 'Apache UserALE.js Example (Custom)',
+    'logCountThreshold': '1',
+    'transmitInterval': '1000'
 });
 
 /**Filter API
