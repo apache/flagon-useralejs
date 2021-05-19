@@ -19,9 +19,9 @@
 
 // these are default values, which can be overridden by the user on the options page
 export var userAleHost = 'http://localhost:8000';
-export var userAleScript = 'userale-2.1.1.min.js';
+export var userAleScript = 'userale-2.2.0.min.js';
 export var toolUser = 'nobody';
 export var toolName = 'test_app';
-export var toolVersion = '2.1.1';
+export var toolVersion = '2.2.0';
 
 /* eslint-enable */
