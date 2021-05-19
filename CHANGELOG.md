@@ -1,5 +1,18 @@
 Changelog
 =========
+
+Apache Flagon UserALE.js (Incubating) 2.2.0 (2021-05-20)
+-------------------------------
+* Release Notes - Flagon - Version UserALE.js 2.2.0
+* [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/7)
+    * Fixes issue in SendOnClose that caused end-of-page-lifecyle events not to be logged
+    * Modernizes build pipeline (now uses rollup instead of gulp)
+    * Adds Cypress Journey testing framework
+    * Modernizes Unit Testing Framework
+    * Adds 'PageLoad' logs, with load time metrics
+    * Minor updates to update deprecated downstream dev dependencies
+    * Minor changes to documentation, updated examples
+
 Apache Flagon UserALE.js (Incubating) 2.1.1 (2021-02-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.1.1
