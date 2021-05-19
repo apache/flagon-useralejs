@@ -25,10 +25,10 @@ The `src` parameter should reference the file path to your version of the minifi
 
 ```
   <script
-    src="../build/userale-2.1.0.min.js" #works out of the box if downloaded flagon-userale via npm
+    src="../build/userale-2.2.0.min.js" #works out of the box if downloaded flagon-userale via npm
     data-url="http://localhost:8000/"
     data-user="example-user"
-    data-version="2.1.0"
+    data-version="2.2.0"
     data-tool="Apache UserALE.js Example"
   ></script>
 ```
@@ -82,7 +82,7 @@ $npm run example:watch
 Once started you will see:
 
 ```
-> flagon-userale@2.1.0 example:watch ...
+> flagon-userale@2.2.0 example:watch ...
 > nodemon -w ./example example/server.js
 
 [nodemon] 1.19.1
@@ -104,9 +104,9 @@ Then start using your instrumented application, browser, or the UserALE.js Examp
     userAction: true,
     details: null,
     userId: 'example-user',
-    toolVersion: '2.1.0',
+    toolVersion: '2.2.0',
     toolName: 'Apache UserALE.js Example',
-    useraleVersion: '2.1.0' },
+    useraleVersion: '2.2.0' },
  ...
 ]
 ```
