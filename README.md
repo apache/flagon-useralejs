@@ -76,6 +76,12 @@ If you include UserALE.js as a `script-tag`, consider installing via npm as a de
 npm install --save-dev flagon-userale
 ```
 
+Or if you want to use a CDN, then you can use something like
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/flagon-userale@2.1.1/build/userale-2.2.0.min.js"></script>
+```
+
 We also support a [WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension) that can be added to your browser in developer mode. Follow the link for instructions.
 
 ## Configure
