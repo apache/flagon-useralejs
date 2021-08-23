@@ -58,7 +58,7 @@
     "@rollup/plugin-node-resolve": "^13.0.0",
     "body-parser": "^1.19.0",
     "chai": "^4.3.0",
-    "cypress": "^7.2.0",
+    "cypress": "^8.3.0",
     "detect-browser": "^5.2.0",
     "dom-storage": "^2.1.0",
     "eslint": "^7.26.0",
