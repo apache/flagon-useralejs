@@ -64,14 +64,14 @@
     "eslint": "^7.26.0",
     "express": "^4.17.1",
     "global-jsdom": "^8.1.0",
-    "jsdom": "^16.4.0",
+    "jsdom": "^17.0.0",
     "mocha": "^8.4.0",
     "nodemon": "^2.0.7",
     "rollup": "^2.42.3",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-license": "^2.2.0",
     "rollup-plugin-terser": "^7.0.2",
-    "sinon": "^9.2.4",
+    "sinon": "^11.1.2",
     "start-server-and-test": "^1.12.0"
   }
 }
