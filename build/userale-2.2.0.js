@@ -20,7 +20,7 @@
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.userale = {}));
-}(this, (function (exports) { 'use strict';
+})(this, (function (exports) { 'use strict';
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
@@ -204,12 +204,14 @@
     }
   }
 
-  var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
-      for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-      for (var r = Array(s), k = 0, i = 0; i < il; i++)
-          for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-              r[k] = a[j];
-      return r;
+  var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from, pack) {
+      if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+          if (ar || !(i in from)) {
+              if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+              ar[i] = from[i];
+          }
+      }
+      return to.concat(ar || Array.prototype.slice.call(from));
   };
   var BrowserInfo = /** @class */ (function () {
       function BrowserInfo(name, version, os) {
@@ -260,7 +262,7 @@
   }());
   // tslint:disable-next-line:max-line-length
   var SEARCHBOX_UA_REGEX = /alexa|bot|crawl(er|ing)|facebookexternalhit|feedburner|google web preview|nagios|postrank|pingdom|slurp|spider|yahoo!|yandex/;
-  var SEARCHBOT_OS_REGEX = /(nuhk|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
+  var SEARCHBOT_OS_REGEX = /(nuhk|curl|Googlebot|Yammybot|Openbot|Slurp|MSNBot|Ask\ Jeeves\/Teoma|ia_archiver)/;
   var REQUIRED_VERSION_PARTS = 3;
   var userAgentRules = [
       ['aol', /AOLShield\/([0-9\._]+)/],
@@ -292,10 +294,11 @@
       ['android', /Android\s([0-9\.]+)/],
       ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/],
       ['safari', /Version\/([0-9\._]+).*Safari/],
-      ['facebook', /FBAV\/([0-9\.]+)/],
+      ['facebook', /FB[AS]V\/([0-9\.]+)/],
       ['instagram', /Instagram\s([0-9\.]+)/],
       ['ios-webview', /AppleWebKit\/([0-9\.]+).*Mobile/],
       ['ios-webview', /AppleWebKit\/([0-9\.]+).*Gecko\)$/],
+      ['curl', /^curl\/([0-9\.]+)$/],
       ['searchbot', SEARCHBOX_UA_REGEX],
   ];
   var operatingSystemRules = [
@@ -363,10 +366,11 @@
       if (name === 'searchbot') {
           return new BotInfo();
       }
-      var versionParts = match[1] && match[1].split(/[._]/).slice(0, 3);
+      // Do not use RegExp for split operation as some browser do not support it (See: http://blog.stevenlevithan.com/archives/cross-browser-split)
+      var versionParts = match[1] && match[1].split('.').join('_').split('_').slice(0, 3);
       if (versionParts) {
           if (versionParts.length < REQUIRED_VERSION_PARTS) {
-              versionParts = __spreadArrays(versionParts, createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length));
+              versionParts = __spreadArray(__spreadArray([], versionParts, true), createVersionParts(REQUIRED_VERSION_PARTS - versionParts.length), true);
           }
       }
       else {
@@ -1176,4 +1180,4 @@
 
   Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+}));
