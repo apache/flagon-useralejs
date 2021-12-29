@@ -25,17 +25,11 @@
   function _typeof(obj) {
     "@babel/helpers - typeof";
 
-    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
-      _typeof = function _typeof(obj) {
-        return typeof obj;
-      };
-    } else {
-      _typeof = function _typeof(obj) {
-        return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-      };
-    }
-
-    return _typeof(obj);
+    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) {
+      return typeof obj;
+    } : function (obj) {
+      return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+    }, _typeof(obj);
   }
 
   var version$1 = "2.2.0";
@@ -287,6 +281,9 @@
       ['opera-mini', /Opera Mini.*Version\/([0-9\.]+)/],
       ['opera', /Opera\/([0-9\.]+)(?:\s|$)/],
       ['opera', /OPR\/([0-9\.]+)(:?\s|$)/],
+      ['pie', /^Microsoft Pocket Internet Explorer\/(\d+\.\d+)$/],
+      ['pie', /^Mozilla\/\d\.\d+\s\(compatible;\s(?:MSP?IE|MSInternet Explorer) (\d+\.\d+);.*Windows CE.*\)$/],
+      ['netfront', /^Mozilla\/\d\.\d+.*NetFront\/(\d.\d)/],
       ['ie', /Trident\/7\.0.*rv\:([0-9\.]+).*\).*Gecko$/],
       ['ie', /MSIE\s([0-9\.]+);.*Trident\/[4-7].0/],
       ['ie', /MSIE\s(7\.0)/],
@@ -319,6 +316,7 @@
       ['Windows 8.1', /(Windows NT 6.3)/],
       ['Windows 10', /(Windows NT 10.0)/],
       ['Windows ME', /Windows ME/],
+      ['Windows CE', /Windows CE|WinCE|Microsoft Pocket Internet Explorer/],
       ['Open BSD', /OpenBSD/],
       ['Sun OS', /SunOS/],
       ['Chrome OS', /CrOS/],
