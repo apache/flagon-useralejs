@@ -1,14 +1,3 @@
-## README
-
-First, OpenTelemetry can be installed as follows:
-
-```
-npm install --save @opentelemetry/instrumentation-user-interaction
-```
-
-Then, OpenTelemetry can be automatically instrumented using the following code from the <a href="https://github.com/open-telemetry/opentelemetry-js-contrib/tree/main/plugins/web/opentelemetry-instrumentation-user-interaction">Open Telemetry GitHub Repository</a>:
-
-```JavaScript
 import { ConsoleSpanExporter, SimpleSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { WebTracerProvider } from '@opentelemetry/sdk-trace-web';
 import { UserInteractionInstrumentation } from '@opentelemetry/instrumentation-user-interaction';
@@ -53,8 +42,8 @@ btn2.addEventListener('click', () => {
 });
 document.querySelector('body').append(btn2);
 
-function getData(url) {
-  return new Promise(async (resolve) => {
+function getData(url, resolve) {
+  return new Promise(async (resolve, reject) => {
     const req = new XMLHttpRequest();
     req.open('GET', url, true);
     req.setRequestHeader('Content-Type', 'application/json');
@@ -63,8 +52,22 @@ function getData(url) {
     req.onload = function () {
       resolve();
     };
+    req.onreadystatechange = function () {
+      if (req.readyState == XMLHttpRequest.DONE) {
+        console.log(req.response);
+        userale.log({
+          clientTime: Date.now(),
+          type: 'XMLHttpRequest',
+          logType: 'custom',
+          userAction: 'false',
+          details: JSON.parse(req.response),
+          userId: userale.options().userId,
+          useraleVersion: userale.options().useraleVersion,
+          sessionID: userale.options().sessionID,
+          traceId: trace.getSpan(context.active())._spanContext.traceId
+        });
+      }
+    }
   });
 }
-
 // now click on buttons
-```
