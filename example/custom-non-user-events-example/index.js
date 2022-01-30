@@ -6,6 +6,8 @@ import { registerInstrumentations } from '@opentelemetry/instrumentation';
 // or if you already have zone.js
 // import { ZoneContextManager } from '@opentelemetry/context-zone-peer-dep';
 
+const userale = require('flagon-userale');
+
 const provider = new WebTracerProvider({
   contextManager: new ZoneContextManager()
 });
