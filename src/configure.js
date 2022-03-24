@@ -22,15 +22,20 @@
  * @param  {Object} newConfig Configuration object to merge into the current config.
  */
 export function configure(config, newConfig) {
-  Object.keys(newConfig).forEach(function(option) {
-    if (option === 'userFromParams') {
-      const userId = getUserIdFromParams(newConfig[option]);
-      if (userId) {
-        config.userId = userId;
+  const configAutostart = config['autostart'];
+  const newConfigAutostart = newConfig['autostart'];
+  Object.keys(newConfig).forEach(function (option) {
+      if (option === 'userFromParams') {
+        const userId = getUserIdFromParams(newConfig[option]);
+        if (userId) {
+          config.userId = userId;
+        }
       }
-    }
-    config[option] = newConfig[option];
-  });
+      config[option] = newConfig[option];
+    });
+  if (configAutostart === false || newConfigAutostart === false) {
+    config['autostart'] = false;
+  }
 }
 
 /**

@@ -57,6 +57,17 @@ describe('Userale API', () => {
         dom.window.close();
     });
 
+    it('disables autostart', async () => {
+        const dom = await createEnvFromFile(htmlFileName)
+        dom.window.userale.options({
+            autostart: false
+        });
+        const newConfig = dom.window.userale.options();
+
+        expect(newConfig.autostart).to.equal(false);
+        dom.window.close();
+    });
+
     it('starts + stops', async () => {
         const dom = await createEnvFromFile(htmlFileName)
         setTimeout(() => {

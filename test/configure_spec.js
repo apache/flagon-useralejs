@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 import { expect } from 'chai';
-import jsdom from 'jsdom';
-import fs from 'fs';
+
 import { getUserIdFromParams, configure } from '../src/configure';
 
 describe('configure', () => {
@@ -25,6 +24,22 @@ describe('configure', () => {
     const newConfig = { foo: 'bar' };
     configure(config, newConfig);
     expect(config).to.deep.equal({ foo: 'bar' });
+    done();
+  });
+
+  it('Config autostart false makes autostart false', (done) => {
+    const config = {autostart: false};
+    const newConfig = { autostart: true };
+    configure(config, newConfig);
+    expect(config).to.deep.equal({ autostart: false });
+    done();
+  });
+
+  it('neither autostart false makes autostart true', (done) => {
+    const config = {autostart: undefined};
+    const newConfig = { autostart: true };
+    configure(config, newConfig);
+    expect(config).to.deep.equal({ autostart: true });
     done();
   });
 

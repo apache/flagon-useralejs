@@ -180,6 +180,8 @@ function timeStampScale(e) {
  * @param  {Object} newConfig Configuration object to merge into the current config.
  */
 function configure(config, newConfig) {
+  var configAutostart = config['autostart'];
+  var newConfigAutostart = newConfig['autostart'];
   Object.keys(newConfig).forEach(function (option) {
     if (option === 'userFromParams') {
       var userId = getUserIdFromParams(newConfig[option]);
@@ -191,6 +193,10 @@ function configure(config, newConfig) {
 
     config[option] = newConfig[option];
   });
+
+  if (configAutostart === false || newConfigAutostart === false) {
+    config['autostart'] = false;
+  }
 }
 /**
  * Attempts to extract the userid from the query parameters of the URL.
@@ -1036,7 +1042,7 @@ function setup(config) {
     setTimeout(function () {
       var state = document.readyState;
 
-      if (state === 'interactive' || state === 'complete') {
+      if (config.autostart && (state === 'interactive' || state === 'complete')) {
         attachHandlers(config);
         initSender(logs, config);
         started = config.on = true;

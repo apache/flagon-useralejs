@@ -63,7 +63,7 @@ function setup(config) {
         setTimeout(function () {
             const state = document.readyState;
 
-            if (state === 'interactive' || state === 'complete') {
+            if (config.autostart && (state === 'interactive' || state === 'complete')) {
                 attachHandlers(config);
                 initSender(logs, config);
                 started = config.on = true;
@@ -88,18 +88,18 @@ export const version = userAleVersion;
  * autostart configuration option is set to false.
  */
 export function start() {
-    if (!started) {
-        setup(config);
+    if (!started || config.autostart === false) {
+        started = config.on = true;
+        config.autostart = true;
     }
-
-    config.on = true;
 }
 
 /**
  * Halts the logging process. Logs will no longer be sent.
  */
 export function stop() {
-    config.on = false;
+    started = config.on = false;
+    config.autostart = false;
 }
 
 /**

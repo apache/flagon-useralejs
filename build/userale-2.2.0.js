@@ -168,6 +168,8 @@
    * @param  {Object} newConfig Configuration object to merge into the current config.
    */
   function configure(config, newConfig) {
+    var configAutostart = config['autostart'];
+    var newConfigAutostart = newConfig['autostart'];
     Object.keys(newConfig).forEach(function (option) {
       if (option === 'userFromParams') {
         var userId = getUserIdFromParams(newConfig[option]);
@@ -179,6 +181,10 @@
 
       config[option] = newConfig[option];
     });
+
+    if (configAutostart === false || newConfigAutostart === false) {
+      config['autostart'] = false;
+    }
   }
   /**
    * Attempts to extract the userid from the query parameters of the URL.
@@ -1097,7 +1103,7 @@
       setTimeout(function () {
         var state = document.readyState;
 
-        if (state === 'interactive' || state === 'complete') {
+        if (config.autostart && (state === 'interactive' || state === 'complete')) {
           attachHandlers(config);
           initSender(logs, config);
           exports.started = config.on = true;
@@ -1121,18 +1127,18 @@
    */
 
   function start() {
-    if (!exports.started) {
-      setup(config);
+    if (!exports.started || config.autostart === false) {
+      exports.started = config.on = true;
+      config.autostart = true;
     }
-
-    config.on = true;
   }
   /**
    * Halts the logging process. Logs will no longer be sent.
    */
 
   function stop() {
-    config.on = false;
+    exports.started = config.on = false;
+    config.autostart = false;
   }
   /**
    * Updates the current configuration
