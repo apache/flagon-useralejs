@@ -25,7 +25,16 @@ function App() {
   }
 
   userale.options({
-    autostart: false
+    autostart: false,
+    logCountThreshold: '1',
+    transmitInterval: '1000',
+    toolName: "Apache UserALE.js React Example"
+  })
+
+  userale.filter(function (log) {
+    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel', 'scroll'];
+    var logType_array = ['interval'];
+    return !type_array.includes(log.type) && !logType_array.includes(log.logType);
   })
 
   return (
