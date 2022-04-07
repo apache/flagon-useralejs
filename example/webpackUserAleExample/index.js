@@ -30,7 +30,7 @@ const changeMe = "me";
 userale.options({
     'userId': changeMe,
     'url': 'http://localhost:8000/',
-    'version': '2.2.0',
+    'version': '2.3.0',
     'logDetails': true,
     'toolName': 'Apache UserALE.js Example (Custom)',
     'logCountThreshold': '1',
