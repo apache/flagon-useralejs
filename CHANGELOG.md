@@ -1,6 +1,16 @@
 Changelog
 =========
 
+Apache Flagon UserALE.js (Incubating) 2.3.0 (2021-04-05)
+-------------------------------
+* Release Notes - Flagon - Version UserALE.js 2.3.0
+* [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/9)
+    * Fixes issue in autostart configurations and start(), stop() export usage
+    * Adds additional unit tests for autostart configurations
+    * Adds React App.js example/test utility
+    * Minor updates to update deprecated downstream dev dependencies
+    * Minor changes to documentation, updated examples
+
 Apache Flagon UserALE.js (Incubating) 2.2.0 (2021-05-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.2.0
