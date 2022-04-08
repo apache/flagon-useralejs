@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Apache Flagon UserALE.js (Incubating) 2.3.0 (2021-04-05)
+Apache Flagon UserALE.js (Incubating) 2.3.0 (2022-04-05)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.3.0
 * [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/9)
