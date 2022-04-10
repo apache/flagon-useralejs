@@ -82,6 +82,8 @@ Or if you want to use a CDN, then you can use something like
 
 We also support a [WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension) that can be added to your browser in developer mode. Follow the link for instructions.
 
+Once UserALE.js is installed in your project, your application will start generating logs automatically.
+
 ## Configure
 
 Some configuration is necessary. At minimum you will need to provide UserALE.js an end-point to ship logs to; default behavior is to ship logs to `localhost:8000`.
@@ -93,18 +95,28 @@ and [script-tag examples](https://github.com/apache/incubator-flagon-useralejs/t
 
 Configuration details follow:
 
-If you have included UserALE.js in your project as a `module`, you will need to use our 'userale.options' function, which exposes library configuration options through our API:
+If you have included UserALE.js in your project as a `module`, you will need to use our 'userale.options' function, which exposes library configuration options through our API.
+
+For example, if you do *not* want UserALE.js to start logging automatically, you can modify this behavior through the `userale.options()` API (`autostart` config).
+
+Then, you can use the `userale.start()` API export to begin logging at the appropriate time during page load or triggered from an event:
 
 ```html
 const changeMe = "me";
 userale.options({
     "userId": changeMe,
+    "autostart": false,
     "url": "http://localhost:8000/",
     "version": "next",
     "logDetails": false,
     "sessionID": "this one"
 });
+
+userale.start();
+
 ```
+
+Additional examples of `userale.options()` can be found in our [example directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
 
 The complete list of configurable parameters that can be configured via 'userale.options' is:
 
@@ -152,7 +164,7 @@ You have access to the same parameters listed above, however, naming conventions
 | data-auth | Authorization header to be passed to logging endpoint | null |
 
 If you are using our [WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension),
-you can modify some of these parameters via the extensions' 'options' page.
+you can modify some of these parameters via the extensions' `options` page.
 
 ## Usage
 
