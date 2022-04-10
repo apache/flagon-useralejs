@@ -95,7 +95,7 @@ and [script-tag examples](https://github.com/apache/incubator-flagon-useralejs/t
 
 Configuration details follow:
 
-If you have included UserALE.js in your project as a `module`, you will need to use our 'userale.options' function, which exposes library configuration options through our API.
+If you have included UserALE.js in your project as a `module`, you will need to use our `userale.options()` function, which exposes library configuration options through our API.
 
 For example, if you do *not* want UserALE.js to start logging automatically, you can modify this behavior through the `userale.options()` API (`autostart` config).
 
@@ -118,7 +118,7 @@ userale.start();
 
 Additional examples of `userale.options()` can be found in our [example directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
 
-The complete list of configurable parameters that can be configured via 'userale.options' is:
+The complete list of configurable parameters that can be configured via `userale.options()` is:
 
 | Param | Description | Default |
 |---|---|---|
