@@ -8,6 +8,7 @@ Apache Flagon UserALE.js (Incubating) 2.3.0 (2022-04-05)
     * Fixes issue in autostart configurations and start(), stop() export usage
     * Adds additional unit tests for autostart configurations
     * Adds React App.js example/test utility
+    * Adds additional examples (non-user log examples)
     * Minor updates to update deprecated downstream dev dependencies
     * Minor changes to documentation, updated examples
 

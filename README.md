@@ -36,6 +36,7 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 - Fixes issue in autostart configurations and start(), stop() export usage
 - Adds additional unit tests for autostart configurations
 - Adds React App.js example/test utility
+- Adds additional UserALE.js custom logging examples
 - Minor updates to update deprecated downstream dev dependencies
 - Minor changes to documentation, updated examples
 
