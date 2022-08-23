@@ -471,7 +471,7 @@ var config = {
 };
 var sessionId = 'session_' + Date.now();
 var getTimestamp = typeof performance !== 'undefined' && typeof performance.now !== 'undefined' ? function () {
-  return performance.now() + performance.timing.navigationStart;
+  return performance.now() + performance.timeOrigin;
 } : Date.now;
 browser.storage.local.set({
   sessionId: sessionId
