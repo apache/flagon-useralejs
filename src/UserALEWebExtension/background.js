@@ -43,6 +43,7 @@ var config = {
   resolution: 500,
   time: timeStampScale({}),
   on: true,
+  sendProtocol: 'fetch'
 };
 var sessionId = 'session_' + Date.now();
 

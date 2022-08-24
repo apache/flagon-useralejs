@@ -411,29 +411,46 @@ function sendOnClose(logs, config) {
  * @param  {string} config     configuration parameters (e.g., to extract URL from & send the POST request to).
  * @param  {Number} retries Maximum number of attempts to send the logs.
  */
-// @todo expose config object to sendLogs replate url with config.url
 
 function sendLogs(logs, config, retries) {
-  var req = new XMLHttpRequest(); // @todo setRequestHeader for Auth
+  if (config.sendProtocol === 'fetch') {
+    var data = JSON.stringify(logs);
+    fetch(config.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8'
+      },
+      body: data
+    }).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      console.log('Success:', data);
+    })["catch"](function (error) {
+      console.error('Error:', error);
+    });
+  } else {
+    var req = new XMLHttpRequest(); // @todo setRequestHeader for Auth
 
-  var data = JSON.stringify(logs);
-  req.open('POST', config.url);
+    var _data = JSON.stringify(logs);
 
-  if (config.authHeader) {
-    req.setRequestHeader('Authorization', config.authHeader);
-  }
+    req.open('POST', config.url);
 
-  req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
-
-  req.onreadystatechange = function () {
-    if (req.readyState === 4 && req.status !== 200) {
-      if (retries > 0) {
-        sendLogs(logs, config, retries--);
-      }
+    if (config.authHeader) {
+      req.setRequestHeader('Authorization', config.authHeader);
     }
-  };
 
-  req.send(data);
+    req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+
+    req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status !== 200) {
+        if (retries > 0) {
+          sendLogs(logs, config, retries--);
+        }
+      }
+    };
+
+    req.send(_data);
+  }
 }
 
 /*
@@ -467,7 +484,8 @@ var config = {
   version: null,
   resolution: 500,
   time: timeStampScale({}),
-  on: true
+  on: true,
+  sendProtocol: 'fetch'
 };
 var sessionId = 'session_' + Date.now();
 var getTimestamp = typeof performance !== 'undefined' && typeof performance.now !== 'undefined' ? function () {
