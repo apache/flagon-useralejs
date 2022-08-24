@@ -86,6 +86,8 @@ export function sendLogs(logs, config, retries) {
       body: data,
     })
         .then((response) => response.json())
+        //@todo: add retries
+        //@todo: add auth headers
         .then((data) => {
           console.log('Success:', data);
         })
