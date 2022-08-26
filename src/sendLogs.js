@@ -73,27 +73,50 @@ export function sendOnClose(logs, config) {
  * @param  {Number} retries Maximum number of attempts to send the logs.
  */
 
-// @todo expose config object to sendLogs replate url with config.url
 export function sendLogs(logs, config, retries) {
-  const req = new XMLHttpRequest();
 
-  // @todo setRequestHeader for Auth
-  const data = JSON.stringify(logs);
+  if (config.sendProtocol === 'fetch') {
+    const data = JSON.stringify(logs);
 
-  req.open('POST', config.url);
-  if (config.authHeader) {
-    req.setRequestHeader('Authorization', config.authHeader)
-  }
+    fetch(config.url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      body: data,
+    })
+        .then((response) => response.json())
+        //@todo: add retries
+        //@todo: add auth headers
+        .then((data) => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
 
-  req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+  } else {
 
-  req.onreadystatechange = function() {
-    if (req.readyState === 4 && req.status !== 200) {
-      if (retries > 0) {
-        sendLogs(logs, config, retries--);
-      }
+    const req = new XMLHttpRequest();
+
+    // @todo setRequestHeader for Auth
+    const data = JSON.stringify(logs);
+
+    req.open('POST', config.url);
+    if (config.authHeader) {
+      req.setRequestHeader('Authorization', config.authHeader)
     }
-  };
 
-  req.send(data);
+    req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+
+    req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status !== 200) {
+        if (retries > 0) {
+          sendLogs(logs, config, retries--);
+        }
+      }
+    };
+
+    req.send(data);
+  };
 }
