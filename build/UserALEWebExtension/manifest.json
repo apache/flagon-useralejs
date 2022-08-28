@@ -20,9 +20,17 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["content.js"],
+      "js": ["custom.js"],
       "all_frames": true
     }
+    //,
+    // {
+    //   "matches": [
+    //     "<all_urls>"
+    //   ],
+    //   "js": ["content.js"],
+    //   "all_frames": true
+    // }
   ],
   "options_ui": {
     "page": "optionsPage.html"
