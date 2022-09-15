@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "User ALE Extension",
+  "name": "UserALE Extension",
   "version": "2.3.0",
   "description": "Injects UserALE.js into every page for testing & user research purposes",
   "icons": {
@@ -20,9 +20,17 @@
       "matches": [
         "<all_urls>"
       ],
-      "js": ["content.js"],
+      "js": ["custom.js"],
       "all_frames": true
     }
+    //,
+    // {
+    //   "matches": [
+    //     "<all_urls>"
+    //   ],
+    //   "js": ["content.js"],
+    //   "all_frames": true
+    // }
   ],
   "options_ui": {
     "page": "optionsPage.html"
