@@ -1020,8 +1020,6 @@ window.onload = function () {
   endLoadTimestamp = Date.now();
 };
 
-
-
 var started = false;
 
 config.on = false;

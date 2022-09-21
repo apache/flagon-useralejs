@@ -1,48 +1,4 @@
-/*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-    * this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-    * the License.  You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
-/* eslint-disable */
-// these are default values, which can be overridden by the user on the options page
-var userAleHost = 'http://localhost:8000';
-var userAleScript = 'userale-2.3.0.min.js';
-var toolUser = 'nobody';
-var toolName = 'test_app';
-var toolVersion = '2.3.0';
-/* eslint-enable */
-
-/*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-    * this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-    * the License.  You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-var prefix = 'USERALE_';
-var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
-var ADD_LOG = prefix + 'ADD_LOG';
+import * as userale from 'flagon-userale';
 
 var version = "2.3.0";
 
@@ -438,7 +394,7 @@ function createVersionParts(count) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-var browser$1 = detect();
+var browser = detect();
 var logs$1;
 var config$1; // Interval Logging Globals
 
@@ -450,14 +406,6 @@ var intervalCounter;
 var intervalLog;
 var filterHandler = null;
 var mapHandler = null;
-/**
- * Assigns a handler to filter logs out of the queue.
- * @param  {Function} callback The handler to invoke when logging.
- */
-
-function setLogFilter(callback) {
-  filterHandler = callback;
-}
 /**
  * Assigns the config and log container to be used by the logging functions.
  * @param  {Array} newLogs   Log container.
@@ -755,8 +703,8 @@ function selectorizePath(path) {
 }
 function detectBrowser() {
   return {
-    'browser': browser$1 ? browser$1.name : '',
-    'version': browser$1 ? browser$1.version : ''
+    'browser': browser ? browser.name : '',
+    'version': browser ? browser.version : ''
   };
 }
 
@@ -1020,12 +968,6 @@ window.onload = function () {
   endLoadTimestamp = Date.now();
 };
 
-window.userale.filter(function (log) {
-  var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
-  var logType_array = ['interval'];
-  return !type_array.includes(log.type) && !logType_array.includes(log.logType);
-});
-
 var started = false;
 
 config.on = false;
@@ -1063,90 +1005,9 @@ function setup(config) {
     }, 100);
   }
 } // Export the Userale API
-/**
- * Updates the current configuration
- * object with the provided values.
- * @param  {Object} newConfig The configuration options to use.
- * @return {Object}           Returns the updated configuration.
- */
 
-function options(newConfig) {
-  if (newConfig !== undefined) {
-    configure(config, newConfig);
-  }
-
-  return config;
-}
-
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-// the 'chrome' global instead. Let's map it to browser so we don't have
-// to have if-conditions all over the place.
-
-var browser = browser || chrome; // creates a Future for retrieval of the named keys
-// the value specified is the default value if one doesn't exist in the storage
-
-browser.storage.local.get({
-  sessionId: null,
-  userAleHost: userAleHost,
-  userAleScript: userAleScript,
-  toolUser: toolUser,
-  toolName: toolName,
-  toolVersion: toolVersion
-}, storeCallback);
-
-function storeCallback(item) {
-  injectScript({
-    url: item.userAleHost,
-    userId: item.toolUser,
-    sessionID: item.sessionId,
-    toolName: item.toolName,
-    toolVersion: item.toolVersion
-  });
-}
-
-function queueLog(log) {
-  browser.runtime.sendMessage({
-    type: ADD_LOG,
-    payload: log
-  });
-}
-
-function injectScript(config) {
-  options(config); //  start();  not necessary given that autostart in place, and option is masked from WebExt users
-
-  setLogFilter(function (log) {
-    queueLog(Object.assign({}, log, {
-      pageUrl: document.location.href
-    }));
-    return false;
-  });
-}
-
-browser.runtime.onMessage.addListener(function (message) {
-  if (message.type === CONFIG_CHANGE) {
-    options({
-      url: message.payload.userAleHost,
-      userId: message.payload.toolUser,
-      toolName: message.payload.toolName,
-      toolVersion: message.payload.toolVersion
-    });
-  }
+userale.filter(function (log) {
+  var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
+  var logType_array = ['interval'];
+  return !type_array.includes(log.type) && !logType_array.includes(log.logType);
 });
-/*
- eslint-enable
- */
