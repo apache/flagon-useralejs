@@ -1,4 +1,4 @@
-import * as userale from 'flagon-userale';
+import 'flagon-userale';
 
 var version = "2.3.0";
 
@@ -1006,7 +1006,7 @@ function setup(config) {
   }
 } // Export the Userale API
 
-userale.filter(function (log) {
+window.userale.filter(function (log) {
   var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
   var logType_array = ['interval'];
   return !type_array.includes(log.type) && !logType_array.includes(log.logType);
