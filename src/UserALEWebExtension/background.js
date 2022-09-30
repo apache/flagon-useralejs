@@ -194,6 +194,7 @@ browser.tabs.onZoomChange.addListener(function (e) {
   });
 });
 
+
 /*
  eslint-enable
  */

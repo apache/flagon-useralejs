@@ -1,8 +1,3 @@
-
-
-import { filter, options, start } from '../main.js';
-import * as userale from 'flagon-userale';
-
 window.userale.filter(function (log) {
     var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
     var logType_array = ['interval'];
