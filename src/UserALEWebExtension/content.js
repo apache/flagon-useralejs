@@ -55,10 +55,11 @@ function queueLog(log) {
 function injectScript(config) {
   options(config);
 //  start();  not necessary given that autostart in place, and option is masked from WebExt users
-  filter(function (log) {
+  map(function (log) {
     queueLog(Object.assign({}, log, {
       pageUrl: document.location.href,
     }));
+    console.log(log);
     return false;
   });
 }
@@ -72,6 +73,12 @@ browser.runtime.onMessage.addListener(function (message) {
       toolVersion: message.payload.toolVersion
     });
   }
+});
+
+filter(function (log) {
+  var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
+  var logType_array = ['interval'];
+  return !type_array.includes(log.type) && !logType_array.includes(log.logType);
 });
 
 /*
