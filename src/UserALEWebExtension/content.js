@@ -19,7 +19,7 @@
 
 import * as globals from './globals';
 import * as MessageTypes from './messageTypes.js';
-import { filter, options, start } from '../main.js';
+import { filter, options, map, start } from '../main.js';
 
 // browser is defined in firefox, but not in chrome. In chrome, they use
 // the 'chrome' global instead. Let's map it to browser so we don't have
