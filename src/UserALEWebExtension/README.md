@@ -69,3 +69,19 @@ There is a known issue when attemping to gather logs from a page running on HTTP
 In the meantime, the only workaround is to disable the related security option in the browser:
 * [Chrome](https://superuser.com/questions/487748/how-to-allow-chrome-browser-to-load-insecure-content)
 * [Firefox](https://support.mozilla.org/en-US/kb/mixed-content-blocking-firefox)
+
+## Adding Custom Scripts
+
+We can add custom scripts to the `content.js` file. Once the custom scripts are added, we can run `*npm run build*` which will build the web extension with the new scripts added. 
+
+At the very bottom of `content.js`, there is a pre-defined section for custom scripts to be added. 
+
+Below is an example of a script that can be added. This script will filter out certain events such as *mousedown, mouseup, mouseover, and etc...* so that such actions will not trigger a log to be generated.
+
+```Javascript
+filter(function (log) {
+  var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
+  var logType_array = ['interval'];
+  return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+});
+```
