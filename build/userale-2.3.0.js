@@ -718,8 +718,8 @@
   function buildPath(e) {
     var path = [];
 
-    if (e.path) {
-      path = e.path;
+    if (typeof e.composedPath == "function" && e.composedPath().length > 0) {
+      path = e.composedPath();
     } else {
       var ele = e.target;
 
