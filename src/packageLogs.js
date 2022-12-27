@@ -305,8 +305,8 @@ export function getSelector(ele) {
  */
 export function buildPath(e) {
   let path = [];
-  if (e.path) {
-    path = e.path;
+  if (typeof e.composedPath == "function" && e.composedPath().length > 0) {
+    path = e.composedPath();
   } else {
     let ele = e.target
     while(ele) {

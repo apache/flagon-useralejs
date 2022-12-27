@@ -330,7 +330,10 @@ describe('packageLogs', () => {
             document.body.appendChild(ele);
             evt.initEvent('testEvent', true, true);
             ele.dispatchEvent(evt);
-            evt.path = [ele, ele.parentElement, ele.parentElement.parentElement];
+            evt.composedPath = function() {
+                let ele = evt.target;
+                return [ele, ele.parentElement, ele.parentElement.parentElement];
+            };
             expect(buildPath(evt)).to.deep.equal(['div', 'body', 'html']);
         });
     });
