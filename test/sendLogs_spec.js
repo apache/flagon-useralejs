@@ -101,32 +101,13 @@ describe('sendLogs', () => {
         sinon.assert.calledOnce(sendBeaconSpy)
     });
 
-    it('does not send logs on page exit if config is off', () => {
-        const html = `<html><head></head><body></body></html>`;
-        const dom = new JSDOM(html)
-        const originalNavigator = global.navigator;
-        const originalXMLHttpRequest = global.XMLHttpRequest;
-        const originalWindow = global.window;
-        let requests = 0;
-        const xhr = sinon.useFakeXMLHttpRequest();
-        global.XMLHttpRequest = xhr;
-        global.window = dom.window;
-        global.XMLHttpRequest = xhr;
-        global.navigator = {sendBeacon: false,};
-        xhr.onCreate = () => {
-            requests++;
+    it('does not send logs on page exit when config is off', () => {
+        const sendBeaconSpy = sinon.spy()
+        global.navigator = {
+            sendBeacon: sendBeaconSpy
         };
-
-        const evt = window.document.createEvent('CustomEvent');
-        evt.initEvent('beforeunload', true, true);
         sendOnClose([{foo: 'bar'}], {on: false, url: 'test'});
-
-        window.dispatchEvent(evt);
-        window.close();
-
-        expect(requests).to.equal(0);
-        global.window = originalWindow;
-        global.navigator = originalNavigator;
-        global.XMLHttpRequest = originalXMLHttpRequest;
+        global.window.dispatchEvent(new CustomEvent('pagehide'))
+        sinon.assert.notCalled(sendBeaconSpy)
     });
 });

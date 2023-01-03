@@ -31,4 +31,17 @@ describe('Userale logging', () => {
             })
         })
     });
+
+    it('builds the correct path in a log', () => {
+        cy.visit('http://localhost:8000')
+        cy.wait('@backend')
+        cy.contains(/click me/i).click()
+        cy.wait('@backend').then(xhr => {
+            const body = xhr.request.body
+            const buttonClickLog = body.find(log => log.target === 'button#test_button')
+            const actualPath = buttonClickLog.path
+            const expectedPath = ["button#test_button", "div.container", "body", "html", "#document", "Window"]
+            expect(actualPath).to.deep.equal(expectedPath)
+        })
+    });
 });

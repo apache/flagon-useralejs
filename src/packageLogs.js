@@ -304,18 +304,10 @@ export function getSelector(ele) {
  * @return {HTMLElement[]}   Array of elements, starting at the event target, ending at the root element.
  */
 export function buildPath(e) {
-  let path = [];
-  if (typeof e.composedPath == "function" && e.composedPath().length > 0) {
-    path = e.composedPath();
-  } else {
-    let ele = e.target
-    while(ele) {
-      path.push(ele);
-      ele = ele.parentElement;
+    if (e instanceof window.Event) {
+        const path = e.composedPath();
+        return selectorizePath(path);
     }
-  }
-
-  return selectorizePath(path);
 }
 
 /**

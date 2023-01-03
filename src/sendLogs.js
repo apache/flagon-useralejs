@@ -58,7 +58,7 @@ export function sendOnInterval(logs, config) {
  */
 export function sendOnClose(logs, config) {
   window.addEventListener('pagehide', function () {
-    if (logs.length > 0) {
+    if (config.on && logs.length > 0) {
       navigator.sendBeacon(config.url, JSON.stringify(logs));
       logs.splice(0); // clear log queue
     }

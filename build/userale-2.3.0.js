@@ -716,20 +716,10 @@
    */
 
   function buildPath(e) {
-    var path = [];
-
-    if (typeof e.composedPath == "function" && e.composedPath().length > 0) {
-      path = e.composedPath();
-    } else {
-      var ele = e.target;
-
-      while (ele) {
-        path.push(ele);
-        ele = ele.parentElement;
-      }
+    if (e instanceof window.Event) {
+      var path = e.composedPath();
+      return selectorizePath(path);
     }
-
-    return selectorizePath(path);
   }
   /**
    * Builds a CSS selector path from the provided list of elements.
@@ -1034,7 +1024,7 @@
 
   function sendOnClose(logs, config) {
     window.addEventListener('pagehide', function () {
-      if (logs.length > 0) {
+      if (config.on && logs.length > 0) {
         navigator.sendBeacon(config.url, JSON.stringify(logs));
         logs.splice(0); // clear log queue
       }

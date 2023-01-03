@@ -313,28 +313,15 @@ describe('packageLogs', () => {
     describe('buildPath', () => {
         it('builds a path', () => {
             new JSDOM(``)
+            let actualPath
             const document = window.document;
             const ele = document.createElement('div');
-            const evt = document.createEvent('CustomEvent');
-            evt.initEvent('testEvent', true, true);
+            const evt = new window.Event('CustomEvent', {bubbles: true, cancelable: true})
             document.body.appendChild(ele);
+            ele.addEventListener('CustomEvent', e => actualPath = buildPath(e))
             ele.dispatchEvent(evt);
-            expect(buildPath(evt)).to.deep.equal(['div', 'body', 'html']);
-        });
-
-        it('defaults to path if available', () => {
-            new JSDOM(``)
-            const document = window.document;
-            const ele = document.createElement('div');
-            const evt = document.createEvent('CustomEvent');
-            document.body.appendChild(ele);
-            evt.initEvent('testEvent', true, true);
-            ele.dispatchEvent(evt);
-            evt.composedPath = function() {
-                let ele = evt.target;
-                return [ele, ele.parentElement, ele.parentElement.parentElement];
-            };
-            expect(buildPath(evt)).to.deep.equal(['div', 'body', 'html']);
+            const expectedPath = ['div', 'body', 'html', "#document", "Window"]
+            expect(actualPath).to.deep.equal(expectedPath);
         });
     });
 });
