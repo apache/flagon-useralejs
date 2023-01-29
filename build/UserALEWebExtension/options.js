@@ -16,12 +16,14 @@
 */
 
 /* eslint-disable */
+
 // these are default values, which can be overridden by the user on the options page
 var userAleHost = 'http://localhost:8000';
 var userAleScript = 'userale-2.3.0.min.js';
 var toolUser = 'nobody';
 var toolName = 'test_app';
 var toolVersion = '2.3.0';
+
 /* eslint-enable */
 
 /*
@@ -40,6 +42,7 @@ var toolVersion = '2.3.0';
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 
@@ -59,13 +62,12 @@ var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 if (chrome) {
   browser = chrome;
-} // creates a Future for retrieval of the named keys
+}
+
+// creates a Future for retrieval of the named keys
 // the value specified is the default value if one doesn't exist in the storage
-
-
 browser.storage.local.get({
   userAleHost: userAleHost,
   userAleScript: userAleScript,
@@ -73,7 +75,6 @@ browser.storage.local.get({
   toolName: toolName,
   toolVersion: toolVersion
 }, storeCallback);
-
 function storeCallback(item) {
   document.getElementById("host").value = item.userAleHost;
   document.getElementById("clientScript").value = item.userAleScript;
@@ -81,7 +82,6 @@ function storeCallback(item) {
   document.getElementById("toolName").value = item.toolName;
   document.getElementById("toolVersion").value = item.toolVersion;
 }
-
 function saveOptions(e) {
   var updatedConfig = {
     userAleHost: document.getElementById("host").value,
@@ -96,8 +96,8 @@ function saveOptions(e) {
     payload: updatedConfig
   });
 }
-
 document.addEventListener("submit", function () {
   saveOptions();
 });
+
 /* eslint-enable */
