@@ -1,6 +1,6 @@
 # HTML attribute logging
 
-The following is an example outlining how to log HTML attributes, and parse some common syntaxes found in attributes.
+The following is an example outlining how to log HTML attributes with UserALE.js, and parse some common syntaxs found in attributes.
 
 ## Common syntaxes
 
@@ -14,7 +14,7 @@ Consider the following HTML canvas element. This element has a attribute, `data-
 
 ## Extracting and parsing attributes
 
-The following function shows how to extract attrbutes and parse JSON attribute values. The `style` attribute is excluded because it is handled as a special case in the next code block.
+The following function shows how to extract attributes and parse JSON attribute values. The `style` attribute is excluded because it is handled as a special case in the next code block.
 
 ```js
 
@@ -61,7 +61,7 @@ export function buildCSS(e) {
     return properties;
 }
 ```
-The above functions can be used in the below snippet to add the results to each log message.
+The above functions can be used in the below snippet to add the results to each log message. In turn, this snippet can be added to a custom.js script to modify core UserALE.js behavior. See the 'index.js' example in this dir. 
 
 ```js
 window.userale.map((log, e) => {
