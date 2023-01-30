@@ -19,7 +19,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     #run dependency checks against test branch, should lead Master branch
     target-branch: "test"
     labels:
