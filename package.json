@@ -35,7 +35,9 @@
     "Michelle Beard",
     "Alex Ford",
     "Joshua C. Poore",
-    "Gedd Johnson"
+    "Gedd Johnson",
+    "Jason Young",
+    "Lewis McGibbney"
   ],
   "license": "Apache-2.0",
   "bugs": {
@@ -43,8 +45,8 @@
   },
   "homepage": "http://flagon.incubator.apache.org",
   "engines": {
-    "node": "10.10.0 || 11.10.0 - 12.20.1 || >=13.7.0",
-    "npm": "6.4.1 || 6.7.0 - 6.12.1 || >=6.13.4"
+    "node": "^16.x || ^18.x",
+    "npm": "^8.x || ^9.x"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",

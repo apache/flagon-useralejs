@@ -49,6 +49,11 @@ Either through cloning our [source repo](https://github.com/apache/incubator-fla
 
 ```html
 npm install flagon-userale
+
+or 
+
+npm install flagon-userale --engine-strict (enforces supported Node.js versions)
+
 ```
 
 To include UserALE.js as an object in your project, include as a `module`:
