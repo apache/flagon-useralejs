@@ -24,7 +24,7 @@ describe('Userale logging', () => {
         cy.wait('@backend').then(xhr => {
             const body = xhr.request.body
             const pageLoadLog = body[0]
-            expect(pageLoadLog['pageLoadTime']).to.be.greaterThan(0)
+            expect(pageLoadLog['details']['pageLoadTime']).to.be.greaterThan(0)
             expect(pageLoadLog).to.contain({
                 logType: 'raw',
                 type: 'load'
