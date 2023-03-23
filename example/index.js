@@ -34,10 +34,12 @@ window.userale.options({
  * Note that for surgical filters, you may need to clear or reset back to a global filter callback
  * the same is true for the 'map' API. See examples below:
  */
-window.userale.filter(function (log) {
-    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
-    var logType_array = ['interval'];
-    return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+window.userale.addCallbacks({
+    filter(log) {
+        var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
+        var logType_array = ['interval'];
+        return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+    }
 });
 
 /**Log Mapping API
@@ -45,17 +47,13 @@ window.userale.filter(function (log) {
  * the 'map' API allows you to add or modify new fields to your logs
  * this example works with the "Click Me!" button at the top of index.html
  */
-document.addEventListener('click', function(e){
-    if (e.target.innerHTML === 'Click Me!') {
-        window.userale.map(function (log) {
+window.userale.addCallbacks({
+    map(log, e) {
+        if(e && e.type === 'click' && e.target.innerHTML === 'Click Me!') {
             return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
-        });
-        window.userale.packageLog(e, window.userale.details(window.userale.options(),e.type));
-        /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
-         * the callback may be applied to other events of the same class (e.g., click) */
-        window.userale.map();
-    } else {
-        return false
+        }
+
+        return log;
     }
 });
 
@@ -108,14 +106,14 @@ document.addEventListener('change', function(e) {
 document.addEventListener('change', function(e){
     if (e.target.value === 'packageLog') {
         /**You can then use the 'Mapping' API function to modify custom logs created with the packageLog function*/
-        window.userale.map(function (log) {
+        window.userale.addCallbacks({changeMap(log) {
             var targetsForLabels = ['change'];
             if (targetsForLabels.includes(log.type)) {
                 return Object.assign({}, log, { logType: 'custom', customLabel: 'packageLog Example' });
             } else {
                 return log;
             }
-        });
+        }});
         /**You can also use the details function to package additional log meta data, or add custom details*/
         window.userale.packageLog(e, window.userale.details(window.userale.options(),e.type));
     } else {

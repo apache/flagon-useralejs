@@ -18,44 +18,59 @@ import {expect} from 'chai';
 import {JSDOM} from 'jsdom';
 import 'global-jsdom/register'
 import {
+    addCallbacks,
     buildPath,
+    cbHandlers,
     extractTimeFields,
-    filterHandler,
     getLocation,
     getSelector,
     initPackager,
     logs,
-    mapHandler,
     packageLog,
+    removeCallbacks,
     selectorizePath,
-    setLogFilter,
-    setLogMapper,
 } from '../src/packageLogs';
 
 describe('packageLogs', () => {
-    describe('setLogFilter', () => {
-        it('assigns the handler to the provided value', () => {
-            const func = x => true;
-            setLogFilter(func);
-            expect(filterHandler).to.equal(func);
+    describe('addCallbacks', () => {
+        it('adds a single callback', () => {
+            initPackager([], {on: false});
+            const fn = {
+                func1() {return true}
+            };
+            addCallbacks(fn);
+            expect(Object.keys(cbHandlers)).to.deep.equal(Object.keys(fn));
         });
-        it('allows the handler to be nulled', () => {
-            setLogFilter(x => true);
-            setLogFilter(null);
-            expect(filterHandler).to.equal(null);
+        it('adds a list of callbacks', () => {
+            initPackager([], {on: false});
+
+            const fns = {
+                func1() {return true},
+                func2() {return false}
+            };
+
+            addCallbacks(fns);
+            expect(Object.keys(cbHandlers)).to.deep.equal(Object.keys(fns));
         });
     });
-
-    describe('setLogMapper', () => {
-        it('assigns the handler to the provided value', () => {
-            const func = x => true;
-            setLogMapper(func);
-            expect(mapHandler).to.equal(func);
+    
+    describe('removeCallbacks', () => {
+        it('removes a single callback', () => {
+            initPackager([], {on: false});
+            const fn = {func() {return true}}; 
+            addCallbacks(fn);
+            removeCallbacks(Object.keys(fn));
+            expect(cbHandlers).to.be.empty;
         });
-        it('allows the handler to be nulled', () => {
-            setLogMapper(x => true);
-            setLogMapper(null);
-            expect(mapHandler).to.equal(null);
+        it('removes a list of callbacks', () => {
+            initPackager([], {on: false});
+            const fns = {
+                func1() {return true},
+                func2() {return false}
+            };
+            addCallbacks(fns);
+            removeCallbacks(Object.keys(fns));
+            expect(cbHandlers).to.be.empty;
         });
     });
 
@@ -90,9 +105,11 @@ describe('packageLogs', () => {
 
         it('filters logs when a handler is assigned and returns false', () => {
             let filterCalled = false;
-            const filter = (log) => {
-                filterCalled = true;
-                return false;
+            const filter = {
+                filterAll() {
+                    filterCalled = true;
+                    return false;
+                }
             };
 
             const evt = {
@@ -105,19 +122,22 @@ describe('packageLogs', () => {
 
             expect(logs.length).to.equal(1);
 
-            setLogFilter(filter);
+            addCallbacks(filter);
             packageLog(evt);
 
+            expect(filterCalled).to.equal(true);
             expect(logs.length).to.equal(1);
         });
 
-        it('assigns logs to the mapper\'s return value if a handler is assigned', () => {
+        it('assigns logs to the callback\'s return value if a handler is assigned', () => {
             let mapperCalled = false;
 
             const mappedLog = {type: 'foo'};
-            const mapper = (log) => {
-                mapperCalled = true;
-                return mappedLog;
+            const mapper = {
+                mapper() {
+                    mapperCalled = true;
+                    return mappedLog;
+                }
             };
 
             const evt = {
@@ -127,14 +147,14 @@ describe('packageLogs', () => {
 
             initPackager([], {on: true});
 
-            setLogMapper(mapper);
+            addCallbacks(mapper);
             packageLog(evt);
 
             expect(mapperCalled).to.equal(true);
             expect(logs.indexOf(mappedLog)).to.equal(0);
         });
 
-        it('does not call the map handler if the log is filtered out', () => {
+        it('does not call a subsequent handler if the log is filtered out', () => {
             let mapperCalled = false;
             const filter = () => false;
             const mapper = (log) => {
@@ -148,8 +168,8 @@ describe('packageLogs', () => {
             };
 
             initPackager([], {on: true});
-            setLogFilter(filter);
-            setLogMapper(mapper);
+            addCallbacks(filter);
+            addCallbacks(mapper);
 
             packageLog(evt);
 
@@ -157,35 +177,16 @@ describe('packageLogs', () => {
         });
 
         it('does not attempt to call a non-function filter/mapper', () => {
-            let filterCalled = false;
-            let mapperCalled = false;
-            const filter = () => {
-                filterCalled = true;
-                return true;
-            };
-            const mapper = (log) => {
-                mapperCalled = true;
-                return log;
-            };
-
             const evt = {
                 target: {},
                 type: 'test',
             };
 
             initPackager([], {on: true});
-            setLogFilter(filter);
-            setLogMapper(mapper);
-
+            packageLog(evt);
+            addCallbacks('foo');
             packageLog(evt);
 
-            expect(filterCalled).to.equal(true);
-            expect(mapperCalled).to.equal(true);
-
-            setLogFilter('foo');
-            setLogMapper('bar');
-
-            packageLog(evt);
             expect(logs.length).to.equal(2);
         });
     });

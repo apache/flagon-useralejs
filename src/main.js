@@ -33,8 +33,7 @@ window.onload = function () {
 export let started = false;
 export {defineCustomDetails as details} from './attachHandlers.js';
 export {
-    setLogMapper as map,
-    setLogFilter as filter,
+    addCallbacks as addCallbacks,
     packageLog as packageLog,
     packageCustomLog as packageCustomLog,
     getSelector as getSelector,

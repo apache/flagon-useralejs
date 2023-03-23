@@ -400,22 +400,9 @@
       return output;
   }
 
-  /*
-   * Licensed to the Apache Software Foundation (ASF) under one or more
-   * contributor license agreements.  See the NOTICE file distributed with
-   * this work for additional information regarding copyright ownership.
-   * The ASF licenses this file to You under the Apache License, Version 2.0
-   * (the "License"); you may not use this file except in compliance with
-   * the License.  You may obtain a copy of the License at
-   * 
-   *   http://www.apache.org/licenses/LICENSE-2.0
-   * 
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
+  function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+  function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+  function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
   var browser = detect();
   var logs$1;
   var config$1;
@@ -427,23 +414,30 @@
   var intervalTimer;
   var intervalCounter;
   var intervalLog;
-  var filterHandler = null;
-  var mapHandler = null;
+  var cbHandlers = {};
 
   /**
-   * Assigns a handler to filter logs out of the queue.
-   * @param  {Function} callback The handler to invoke when logging.
+   * Adds named callbacks to be executed when logging.
+   * @param  {Object } newCallbacks An object containing named callback functions.
    */
-  function setLogFilter(callback) {
-    filterHandler = callback;
-  }
-
-  /**
-   * Assigns a handler to transform logs from their default structure.
-   * @param  {Function} callback The handler to invoke when logging.
-   */
-  function setLogMapper(callback) {
-    mapHandler = callback;
+  function addCallbacks() {
+    for (var _len = arguments.length, newCallbacks = new Array(_len), _key = 0; _key < _len; _key++) {
+      newCallbacks[_key] = arguments[_key];
+    }
+    newCallbacks.forEach(function (source) {
+      var descriptors = Object.keys(source).reduce(function (descriptors, key) {
+        descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
+        return descriptors;
+      }, {});
+      Object.getOwnPropertySymbols(source).forEach(function (sym) {
+        var descriptor = Object.getOwnPropertyDescriptor(source, sym);
+        if (descriptor.enumerable) {
+          descriptors[sym] = descriptor;
+        }
+      });
+      Object.defineProperties(cbHandlers, descriptors);
+    });
+    return cbHandlers;
   }
 
   /**
@@ -454,8 +448,7 @@
   function initPackager(newLogs, newConfig) {
     logs$1 = newLogs;
     config$1 = newConfig;
-    filterHandler = null;
-    mapHandler = null;
+    cbHandlers = [];
     intervalID = null;
     intervalType = null;
     intervalPath = null;
@@ -500,11 +493,14 @@
       'useraleVersion': config$1.useraleVersion,
       'sessionID': config$1.sessionID
     };
-    if (typeof filterHandler === 'function' && !filterHandler(log)) {
-      return false;
-    }
-    if (typeof mapHandler === 'function') {
-      log = mapHandler(log, e);
+    for (var _i = 0, _Object$values = Object.values(cbHandlers); _i < _Object$values.length; _i++) {
+      var func = _Object$values[_i];
+      if (typeof func === 'function') {
+        log = func(log, e);
+        if (!log) {
+          return false;
+        }
+      }
     }
     logs$1.push(log);
     return true;
@@ -542,11 +538,22 @@
       'sessionID': config$1.sessionID
     };
     var log = Object.assign(metaData, customLog);
-    if (typeof filterHandler === 'function' && !filterHandler(log)) {
-      return false;
-    }
-    if (typeof mapHandler === 'function') {
-      log = mapHandler(log);
+    var _iterator = _createForOfIteratorHelper(cbHandlers.values()),
+      _step;
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var func = _step.value;
+        if (typeof func === 'function') {
+          log = func(log, null);
+          if (!log) {
+            return false;
+          }
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
     }
     logs$1.push(log);
     return true;
@@ -611,11 +618,22 @@
         'useraleVersion': config$1.useraleVersion,
         'sessionID': config$1.sessionID
       };
-      if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
-        return false;
-      }
-      if (typeof mapHandler === 'function') {
-        intervalLog = mapHandler(intervalLog, e);
+      var _iterator2 = _createForOfIteratorHelper(cbHandlers.values()),
+        _step2;
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var func = _step2.value;
+          if (typeof func === 'function') {
+            intervalLog = func(intervalLog, null);
+            if (!intervalLog) {
+              return false;
+            }
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
       }
       logs$1.push(intervalLog);
 
@@ -1127,12 +1145,11 @@
     }
   }
 
+  exports.addCallbacks = addCallbacks;
   exports.buildPath = buildPath;
   exports.details = defineCustomDetails;
-  exports.filter = setLogFilter;
   exports.getSelector = getSelector;
   exports.log = log;
-  exports.map = setLogMapper;
   exports.options = options;
   exports.packageCustomLog = packageCustomLog;
   exports.packageLog = packageLog;
