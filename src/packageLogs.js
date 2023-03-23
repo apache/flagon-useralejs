@@ -29,25 +29,41 @@ let intervalTimer;
 let intervalCounter;
 let intervalLog;
 
-export let filterHandler = null;
-export let mapHandler = null;
+export let cbHandlers = {};
 
 /**
- * Assigns a handler to filter logs out of the queue.
- * @param  {Function} callback The handler to invoke when logging.
+ * Adds named callbacks to be executed when logging.
+ * @param  {Object } newCallbacks An object containing named callback functions.
  */
-export function setLogFilter(callback) {
-  filterHandler = callback;
+export function addCallbacks(...newCallbacks) {
+  newCallbacks.forEach((source) => {
+    const descriptors = Object.keys(source).reduce((descriptors, key) => {
+      descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
+      return descriptors;
+    }, {});
+
+    Object.getOwnPropertySymbols(source).forEach((sym) => {
+      const descriptor = Object.getOwnPropertyDescriptor(source, sym);
+      if (descriptor.enumerable) {
+        descriptors[sym] = descriptor;
+      }
+    });
+    Object.defineProperties(cbHandlers, descriptors);
+  });
+  return cbHandlers;
 }
 
 /**
- * Assigns a handler to transform logs from their default structure.
- * @param  {Function} callback The handler to invoke when logging.
+ * Removes callbacks by name.
+ * @param  {String[]} targetKeys A list of names of functions to remove.
  */
-export function setLogMapper(callback) {
-  mapHandler = callback;
+export function removeCallbacks(targetKeys) {
+  targetKeys.forEach(key => {
+    if(Object.hasOwn(cbHandlers, key)) {
+      delete cbHandlers[key];
+    }
+  });
 }
-
 
 /**
  * Assigns the config and log container to be used by the logging functions.
@@ -57,8 +73,7 @@ export function setLogMapper(callback) {
 export function initPackager(newLogs, newConfig) {
   logs = newLogs;
   config = newConfig;
-  filterHandler = null;
-  mapHandler = null;
+  cbHandlers = [];
   intervalID = null;
   intervalType = null;
   intervalPath = null;
@@ -109,16 +124,16 @@ export function packageLog(e, detailFcn) {
     'sessionID': config.sessionID,
   };
 
-  if ((typeof filterHandler === 'function') && !filterHandler(log)) {
-    return false;
-  }
-
-  if (typeof mapHandler === 'function') {
-    log = mapHandler(log, e);
+  for (const func of Object.values(cbHandlers)) {
+    if (typeof func === 'function') {
+      log = func(log, e);
+      if(!log) {
+        return false;
+      }
+    }
   }
 
   logs.push(log);
-
   return true;
 }
 
@@ -158,12 +173,13 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
 
     let log = Object.assign(metaData, customLog);
 
-    if ((typeof filterHandler === 'function') && !filterHandler(log)) {
-        return false;
-    }
-
-    if (typeof mapHandler === 'function') {
-        log = mapHandler(log);
+    for (const func of cbHandlers.values()) {
+      if (typeof func === 'function') {
+        log = func(log, null);
+        if(!log) {
+          return false;
+        }
+      }
     }
 
     logs.push(log);
@@ -231,12 +247,13 @@ export function packageIntervalLog(e) {
             'sessionID': config.sessionID
         };
 
-        if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
-          return false;
-        }
-
-        if (typeof mapHandler === 'function') {
-          intervalLog = mapHandler(intervalLog, e);
+        for (const func of cbHandlers.values()) {
+          if (typeof func === 'function') {
+            intervalLog = func(intervalLog, null);
+            if(!intervalLog) {
+              return false;
+            }
+          }
         }
 
         logs.push(intervalLog);
