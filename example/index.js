@@ -38,7 +38,10 @@ window.userale.addCallbacks({
     filter(log) {
         var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
         var logType_array = ['interval'];
-        return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+        if(type_array.includes(log.type) || logType_array.includes(log.logType)) {
+            return false;
+        }
+        return log;
     }
 });
 
@@ -47,13 +50,19 @@ window.userale.addCallbacks({
  * the 'map' API allows you to add or modify new fields to your logs
  * this example works with the "Click Me!" button at the top of index.html
  */
-window.userale.addCallbacks({
-    map(log, e) {
-        if(e && e.type === 'click' && e.target.innerHTML === 'Click Me!') {
-            return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
-        }
-
-        return log;
+document.addEventListener('click', function(e){
+    if (e.target.innerHTML === 'Click Me!') {
+        window.userale.addCallbacks({
+            map(log) {
+                return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
+            }
+        });
+        window.userale.packageLog(e, window.userale.details(window.userale.options(),e.type));
+        /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
+         * the callback may be applied to other events of the same class (e.g., click) */
+        window.userale.removeCallbacks(["map"]);
+    } else {
+        return false
     }
 });
 
