@@ -173,7 +173,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
 
     let log = Object.assign(metaData, customLog);
 
-    for (const func of cbHandlers.values()) {
+    for (const func of Object.values(cbHandlers)) {
       if (typeof func === 'function') {
         log = func(log, null);
         if(!log) {
@@ -247,7 +247,7 @@ export function packageIntervalLog(e) {
             'sessionID': config.sessionID
         };
 
-        for (const func of cbHandlers.values()) {
+        for (const func of Object.values(cbHandlers)) {
           if (typeof func === 'function') {
             intervalLog = func(intervalLog, null);
             if(!intervalLog) {
