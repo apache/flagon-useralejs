@@ -1,4 +1,4 @@
-# Apache Flagon UserALE.js (Incubating)
+# Apache Flagon UserALE.js
 
 ![Node.js CI](https://github.com/apache/incubator-flagon-useralejs/workflows/Node.js%20CI/badge.svg)
 ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/flagon-userale)
