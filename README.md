@@ -1,6 +1,6 @@
 # Apache Flagon UserALE.js
 
-![Node.js CI](https://github.com/apache/incubator-flagon-useralejs/workflows/Node.js%20CI/badge.svg)
+![Node.js CI](https://github.com/apache/flagon-useralejs/workflows/Node.js%20CI/badge.svg)
 ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/flagon-userale)
 ![Maintenance](https://img.shields.io/maintenance/yes/2023)
 ![npm](https://img.shields.io/npm/v/flagon-userale)
@@ -15,22 +15,22 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 
 ### Quickstart Guide
 
-1. Include UserALE.js in your project as either a [module or script tag](https://github.com/apache/incubator-flagon-useralejs#installation)
-1. Set up a logging end-point. Try our [example server utility](https://github.com/apache/incubator-flagon-useralejs/tree/master/example#capturing-logs-using-the-logging-server) or try out our [Elasticsearch (ELK) stack example](https://github.com/apache/incubator-flagon/tree/master/docker).
-1. Configure [UserALE.js settings](https://github.com/apache/incubator-flagon-useralejs#configure) using our API, including where to POST logs to (port:8000 for UserALE example or port:8100 of ELK/Logstash)
-1. Further explore the [UserALE.js API](https://github.com/apache/incubator-flagon-useralejs#usage) to customize your log feed, add filters, custom logs, and modify logs themselves. Explore a few [examples](https://github.com/apache/incubator-flagon-useralejs#examples) here and a wider set in our [example utility](https://github.com/apache/incubator-flagon-useralejs/blob/master/example/webpackUserAleExample/index.js).
-1. Visualize and analyze your logs. See our sample [kibana dahsboards](https://github.com/apache/incubator-flagon/tree/master/docker#single-node-example-container) for behavioral analytics.
+1. Include UserALE.js in your project as either a [module or script tag](https://github.com/apache/flagon-useralejs#installation)
+1. Set up a logging end-point. Try our [example server utility](https://github.com/apache/flagon-useralejs/tree/master/example#capturing-logs-using-the-logging-server) or try out our [Elasticsearch (ELK) stack example](https://github.com/apache/flagon/tree/master/docker).
+1. Configure [UserALE.js settings](https://github.com/apache/flagon-useralejs#configure) using our API, including where to POST logs to (port:8000 for UserALE example or port:8100 of ELK/Logstash)
+1. Further explore the [UserALE.js API](https://github.com/apache/flagon-useralejs#usage) to customize your log feed, add filters, custom logs, and modify logs themselves. Explore a few [examples](https://github.com/apache/flagon-useralejs#examples) here and a wider set in our [example utility](https://github.com/apache/flagon-useralejs/blob/master/example/webpackUserAleExample/index.js).
+1. Visualize and analyze your logs. See our sample [kibana dahsboards](https://github.com/apache/flagon/tree/master/docker#single-node-example-container) for behavioral analytics.
 
 ## Table of Contents
-[What's New](https://github.com/apache/incubator-flagon-useralejs#whats-new-in-version-210)  
-[Installation](https://github.com/apache/incubator-flagon-useralejs#installation)  
-[Configure](https://github.com/apache/incubator-flagon-useralejs#configure)  
-[Usage](https://github.com/apache/incubator-flagon-useralejs#usage)  
-[Examples](https://github.com/apache/incubator-flagon-useralejs#examples)   
-[Indexing, Storing, and Visualizing Logs](https://github.com/apache/incubator-flagon-useralejs#indexing-storing-and-visualizing-logs)  
-[Modifying Source](https://github.com/apache/incubator-flagon-useralejs#modifying-source)   
-[Contributing](https://github.com/apache/incubator-flagon-useralejs#contributing)  
-[License](https://github.com/apache/incubator-flagon-useralejs#license)
+[What's New](https://github.com/apache/flagon-useralejs#whats-new-in-version-210)  
+[Installation](https://github.com/apache/flagon-useralejs#installation)  
+[Configure](https://github.com/apache/flagon-useralejs#configure)  
+[Usage](https://github.com/apache/flagon-useralejs#usage)  
+[Examples](https://github.com/apache/flagon-useralejs#examples)   
+[Indexing, Storing, and Visualizing Logs](https://github.com/apache/flagon-useralejs#indexing-storing-and-visualizing-logs)  
+[Modifying Source](https://github.com/apache/flagon-useralejs#modifying-source)   
+[Contributing](https://github.com/apache/flagon-useralejs#contributing)  
+[License](https://github.com/apache/flagon-useralejs#license)
 
 ## What's New in Version 2.3.0?
 
@@ -41,11 +41,11 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 - Minor updates to update deprecated downstream dev dependencies
 - Minor changes to documentation, updated examples
 
-See our [CHANGELOG](https://github.com/apache/incubator-flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
+See our [CHANGELOG](https://github.com/apache/flagon-useralejs/blob/master/CHANGELOG.md) for a complete list of changes.
 
 ## Installation
 
-Either through cloning our [source repo](https://github.com/apache/incubator-flagon-useralejs) or by using npm:
+Either through cloning our [source repo](https://github.com/apache/flagon-useralejs) or by using npm:
 
 ```html
 npm install flagon-userale
@@ -65,7 +65,7 @@ or
 
 const userale = require('flagon-userale');
 ```
-Our [webpack example](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/webpackUserAleExample) illustrates this use-case.
+Our [webpack example](https://github.com/apache/flagon-useralejs/tree/master/example/webpackUserAleExample) illustrates this use-case.
 
 You can also include UserALE.js as a `script-tag`. A pre-built version of the userale script is included in our package and
 repositories:
@@ -73,7 +73,7 @@ repositories:
 ```html
 <script src="./node_modules/flagon-userale/build/userale-2.3.0.min.js"></script>
 ```
-Our [script tag example](https://github.com/apache/incubator-flagon-useralejs/tree/master/example) illustrates this use-case
+Our [script tag example](https://github.com/apache/flagon-useralejs/tree/master/example) illustrates this use-case
 
 If you include UserALE.js as a `script-tag`, consider installing via npm as a development dependency:
 
@@ -87,7 +87,7 @@ Or if you want to use a CDN, then you can use something like
 <script src="https://cdn.jsdelivr.net/npm/flagon-userale@2.1.1/build/userale-2.3.0.min.js"></script>
 ```
 
-We also support a [WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension) that can be added to your browser in developer mode. Follow the link for instructions.
+We also support a [WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension) that can be added to your browser in developer mode. Follow the link for instructions.
 
 Once UserALE.js is installed in your project, your application will start generating logs automatically.
 
@@ -95,10 +95,10 @@ Once UserALE.js is installed in your project, your application will start genera
 
 Some configuration is necessary. At minimum you will need to provide UserALE.js an end-point to ship logs to; default behavior is to ship logs to `localhost:8000`.
 
-**NOTE**: In order to facilitate testing configuration and usage of UserALE.js, we have included an [example logging server](https://github.com/apache/incubator-flagon-useralejs/tree/master/example#capturing-logs-using-the-logging-server) in our 
-[example directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example). This is a very helpful utility
-that works with both included [module examples](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/webpackUserAleExample)
-and [script-tag examples](https://github.com/apache/incubator-flagon-useralejs/tree/master/example). We strongly recommend experimenting with it.
+**NOTE**: In order to facilitate testing configuration and usage of UserALE.js, we have included an [example logging server](https://github.com/apache/flagon-useralejs/tree/master/example#capturing-logs-using-the-logging-server) in our 
+[example directory](https://github.com/apache/flagon-useralejs/tree/master/example). This is a very helpful utility
+that works with both included [module examples](https://github.com/apache/flagon-useralejs/tree/master/example/webpackUserAleExample)
+and [script-tag examples](https://github.com/apache/flagon-useralejs/tree/master/example). We strongly recommend experimenting with it.
 
 Configuration details follow:
 
@@ -123,7 +123,7 @@ userale.start();
 
 ```
 
-Additional examples of `userale.options()` can be found in our [example directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
+Additional examples of `userale.options()` can be found in our [example directory](https://github.com/apache/flagon-useralejs/tree/master/example).
 
 The complete list of configurable parameters that can be configured via `userale.options()` is:
 
@@ -170,7 +170,7 @@ You have access to the same parameters listed above, however, naming conventions
 | data-tool | Name of tool being logged | null |
 | data-auth | Authorization header to be passed to logging endpoint | null |
 
-If you are using our [WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension),
+If you are using our [WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension),
 you can modify some of these parameters via the extensions' `options` page.
 
 ## Usage
@@ -204,9 +204,9 @@ userale.options = window.userale.options
 
 ## Examples
 
-We provide a number of examples to illustrate how the [functions above](https://github.com/apache/incubator-flagon-useralejs#usage) 
-can be used with sample webpages and logging servers. These are tailored for [module examples](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/webpackUserAleExample)
-and [script-tag examples](https://github.com/apache/incubator-flagon-useralejs/tree/master/example).
+We provide a number of examples to illustrate how the [functions above](https://github.com/apache/flagon-useralejs#usage) 
+can be used with sample webpages and logging servers. These are tailored for [module examples](https://github.com/apache/flagon-useralejs/tree/master/example/webpackUserAleExample)
+and [script-tag examples](https://github.com/apache/flagon-useralejs/tree/master/example).
 Select examples are below:
 
 Filter your logs with `userale.filter`:
@@ -232,7 +232,7 @@ userale.map(function (log) {
       });
 ```
 
-(Additional examples illustrate [precision custom labeling](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/log-label-example), using a variety of functions.)
+(Additional examples illustrate [precision custom labeling](https://github.com/apache/flagon-useralejs/tree/master/example/log-label-example), using a variety of functions.)
 
 Generate custom logs with `userale.log`:
 
@@ -281,7 +281,7 @@ document.addEventListener('change', function(e){
 });
 ``` 
 
-Again, see [Usage](https://github.com/apache/incubator-flagon-useralejs#usage) for differences in invoking these functions with `module` and `script-tag` includes.
+Again, see [Usage](https://github.com/apache/flagon-useralejs#usage) for differences in invoking these functions with `module` and `script-tag` includes.
 
 You can find additional examples on our [website](http://flagon.incubator.apache.org/docs/useralejs/API/).
 
@@ -289,13 +289,13 @@ You can find additional examples on our [website](http://flagon.incubator.apache
 
 We recommend Elastic products, specifically an [ELK cluster](https://www.elastic.co/what-is/elk-stack), for indexing and storing logs in productions. 
 
-You can find a 'sand-box' ELK build, configuration files, and visualization/dashboards tailored for UserALE.js in the [Apache Flagon parent repository](https://github.com/apache/incubator-flagon/tree/master/docker).
+You can find a 'sand-box' ELK build, configuration files, and visualization/dashboards tailored for UserALE.js in the [Apache Flagon parent repository](https://github.com/apache/flagon/tree/master/docker).
 
 We also provide some documentation about stack-considerations on our [project website](http://flagon.incubator.apache.org/docs/stack/).
 
 ## Modifying Source
 
-You may wish to modify UserALE.js to suite your needs. After making modification to [UserALE.js src](https://github.com/apache/incubator-flagon-useralejs/tree/master/src),
+You may wish to modify UserALE.js to suite your needs. After making modification to [UserALE.js src](https://github.com/apache/flagon-useralejs/tree/master/src),
 you will need to rebuild the UserALE.js script (and run tests).
 
 To (re)build UserALE.js:
@@ -322,19 +322,19 @@ We use gulp-mocha for unit tests. The results will print to your terminal:
   45 passing (954ms)
   1 pending
 ```
-Any failing tests will also be logged in the terminal. If there are failing tests, please consider [submitting an issue report](https://github.com/apache/incubator-flagon-useralejs/issues).
+Any failing tests will also be logged in the terminal. If there are failing tests, please consider [submitting an issue report](https://github.com/apache/flagon-useralejs/issues).
 
 For more guidance on modifying Flagon UserALE src code, check out [the guide on our website](http://flagon.incubator.apache.org/docs/useralejs/modifying/).
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/flagon-useralejs/issues). Pull requests are welcome.  The core team will review it and work with you to incorporate it into UserALE.js. If you want to become a contributor to the project, see our [contribution guide](http://flagon.incubator.apache.org/docs/contributing/). 
 
 Join the conversation: tell us your needs, wishes, and interests by joining our [mailing list](dev-subscribe@flagon.incubator.apache.org)!
 
 ## License
 
-Apache Flagon UserALE.js is provided under Apache License version 2.0. See [LICENSE](https://github.com/apache/incubator-flagon-useralejs/blob/master/LICENSE) and [NOTICE](https://github.com/apache/incubator-flagon-useralejs/blob/master/NOTICE) files at MASTER for more details.
+Apache Flagon UserALE.js is provided under Apache License version 2.0. See [LICENSE](https://github.com/apache/flagon-useralejs/blob/master/LICENSE) and [NOTICE](https://github.com/apache/flagon-useralejs/blob/master/NOTICE) files at MASTER for more details.
 
 ## Disclaimer
 
@@ -346,4 +346,4 @@ ASF projects. While incubation status is not necessarily a reflection of the
 completeness or stability of the code, it does indicate that the project has yet to be
 fully endorsed by the ASF.
 
-A copy of this disclaimer can also be found in [UserALE's source repository](https://github.com/apache/incubator-flagon-useralejs/blob/master/DISCLAIMER).
+A copy of this disclaimer can also be found in [UserALE's source repository](https://github.com/apache/flagon-useralejs/blob/master/DISCLAIMER).
