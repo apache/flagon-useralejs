@@ -44,4 +44,22 @@ describe('Userale logging', () => {
             expect(actualPath).to.deep.equal(expectedPath)
         })
     });
+
+    it('executes added callbacks', () => {
+        cy.visit('http://localhost:8000')
+        cy.wait('@backend')
+        cy.contains(/click me/i).click()
+        cy.wait('@backend').then(xhr => {
+            const body = xhr.request.body
+            const buttonClickLog = body.find(
+                log => log.target === 'button#test_button'
+                && log.logType === 'custom')
+                
+            expect(buttonClickLog).to.have.property('customLabel');
+
+            const actualValue = buttonClickLog.customLabel
+            const expectedValue = 'map & packageLog Example'
+            expect(actualValue).to.equal(expectedValue)
+        })
+    });
 });
