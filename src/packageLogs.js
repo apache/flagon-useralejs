@@ -29,7 +29,29 @@ let intervalTimer;
 let intervalCounter;
 let intervalLog;
 
+export let filterHandler = null;
+export let mapHandler = null;
 export let cbHandlers = {};
+
+/**
+ * Assigns a handler to filter logs out of the queue.
+ * @deprecated Use addCallbacks and removeCallbacks instead
+ * @param  {Function} callback The handler to invoke when logging.
+ */
+export function setLogFilter(callback) {
+  console.warn("setLogFilter() is deprecated and will be removed in a futre release");
+  filterHandler = callback;
+}
+
+/**
+ * Assigns a handler to transform logs from their default structure.
+ * @deprecated Use addCallbacks and removeCallbacks instead
+ * @param  {Function} callback The handler to invoke when logging.
+ */
+export function setLogMapper(callback) {
+  console.warn("setLogMapper() is deprecated and will be removed in a futre release");
+  mapHandler = callback;
+}
 
 /**
  * Adds named callbacks to be executed when logging.
@@ -124,6 +146,14 @@ export function packageLog(e, detailFcn) {
     'sessionID': config.sessionID,
   };
 
+  if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+    return false;
+  }
+
+  if (typeof mapHandler === 'function') {
+    log = mapHandler(log, e);
+  }
+
   for (const func of Object.values(cbHandlers)) {
     if (typeof func === 'function') {
       log = func(log, e);
@@ -172,6 +202,14 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
     };
 
     let log = Object.assign(metaData, customLog);
+
+    if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+        return false;
+    }
+
+    if (typeof mapHandler === 'function') {
+        log = mapHandler(log);
+    }
 
     for (const func of Object.values(cbHandlers)) {
       if (typeof func === 'function') {
@@ -246,6 +284,14 @@ export function packageIntervalLog(e) {
             'useraleVersion': config.useraleVersion,
             'sessionID': config.sessionID
         };
+
+        if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
+          return false;
+        }
+
+        if (typeof mapHandler === 'function') {
+          intervalLog = mapHandler(intervalLog, e);
+        }
 
         for (const func of Object.values(cbHandlers)) {
           if (typeof func === 'function') {

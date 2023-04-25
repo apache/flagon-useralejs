@@ -22,16 +22,46 @@ import {
     buildPath,
     cbHandlers,
     extractTimeFields,
+    filterHandler,
     getLocation,
     getSelector,
     initPackager,
     logs,
+    mapHandler,
     packageLog,
     removeCallbacks,
     selectorizePath,
+    setLogFilter,
+    setLogMapper,
 } from '../src/packageLogs';
 
 describe('packageLogs', () => {
+    describe('setLogFilter', () => {
+        it('assigns the handler to the provided value', () => {
+            const func = x => true;
+            setLogFilter(func);
+            expect(filterHandler).to.equal(func);
+        });
+        it('allows the handler to be nulled', () => {
+            setLogFilter(x => true);
+            setLogFilter(null);
+            expect(filterHandler).to.equal(null);
+        });
+    });
+
+    describe('setLogMapper', () => {
+        it('assigns the handler to the provided value', () => {
+            const func = x => true;
+            setLogMapper(func);
+            expect(mapHandler).to.equal(func);
+        });
+        it('allows the handler to be nulled', () => {
+            setLogMapper(x => true);
+            setLogMapper(null);
+            expect(mapHandler).to.equal(null);
+        });
+    });
+    
     describe('addCallbacks', () => {
         it('adds a single callback', () => {
             initPackager([], {on: false});
