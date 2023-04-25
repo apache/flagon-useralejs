@@ -184,8 +184,10 @@ A complete list of available functions are as follows:
 | Function | Description | Notes |
 |---|---|---|
 | userale.options | modify userale's configuration option | see top level README for complete list of options |
-| userale.filter | filters out logs from logging queue by keys or values | filters are callbacks with global scope |
-| userale.map | modify/add log keys or values | mappings are callbacks with global scope |
+| [DEPRECATED] userale.filter | filters out logs from logging queue by keys or values | filters are callbacks with global scope |
+| [DEPRECATED] userale.map | modify/add log keys or values | mappings are callbacks with global scope |
+| userale.addCallbacks | add one or more callbacks to be executed during log packaging | callbacks have global scope |
+| userale.removeCallbacks | remove one or more callbacks by name | Removes callbacks added from userale.addCallbacks |
 | userale.log | appends a custom log to the log queue | the custom log object is an object key:value pairs |
 | userale.packageLog | transforms the provided event into a log and appends it to the log queue | designed for HTML events |
 | userale.packageCustomLog | packages the provided customLog to include standard meta data and appends it to the log queue | designed for non HTML events| 
