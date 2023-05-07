@@ -6,8 +6,8 @@ This example provides:
  * a means of viewing log event structure within a simple UserALE logging server;
  * a means of testing UserALE.js API functions within a simple HTML Webpage. 
 
-If you are interested in examples for a **script tag** deployment methodology, see the README in the [/examples directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example). For details about our web extension, see 
-our [UserALE.js WebExtension documentation](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension).
+If you are interested in examples for a **script tag** deployment methodology, see the README in the [/examples directory](https://github.com/apache/flagon-useralejs/tree/master/example). For details about our web extension, see 
+our [UserALE.js WebExtension documentation](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension).
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ You will need to `npm install` the [flagon-userale](https://www.npmjs.com/packag
 
 From `./example/webpackUserAleExample` directory, `npm install` dependencies to run this Example Utility. Note that the UserALE.js Webpack Example has it's own package.json file, that is separate from the larger `flagon-userale` package.
 
-Please follow [Installation directions](https://github.com/apache/incubator-flagon-useralejs#installation) if you run into issues.
+Please follow [Installation directions](https://github.com/apache/flagon-useralejs#installation) if you run into issues.
 
 ## Using the Example Page 
 
@@ -54,7 +54,7 @@ UserAle Local running on port 8000
 
 The server allows you to watch as logs are sent from the client to the server, as well as review a flat-file of saved logs, which you can view @ `/logs` in the flagon-userale parent directory.
 
-This means you can test logs from your own instrumented application, the [UserALE.js WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension), or the UserALE.js Example Page, so long as you have not changed the UserALE.js `url` configuration option from `localhost:8000` (instructions below). This is the default setting for userale; logs generated from module, script tag, or WebExtension deployments will always ship logs to `localhost:8000` unless modified via the `userale.options` (API) configuration, HTML script tag parameter (data-url), or the WebExtension options page.
+This means you can test logs from your own instrumented application, the [UserALE.js WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension), or the UserALE.js Example Page, so long as you have not changed the UserALE.js `url` configuration option from `localhost:8000` (instructions below). This is the default setting for userale; logs generated from module, script tag, or WebExtension deployments will always ship logs to `localhost:8000` unless modified via the `userale.options` (API) configuration, HTML script tag parameter (data-url), or the WebExtension options page.
 
 Start using your instrumented application, browser, or the UserALE.js Example Page, and you will see logs propagating in the terminal:
 
@@ -129,8 +129,8 @@ $npm run build-example
 
 * additional, annotated examples for most exports can be found embedded within `index.js` the UserALE.js **module** import example. 
 
-See the [Flagon website](http://flagon.incubator.apache.org/) for additional documentation on the [API](http://flagon.incubator.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.incubator.apache.org/docs/stack/scaling/).
+See the [Flagon website](http://flagon.apache.org/) for additional documentation on the [API](http://flagon.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.apache.org/docs/stack/scaling/).
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.

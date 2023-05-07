@@ -6,14 +6,14 @@ This directory provides
  * a means of viewing log event structure within a simple UserALE logging server;
  * a means of testing UserALE.js API functions within a simple HTML Webpage. 
 
-If you are interested in examples for a **module** deployment methodology, see the README in the [/webpack examples directory](https://github.com/apache/incubator-flagon-useralejs/tree/master/example/webpackUserAleExample). For details about our web extension, see 
-our [UserALE.js WebExtension documentation](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension).
+If you are interested in examples for a **module** deployment methodology, see the README in the [/webpack examples directory](https://github.com/apache/flagon-useralejs/tree/master/example/webpackUserAleExample). For details about our web extension, see 
+our [UserALE.js WebExtension documentation](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension).
 
 ## Prerequisites
 
 Ensure that you have [node.js](https://nodejs.org/) installed.
 
-You will need to clone the [UserALE.js repository](https://github.com/apache/incubator-flagon-useralejs) and follow [Installation directions](https://github.com/apache/incubator-flagon-useralejs#installation).
+You will need to clone the [UserALE.js repository](https://github.com/apache/flagon-useralejs) and follow [Installation directions](https://github.com/apache/flagon-useralejs#installation).
 
 ## Using the Example Page 
 
@@ -21,7 +21,7 @@ This Example Page is a simple HTML Webpage with UserALE.js included as a **scrip
 
 To generate UserALE.js logs with the Example Page, you may need to modify the 'src' HTML5 parameter of the UserALE.js script tag.
 
-The `src` parameter should reference the file path to your version of the minified UserALE.js script, in the /build dir of your cloned `incubator-flagon-useralejs` repository or `flagon-userale` node module. See the snippet below.
+The `src` parameter should reference the file path to your version of the minified UserALE.js script, in the /build dir of your cloned `flagon-useralejs` repository or `flagon-userale` node module. See the snippet below.
 
 ```
   <script
@@ -44,7 +44,7 @@ On this page, all user events will be captured and sent to the logging server. S
 
 The UserALE.js Example page can be used to test the structure of logs after instrumentation or UserALE.js src code modification. It can also be used to experiment with UserALE.js API functions.
 
-In order to experiment with various elements of the UserALE.js API, simply modify the well documented API examples in `index.js`. Details about the API can be found at the [UserALE.js parent README](https://github.com/apache/incubator-flagon-useralejs/tree/FLAGON-469). However, a complete list of exported functions in the API can be found below: 
+In order to experiment with various elements of the UserALE.js API, simply modify the well documented API examples in `index.js`. Details about the API can be found at the [UserALE.js parent README](https://github.com/apache/flagon-useralejs/tree/FLAGON-469). However, a complete list of exported functions in the API can be found below: 
 
 | Function | Description | Notes |
 |---|---|---|
@@ -62,13 +62,13 @@ In order to experiment with various elements of the UserALE.js API, simply modif
 
 NOTE: Each modification of `index.html` or `index.js` will require that you both save the modifications and refresh the webpage in your browser.
 
-See the [Flagon website](http://flagon.incubator.apache.org/) for additional documentation on the [API](http://flagon.incubator.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.incubator.apache.org/docs/stack/scaling/).
+See the [Flagon website](http://flagon.apache.org/) for additional documentation on the [API](http://flagon.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.apache.org/docs/stack/scaling/).
 
 ## Capturing Logs Using the Logging Server
 
 The example logging server receives log from any UserALE.js instrumented page at `localhost:8000`.
 
-This means you can test logs from your own instrumented application, the [UserALE.js WebExtension](https://github.com/apache/incubator-flagon-useralejs/tree/master/src/UserALEWebExtension), 
+This means you can test logs from your own instrumented application, the [UserALE.js WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension), 
 or the UserALE.js Example Page, so long as the `data-url` parameter is set to `localhost:8000`. This is the default setting for both the WebExtension and UserALE.js Example Page. See the example above.
 
 Once your UserALE.js script tag is properly configured to point to a minified UserALE.js script, and `localhost:8000`, you can log to the Example Logging Server.
@@ -121,4 +121,4 @@ Find them in `/logs` under the top level flagon-userale dir. A new log file will
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue](https://github.com/apache/incubator-flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.

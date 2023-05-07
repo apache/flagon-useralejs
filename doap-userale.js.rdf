@@ -25,13 +25,13 @@
         <created>2016-11-10</created>
         <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
         <name>Apache Flagon - UserALE.js</name>
-        <homepage rdf:resource="http://flagon.incubator.apache.org" />
-        <asfext:pmc rdf:resource="http://flagon.incubator.apache.org" />
+        <homepage rdf:resource="https://flagon.apache.org/" />
+        <asfext:pmc rdf:resource="https://flagon.apache.org/" />
         <shortdesc>UserALE.js is the UserALE client for DOM and JavaScript-based applications.</shortdesc>
         <description>UserALE.js is the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.</description>
-        <bug-database rdf:resource="https://github.com/apache/incubator-flagon-useralejs/issues" />
+        <bug-database rdf:resource="https://github.com/apache/flagon-useralejs/issues" />
         <mailing-list rdf:resource="dev@flagon.apache.org" />
-        <download-page rdf:resource="http://flagon.incubator.apache.org/releases/" />
+        <download-page rdf:resource="https://flagon.apache.org/releases/" />
         <programming-language>Javascript</programming-language>
         <category rdf:resource="https://projects.apache.org/projects.html?category#Library" />
         <release>
@@ -43,8 +43,8 @@
         </release>
         <repository>
             <GITRepository>
-                <location rdf:resource="https://gitbox.apache.org/repos/asf/incubator-flagon-useralejs.git"/>
-                <browse rdf:resource="https://github.com/apache/incubator-flagon-useralejs"/>
+                <location rdf:resource="https://gitbox.apache.org/repos/asf/flagon-useralejs.git"/>
+                <browse rdf:resource="https://github.com/apache/flagon-useralejs"/>
             </GITRepository>
         </repository>
         <maintainer>
