@@ -46,10 +46,15 @@ userale.options({
  * Note that for surgical filters, you may need to clear or reset back to a global filter callback
  * the same is true for the 'map' API. See examples below:
  */
-userale.filter(function (log) {
-    var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel', 'scroll'];
-    var logType_array = ['interval'];
-    return !type_array.includes(log.type) && !logType_array.includes(log.logType);
+userale.addCallbacks({
+    filter(log) {
+        var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
+        var logType_array = ['interval'];
+        if(type_array.includes(log.type) || logType_array.includes(log.logType)) {
+            return false;
+        }
+        return log;
+    }
 });
 
 /**Log Mapping API
@@ -59,13 +64,15 @@ userale.filter(function (log) {
  */
 document.addEventListener('click', function(e){
     if (e.target.innerHTML === 'Click Me!') {
-        userale.map(function (log) {
-            return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
+        userale.addCallbacks({
+            map(log) {
+                return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
+            }
         });
         userale.packageLog(e, userale.details(userale.options(),e.type));
         /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
          * the callback may be applied to other events of the same class (e.g., click) */
-        userale.map();
+        userale.removeCallbacks(["map"]);
     } else {
         return false
     }
@@ -120,14 +127,14 @@ document.addEventListener('change', function(e) {
 document.addEventListener('change', function(e){
     if (e.target.value === 'packageLog') {
         /**You can then use the 'Mapping' API function to modify custom logs created with the packageLog function*/
-        userale.map(function (log) {
+        userale.addCallbacks({changeMap(log) {
             var targetsForLabels = ['change'];
             if (targetsForLabels.includes(log.type)) {
                 return Object.assign({}, log, { logType: 'custom', customLabel: 'packageLog Example' });
             } else {
                 return log;
             }
-        });
+        }});
         /**You can also use the details function to package additional log meta data, or add custom details*/
         userale.packageLog(e, userale.details(userale.options(),e.type));
     } else {
@@ -141,12 +148,12 @@ document.addEventListener('change', function(e){
 document.addEventListener('change', function(e) {
     if (e.target.value === 'packageCustomLog') {
         userale.packageCustomLog({
-                customLabel: 'packageCustomLog Example',
-                customField1: 'foo',
-                customField2: 'bar'},
+            customLabel: 'packageCustomLog Example',
+            customField1: 'foo',
+            customField2: 'bar'},
             function(){return {'foo': 'bar', 'bar': 'foo'}},
             true
-        );
+            );
     } else {
         return false
     }

@@ -64,12 +64,14 @@ export function buildCSS(e) {
 The above functions can be used in the below snippet to add the results to each log message. In turn, this snippet can be added to a custom.js script to modify core UserALE.js behavior. See the 'index.js' example in this dir. 
 
 ```js
-window.userale.map((log, e) => {
-    return {
-        ...log,
-        attributes: buildAttrs(e),
-        style : buildCSS(e),
-        logType: 'custom',
-    };
+window.userale.addCallbacks({
+    map(log, e) {
+        return {
+            ...log,
+            attributes: buildAttrs(e),
+            style : buildCSS(e),
+            logType: 'custom',
+        };
+    }
 });
 ```

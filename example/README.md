@@ -49,8 +49,10 @@ In order to experiment with various elements of the UserALE.js API, simply modif
 | Function | Description | Notes |
 |---|---|---|
 | userale.options | modify userale's configuration option | see top level README for complete list of options |
-| userale.filter | filters out logs from logging queue by keys or values | filters are callbacks with global scope |
-| userale.map | modify/add log keys or values | mappings are callbacks with global scope |
+| [DEPRECATED] userale.filter | filters out logs from logging queue by keys or values | filters are callbacks with global scope |
+| [DEPRECATED] userale.map | modify/add log keys or values | mappings are callbacks with global scope |
+| userale.addCallbacks | add one or more callbacks to be executed during log packaging | callbacks have global scope |
+| userale.removeCallbacks | remove one or more callbacks by name | Removes callbacks added from userale.addCallbacks |
 | userale.log | appends a custom log to the log queue | the custom log object is an object key:value pairs |
 | userale.packageLog | transforms the provided event into a log and appends it to the log queue | designed for HTML events |
 | userale.packageCustomLog | packages the provided customLog to include standard meta data and appends it to the log queue | designed for non HTML events| 
@@ -58,7 +60,7 @@ In order to experiment with various elements of the UserALE.js API, simply modif
 | userale.getSelector | builds a string CSS selector from the provided HTML element id | populates 'target' field in packaged logs |
 | userale.buildPath| builds an array of elements from the provided event target, to the root element (DOM path) | populates the 'path' field in packaged logs |
 | userale.start | used to start the logging process if | unecessary if 'autostart' is set to true in initial setting (default) |
-| userale.stop | halts the logging process. Logs will no longer be sent | will need to invoke userale.start to restart logging | 
+| userale.stop | halts the logging process. Logs will no longer be sent | will need to invoke userale.start to restart logging |
 
 NOTE: Each modification of `index.html` or `index.js` will require that you both save the modifications and refresh the webpage in your browser.
 

@@ -68,13 +68,15 @@ limitations under the License.
         return properties;
     }
 
-    window.userale.map((log, e) => {
-        return {
-            ...log,
-            attributes: buildAttrs(e),
-            style : buildCSS(e),
-            logType: 'custom',
-        };
+    window.userale.addCallbacks({
+        map(log, e) {
+            return {
+                ...log,
+                attributes: buildAttrs(e),
+                style : buildCSS(e),
+                logType: 'custom',
+            };
+        }
     });
 </script>
 </html>
