@@ -61,7 +61,7 @@
     "@rollup/plugin-terser": "^0.4.0",
     "body-parser": "^1.20.1",
     "chai": "^4.3.7",
-    "cypress": "^9.2.0",
+    "cypress": "^12.16.0",
     "detect-browser": "^5.3.0",
     "dom-storage": "^2.1.0",
     "eslint": "^8.33.0",
