@@ -1,6 +1,17 @@
 Changelog
 =========
 
+
+Apache Flagon UserALE.js (Incubating) 2.4.0 (2023-XX-XX)
+-------------------------------
+* Release Notes - Flagon - Version UserALE.js 2.4.0
+* [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/9)
+    * Refactors Map and Filter APIs as generalized callbacks for functionality
+    * Updates packages and dependencies
+    * Adds additional examples (callback functions)
+    * Updates to update deprecated downstream dev dependencies
+    * Changes to documentation, updated examples
+
 Apache Flagon UserALE.js (Incubating) 2.3.0 (2022-04-05)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.3.0
