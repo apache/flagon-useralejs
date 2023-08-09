@@ -70,7 +70,7 @@
     "jsdom": "^21.1.2",
     "mocha": "^10.2.0",
     "nodemon": "^3.0.1",
-    "rollup": "^2.79.1",
+    "rollup": "^3.27.2",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-license": "^3.0.1",
     "sinon": "^15.2.0",
