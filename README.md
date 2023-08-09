@@ -32,12 +32,10 @@ Additional documentation and a demonstration can be found at the [Apache Flagon 
 [Contributing](https://github.com/apache/flagon-useralejs#contributing)  
 [License](https://github.com/apache/flagon-useralejs#license)
 
-## What's New in Version 2.3.0?
+## What's New in Version 2.4.0?
 
-- Fixes issue in autostart configurations and start(), stop() export usage
-- Adds additional unit tests for autostart configurations
-- Adds React App.js example/test utility
-- Adds additional UserALE.js custom logging examples
+- Refactors Map and Filter APIs as generalized callbacks for functionality
+- Adds additional UserALE.js API examples utilizing generalized callbacks
 - Minor updates to update deprecated downstream dev dependencies
 - Minor changes to documentation, updated examples
 
@@ -71,7 +69,7 @@ You can also include UserALE.js as a `script-tag`. A pre-built version of the us
 repositories:
 
 ```html
-<script src="./node_modules/flagon-userale/build/userale-2.3.0.min.js"></script>
+<script src="./node_modules/flagon-userale/build/userale-2.4.0.min.js"></script>
 ```
 Our [script tag example](https://github.com/apache/flagon-useralejs/tree/master/example) illustrates this use-case
 
@@ -84,7 +82,7 @@ npm install --save-dev flagon-userale
 Or if you want to use a CDN, then you can use something like
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/flagon-userale@2.1.1/build/userale-2.3.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flagon-userale@2.1.1/build/userale-2.4.0.min.js"></script>
 ```
 
 We also support a [WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension) that can be added to your browser in developer mode. Follow the link for instructions.
@@ -146,10 +144,10 @@ If you have included UserALE.js as a `script-tag` in your project, you can use H
 
 ```html
   <script
-          src="./node_modules/flagon-userale/build/userale-2.3.0.min.js"
+          src="./node_modules/flagon-userale/build/userale-2.4.0.min.js"
           data-url="http://localhost:8000/"
           data-user="example-user"
-          data-version="2.3.0"
+          data-version="2.4.0"
           data-tool="Apache UserALE.js Example"
   ></script>
 ```

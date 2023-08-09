@@ -32,7 +32,7 @@
     }, _typeof(obj);
   }
 
-  var version$1 = "2.3.0";
+  var version$1 = "2.4.0";
 
   /*
    * Licensed to the Apache Software Foundation (ASF) under one or more
