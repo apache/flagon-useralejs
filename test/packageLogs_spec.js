@@ -261,16 +261,19 @@ describe('packageLogs', () => {
             new JSDOM(``);
             const document = window.document;
             const ele = document.createElement('div');
+            // Create a click in the top left corner of the viewport
             const evt = new window.MouseEvent('click', {
                 'view': window,
                 'bubbles': true,
-                'cancelable': true
+                'cancelable': true,
+                'clientX': 0,
+                'clientY': 0,
             });
             document.body.appendChild(ele);
             ele.addEventListener('click', (e) => {
-                e.pageX = 0;
-                e.pageY = 0;
-                expect(getLocation(e)).to.deep.equal({x: 0, y: 0});
+                // Expect the click location to be the top left corner of the viewport
+                let expectedLocation = {'x': window.scrollX, 'y': window.scrollY};
+                expect(getLocation(e)).to.deep.equal(expectedLocation);
             });
             ele.dispatchEvent(evt);
         });
