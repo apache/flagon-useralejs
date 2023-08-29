@@ -97,7 +97,7 @@ describe('sendLogs', () => {
         };
         sendOnClose([], {on: true, url: 'test'})
         sendOnClose([{foo: 'bar'}], {on: true, url: 'test'});
-        global.window.dispatchEvent(new CustomEvent('pagehide'))
+        global.window.dispatchEvent(new window.CustomEvent('pagehide'))
         sinon.assert.calledOnce(sendBeaconSpy)
     });
 
@@ -107,7 +107,7 @@ describe('sendLogs', () => {
             sendBeacon: sendBeaconSpy
         };
         sendOnClose([{foo: 'bar'}], {on: false, url: 'test'});
-        global.window.dispatchEvent(new CustomEvent('pagehide'))
+        global.window.dispatchEvent(new window.CustomEvent('pagehide'))
         sinon.assert.notCalled(sendBeaconSpy)
     });
 });
