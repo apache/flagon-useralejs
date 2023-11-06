@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,16 +15,32 @@
  * limitations under the License.
  */
 
-import { packageLog } from './packageLogs.js';
-import { packageIntervalLog} from './packageLogs';
+import { packageLog, packageIntervalLog } from "./packageLogs.js";
+import {
+  Http,
+  XMLHttpRequest,
+  Fetch,
+  registerInstrumentations,
+  providerWithZone,
+  defaultInstrumentConfig,
+} from "./instrumentNetwork.js";
 
 let events;
 let bufferBools;
 let bufferedEvents;
+let networkInstruments;
 //@todo: Investigate drag events and their behavior
-const intervalEvents = ['click', 'focus', 'blur', 'input', 'change', 'mouseover', 'submit'];
+const intervalEvents = [
+  "click",
+  "focus",
+  "blur",
+  "input",
+  "change",
+  "mouseover",
+  "submit",
+];
 let refreshEvents;
-const windowEvents = ['load', 'blur', 'focus'];
+const windowEvents = ["load", "blur", "focus"];
 
 /**
  * Maps an event to an object containing useful information.
@@ -32,12 +48,12 @@ const windowEvents = ['load', 'blur', 'focus'];
  */
 export function extractMouseEvent(e) {
   return {
-    'clicks' : e.detail,
-    'ctrl' : e.ctrlKey,
-    'alt' : e.altKey,
-    'shift' : e.shiftKey,
-    'meta' : e.metaKey,
-//    'text' : e.target.innerHTML
+    clicks: e.detail,
+    ctrl: e.ctrlKey,
+    alt: e.altKey,
+    shift: e.shiftKey,
+    meta: e.metaKey,
+    //    'text' : e.target.innerHTML
   };
 }
 
@@ -51,32 +67,81 @@ export function defineDetails(config) {
   // Keys are event types
   // Values are functions that return details object if applicable
   events = {
-    'click' : extractMouseEvent,
-    'dblclick' : extractMouseEvent,
-    'mousedown' : extractMouseEvent,
-    'mouseup' : extractMouseEvent,
-    'focus' : null,
-    'blur' : null,
-    'input' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-    'change' : config.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-    'dragstart' : null,
-    'dragend' : null,
-    'drag' : null,
-    'drop' : null,
-    'keydown' : config.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
-    'mouseover' : null
+    click: extractMouseEvent,
+    dblclick: extractMouseEvent,
+    mousedown: extractMouseEvent,
+    mouseup: extractMouseEvent,
+    focus: null,
+    blur: null,
+    input: config.logDetails
+      ? function (e) {
+          return { value: e.target.value };
+        }
+      : null,
+    change: config.logDetails
+      ? function (e) {
+          return { value: e.target.value };
+        }
+      : null,
+    dragstart: null,
+    dragend: null,
+    drag: null,
+    drop: null,
+    keydown: config.logDetails
+      ? function (e) {
+          return {
+            key: e.keyCode,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+            shift: e.shiftKey,
+            meta: e.metaKey,
+          };
+        }
+      : null,
+    mouseover: null,
   };
 
   bufferBools = {};
   bufferedEvents = {
-    'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
-    'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
-    'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; }
+    wheel: function (e) {
+      return { x: e.deltaX, y: e.deltaY, z: e.deltaZ };
+    },
+    scroll: function () {
+      return { x: window.scrollX, y: window.scrollY };
+    },
+    resize: function () {
+      return { width: window.outerWidth, height: window.outerHeight };
+    },
   };
 
   refreshEvents = {
-    'submit' : null
+    submit: null,
   };
+
+  // TODO: Add OTel insturmentation events here
+  // map from gRPC, XMLHttpRequests, fetch, HTTP, HTTPS
+  // to their respective Instrumentation classes
+  networkInstruments = [
+    {
+      name: "xml",
+      instrument: XMLHttpRequest,
+      config: Object.assign(
+        {},
+        config.XMLHttpRequestDetails,
+        defaultInstrumentConfig
+      ),
+    },
+    {
+      name: "fetch",
+      instrument: Fetch,
+      config: Object.assign({}, config.fetchDetails, defaultInstrumentConfig),
+    },
+    {
+      name: "http",
+      instrument: Http,
+      config: Object.assign({}, config.httpDetails, defaultInstrumentConfig),
+    },
+  ];
 }
 
 /**
@@ -90,24 +155,48 @@ export function defineCustomDetails(options, type) {
   // Keys are event types
   // Values are functions that return details object if applicable
   const eventType = {
-    'click' : extractMouseEvent,
-    'dblclick' : extractMouseEvent,
-    'mousedown' : extractMouseEvent,
-    'mouseup' : extractMouseEvent,
-    'focus' : null,
-    'blur' : null,
-    'input' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-    'change' : options.logDetails ? function(e) { return { 'value' : e.target.value }; } : null,
-    'dragstart' : null,
-    'dragend' : null,
-    'drag' : null,
-    'drop' : null,
-    'keydown' : options.logDetails ? function(e) { return { 'key' : e.keyCode, 'ctrl' : e.ctrlKey, 'alt' : e.altKey, 'shift' : e.shiftKey, 'meta' : e.metaKey }; } : null,
-    'mouseover' : null,
-    'wheel' : function(e) { return { 'x' : e.deltaX, 'y' : e.deltaY, 'z' : e.deltaZ }; },
-    'scroll' : function() { return { 'x' : window.scrollX, 'y' : window.scrollY }; },
-    'resize' : function() { return { 'width' : window.outerWidth, 'height' : window.outerHeight }; },
-    'submit' : null
+    click: extractMouseEvent,
+    dblclick: extractMouseEvent,
+    mousedown: extractMouseEvent,
+    mouseup: extractMouseEvent,
+    focus: null,
+    blur: null,
+    input: options.logDetails
+      ? function (e) {
+          return { value: e.target.value };
+        }
+      : null,
+    change: options.logDetails
+      ? function (e) {
+          return { value: e.target.value };
+        }
+      : null,
+    dragstart: null,
+    dragend: null,
+    drag: null,
+    drop: null,
+    keydown: options.logDetails
+      ? function (e) {
+          return {
+            key: e.keyCode,
+            ctrl: e.ctrlKey,
+            alt: e.altKey,
+            shift: e.shiftKey,
+            meta: e.metaKey,
+          };
+        }
+      : null,
+    mouseover: null,
+    wheel: function (e) {
+      return { x: e.deltaX, y: e.deltaY, z: e.deltaZ };
+    },
+    scroll: function () {
+      return { x: window.scrollX, y: window.scrollY };
+    },
+    resize: function () {
+      return { width: window.outerWidth, height: window.outerHeight };
+    },
+    submit: null,
   };
   return eventType[type];
 }
@@ -120,40 +209,72 @@ export function defineCustomDetails(options, type) {
 export function attachHandlers(config) {
   defineDetails(config);
 
-  Object.keys(events).forEach(function(ev) {
-    document.addEventListener(ev, function(e) {
-      packageLog(e, events[ev]);
-    }, true);
+  Object.keys(events).forEach(function (ev) {
+    document.addEventListener(
+      ev,
+      function (e) {
+        packageLog(e, events[ev]);
+      },
+      true
+    );
   });
 
-  intervalEvents.forEach(function(ev) {
-    document.addEventListener(ev, function(e) {
+  intervalEvents.forEach(function (ev) {
+    document.addEventListener(
+      ev,
+      function (e) {
         packageIntervalLog(e);
-    }, true);
+      },
+      true
+    );
   });
 
-  Object.keys(bufferedEvents).forEach(function(ev) {
+  Object.keys(bufferedEvents).forEach(function (ev) {
     bufferBools[ev] = true;
 
-    window.addEventListener(ev, function(e) {
-      if (bufferBools[ev]) {
-        bufferBools[ev] = false;
-        packageLog(e, bufferedEvents[ev]);
-        setTimeout(function() { bufferBools[ev] = true; }, config.resolution);
-      }
-    }, true);
+    window.addEventListener(
+      ev,
+      function (e) {
+        if (bufferBools[ev]) {
+          bufferBools[ev] = false;
+          packageLog(e, bufferedEvents[ev]);
+          setTimeout(function () {
+            bufferBools[ev] = true;
+          }, config.resolution);
+        }
+      },
+      true
+    );
   });
 
-  Object.keys(refreshEvents).forEach(function(ev) {
-    document.addEventListener(ev, function(e) {
-      packageLog(e, events[ev]);
-    }, true);
+  Object.keys(refreshEvents).forEach(function (ev) {
+    document.addEventListener(
+      ev,
+      function (e) {
+        packageLog(e, events[ev]);
+      },
+      true
+    );
   });
 
-  windowEvents.forEach(function(ev) {
-    window.addEventListener(ev, function(e) {
-      packageLog(e, function() { return { 'window' : true }; });
-    }, true);
+  windowEvents.forEach(function (ev) {
+    window.addEventListener(
+      ev,
+      function (e) {
+        packageLog(e, function () {
+          return { window: true };
+        });
+      },
+      true
+    );
+  });
+
+  // Iterate through OTel events and instantiate the handlers
+  registerInstrumentations({
+    instrumentations: networkInstruments.map(({ instrument, config }) => {
+      return new instrument(config);
+    }),
+    tracerProvider: providerWithZone,
   });
 
   return true;
