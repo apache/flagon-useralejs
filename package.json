@@ -8,7 +8,7 @@
     "pretest": "npm run lint && npm run clean && npm run build",
     "test": "mocha --require @babel/register && npm run journey:ci",
     "build": "rollup -c rollup.config.js",
-    "clean": "rm -r ./build",
+    "clean": "node scripts/clean.js",
     "journey": "cypress run",
     "journey:debug": "cypress open",
     "journey:ci": "start-server-and-test example:run 8000 journey",
@@ -73,7 +73,18 @@
     "rollup": "^2.79.1",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-license": "^3.0.1",
+    "rollup-plugin-polyfill-node": "^0.12.0",
     "sinon": "^15.0.1",
     "start-server-and-test": "^1.15.3"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "^1.6.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.39.4",
+    "@opentelemetry/context-zone": "^1.17.1",
+    "@opentelemetry/instrumentation-fetch": "^0.44.0",
+    "@opentelemetry/instrumentation-grpc": "^0.44.0",
+    "@opentelemetry/instrumentation-http": "^0.44.0",
+    "@opentelemetry/instrumentation-xml-http-request": "^0.44.0",
+    "@opentelemetry/sdk-node": "^0.44.0"
   }
 }
