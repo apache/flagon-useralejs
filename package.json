@@ -45,8 +45,8 @@
   },
   "homepage": "https://flagon.apache.org/",
   "engines": {
-    "node": "^16.x || ^18.x",
-    "npm": "^8.x || ^9.x"
+    "node": "^18.x || ^20.x",
+    "npm": ">= 9.x"
   },
   "devDependencies": {
     "@babel/core": "^7.23.5",
