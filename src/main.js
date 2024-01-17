@@ -32,6 +32,7 @@ window.onload = function () {
 
 export let started = false;
 export {defineCustomDetails as details} from './attachHandlers.js';
+export {registerAuthCallback as registerAuthCallback} from './auth.js';
 export {
     addCallbacks as addCallbacks,
     removeCallbacks as removeCallbacks,
