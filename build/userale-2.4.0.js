@@ -975,9 +975,79 @@
    * The ASF licenses this file to You under the Apache License, Version 2.0
    * (the "License"); you may not use this file except in compliance with
    * the License.  You may obtain a copy of the License at
-   * 
+   *
    *   http://www.apache.org/licenses/LICENSE-2.0
-   * 
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */
+
+  var authCallback = null;
+
+  /**
+   * Fetches the most up-to-date auth header string from the auth callback
+   * and updates the config object with the new value.
+   * @param {Object} config Configuration object to be updated.
+   * @param {Function} authCallback Callback used to fetch the newest header.
+   * @returns {void}
+   */
+  function updateAuthHeader(config) {
+    if (authCallback) {
+      try {
+        config.authHeader = authCallback();
+      } catch (e) {
+        // We should emit the error, but otherwise continue as this could be a temporary issue
+        // due to network connectivity or some logic inside the authCallback which is the user's
+        // responsibility.
+        console.error("Error encountered while setting the auth header: ".concat(e));
+      }
+    }
+  }
+
+  /**
+   * Registers the provided callback to be used when updating the auth header.
+   * @param {Function} callback Callback used to fetch the newest header. Should return a string.
+   * @returns {boolean} Whether the operation succeeded.
+   */
+  function registerAuthCallback(callback) {
+    try {
+      verifyCallback(callback);
+      authCallback = callback;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * Verify that the provided callback is a function which returns a string
+   * @param {Function} callback Callback used to fetch the newest header. Should return a string.
+   * @throws {Error} If the callback is not a function or does not return a string.
+   * @returns {void}
+   */
+  function verifyCallback(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("Userale auth callback must be a function");
+    }
+    var result = callback();
+    if (typeof result !== "string") {
+      throw new Error("Userale auth callback must return a string");
+    }
+  }
+
+  /*
+   * Licensed to the Apache Software Foundation (ASF) under one or more
+   * contributor license agreements.  See the NOTICE file distributed with
+   * this work for additional information regarding copyright ownership.
+   * The ASF licenses this file to You under the Apache License, Version 2.0
+   * (the "License"); you may not use this file except in compliance with
+   * the License.  You may obtain a copy of the License at
+   *
+   *   http://www.apache.org/licenses/LICENSE-2.0
+   *
    * Unless required by applicable law or agreed to in writing, software
    * distributed under the License is distributed on an "AS IS" BASIS,
    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -1025,8 +1095,13 @@
    * @param  {Object} config Configuration object to be read from.
    */
   function sendOnClose(logs, config) {
-    window.addEventListener('pagehide', function () {
+    window.addEventListener("pagehide", function () {
       if (config.on && logs.length > 0) {
+        // NOTE: sendBeacon does not support auth headers,
+        // so this will fail if auth is required.
+        // The alternative is to use fetch() with keepalive: true
+        // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#description
+        // https://stackoverflow.com/a/73062712/9263449
         navigator.sendBeacon(config.url, JSON.stringify(logs));
         logs.splice(0); // clear log queue
       }
@@ -1044,14 +1119,15 @@
   // @todo expose config object to sendLogs replate url with config.url
   function sendLogs(logs, config, retries) {
     var req = new XMLHttpRequest();
-
-    // @todo setRequestHeader for Auth
     var data = JSON.stringify(logs);
-    req.open('POST', config.url);
+    req.open("POST", config.url);
+
+    // Update headers
+    updateAuthHeader(config);
     if (config.authHeader) {
-      req.setRequestHeader('Authorization', config.authHeader);
+      req.setRequestHeader("Authorization", config.authHeader);
     }
-    req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+    req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
     req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status !== 200) {
         if (retries > 0) {
@@ -1164,6 +1240,7 @@
   exports.options = options;
   exports.packageCustomLog = packageCustomLog;
   exports.packageLog = packageLog;
+  exports.registerAuthCallback = registerAuthCallback;
   exports.removeCallbacks = removeCallbacks;
   exports.start = start;
   exports.stop = stop;
