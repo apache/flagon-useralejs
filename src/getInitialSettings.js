@@ -51,6 +51,7 @@ export function getInitialSettings() {
     settings.sessionID = get('data-session') || sessionId;
     settings.authHeader = get('data-auth') || null;
     settings.custIndex = get('data-index') || null;
+    settings.headers = get('data-headers') || null;
     return settings;
 }
 

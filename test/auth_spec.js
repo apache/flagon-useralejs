@@ -16,27 +16,33 @@
  */
 import {expect} from 'chai';
 import sinon from 'sinon';
-import {authCallback, registerAuthCallback, resetAuthCallback, updateAuthHeader, verifyCallback} from '../src/auth';
+import {
+    authCallback,
+    registerAuthCallback,
+    resetAuthCallback,
+    updateAuthHeader,
+    verifyAuthCallback
+} from '../src/utils';
 
 describe('verifyCallback', () => {
     it('should not throw error for valid callback', () => {
         const validCallback = sinon.stub().returns('someString');
-        expect(() => verifyCallback(validCallback)).to.not.throw();
+        expect(() => verifyAuthCallback(validCallback)).to.not.throw();
     });
 
     it('should throw error for non-function callback', () => {
         const nonFunctionCallback = 'notAFunction';
-        expect(() => verifyCallback(nonFunctionCallback)).to.throw('Userale auth callback must be a function');
+        expect(() => verifyAuthCallback(nonFunctionCallback)).to.throw('Userale auth callback must be a function');
     });
 
     it('should throw error for non-string callback return', () => {
         const invalidReturnCallback = sinon.stub().returns(123);
-        expect(() => verifyCallback(invalidReturnCallback)).to.throw('Userale auth callback must return a string');
+        expect(() => verifyAuthCallback(invalidReturnCallback)).to.throw('Userale auth callback must return a string');
     });
 
     it('should not throw error for valid callback with empty string return', () => {
         const validCallback = sinon.stub().returns('');
-        expect(() => verifyCallback(validCallback)).to.not.throw();
+        expect(() => verifyAuthCallback(validCallback)).to.not.throw();
     });
 });
 

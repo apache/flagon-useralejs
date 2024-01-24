@@ -15,7 +15,8 @@
  * limitations under the License.
  */
 
-import { updateAuthHeader } from "./auth.js";
+import { updateAuthHeader } from "./utils";
+import { updateCustomHeaders } from "./utils/headers";
 
 let sendIntervalId = null;
 
@@ -93,6 +94,15 @@ export function sendLogs(logs, config, retries) {
     req.setRequestHeader("Authorization", config.authHeader);
   }
   req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+
+  // Update custom headers last to allow them to over-write the defaults. This assumes
+  // the user knows what they are doing and may want to over-write the defaults.
+  updateCustomHeaders(config);
+  if (config.headers) {
+    Object.entries(config.headers).forEach(([header, value]) => {
+      req.setRequestHeader(header, value);
+    });
+  }
 
   req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status !== 200) {
