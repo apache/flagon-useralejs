@@ -347,9 +347,9 @@ function extractTimeFields(timeStamp) {
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -397,8 +397,13 @@ function sendOnInterval(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 function sendOnClose(logs, config) {
-  window.addEventListener('pagehide', function () {
+  window.addEventListener("pagehide", function () {
     if (config.on && logs.length > 0) {
+      // NOTE: sendBeacon does not support auth headers,
+      // so this will fail if auth is required.
+      // The alternative is to use fetch() with keepalive: true
+      // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#description
+      // https://stackoverflow.com/a/73062712/9263449
       navigator.sendBeacon(config.url, JSON.stringify(logs));
       logs.splice(0); // clear log queue
     }
@@ -416,14 +421,12 @@ function sendOnClose(logs, config) {
 // @todo expose config object to sendLogs replate url with config.url
 function sendLogs(logs, config, retries) {
   var req = new XMLHttpRequest();
-
-  // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
-  req.open('POST', config.url);
+  req.open("POST", config.url);
   if (config.authHeader) {
-    req.setRequestHeader('Authorization', config.authHeader);
+    req.setRequestHeader("Authorization", config.authHeader);
   }
-  req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+  req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
   req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status !== 200) {
       if (retries > 0) {
