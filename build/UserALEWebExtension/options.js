@@ -62,7 +62,6 @@ var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-
 if (chrome) {
   browser = chrome;
 }

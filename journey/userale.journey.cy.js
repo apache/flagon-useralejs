@@ -28,7 +28,7 @@ describe('Userale logging', () => {
             const pageLoadLog = body[0]
             expect(pageLoadLog['details']['pageLoadTime']).to.be.greaterThan(0)
             expect(pageLoadLog).to.contain({
-                logType: 'raw',
+                logType: 'custom',
                 type: 'load'
             })
         })

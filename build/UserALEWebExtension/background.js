@@ -64,7 +64,6 @@ var ADD_LOG = prefix + 'ADD_LOG';
  * limitations under the License.
  */
 
-
 /**
  * Creates a function to normalize the timestamp of the provided event.
  * @param  {Object} e An event containing a timeStamp property.
@@ -324,7 +323,6 @@ function createVersionParts(count) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 detect();
 
 /**
@@ -499,7 +497,6 @@ function sendLogs(logs, config, retries) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 // inherent dependency on globals.js, loaded by the webext
 
