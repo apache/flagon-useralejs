@@ -110,6 +110,7 @@ Then, you can use the `userale.start()` API export to begin logging at the appro
 const changeMe = "me";
 userale.options({
     "userId": changeMe,
+    "appId": changeMe,
     "autostart": false,
     "url": "http://localhost:8000/",
     "version": "next",
@@ -132,6 +133,7 @@ The complete list of configurable parameters that can be configured via `userale
 | transmitInterval | Delay between transmit checks | 5000 (ms) |
 | logCountThreshold | Minimum number of logs to send | 5 |
 | userId | User identifier | null |
+| appId | Application identifier | null (but required) |
 | sessionID | Session identifier | null |
 | version | Application version identifier | null |
 | logDetails | Toggle detailed logs (keys pressed and input/change values) | false |
@@ -147,6 +149,7 @@ If you have included UserALE.js as a `script-tag` in your project, you can use H
           src="./node_modules/flagon-userale/build/userale-2.4.0.min.js"
           data-url="http://localhost:8000/"
           data-user="example-user"
+          data-appId="sample-app"
           data-version="2.4.0"
           data-tool="Apache UserALE.js Example"
   ></script>
@@ -161,6 +164,7 @@ You have access to the same parameters listed above, however, naming conventions
 | data-interval | Delay between transmit checks | 5000 (ms) |
 | data-threshold | Minimum number of logs to send | 5 |
 | data-user | User identifier | null |
+| data-appId | Application identifier | null (but is required) |
 | data-version | Application version identifier | null |
 | data-log-details | Toggle detailed logs (keys pressed and input/change values) | false |
 | data-resolution | Delay between instances of high frequency logs (mouseover, scroll, etc.) | 500 (ms) |
@@ -249,6 +253,7 @@ document.addEventListener('change', function(e) {
             customField1: 'foo',
             customField2: 'bar',
             userId: userale.options().userId,
+            appId: userale.options().appId,
             toolVersion: userale.options().version,
             toolName: userale.options().toolName,
             useraleVersion: userale.options().useraleVersion,

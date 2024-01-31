@@ -42,6 +42,7 @@ var config = {
   version: null,
   resolution: 500,
   time: timeStampScale({}),
+  appId: "browser-plugin",
   on: true,
 };
 var sessionId = 'session_' + Date.now();
@@ -95,6 +96,7 @@ function packageBrowserLog(type, logDetail) {
     'userAction' : true,
     'details' : logDetail,
     'userId' : globals.toolUser,
+    'appId': "browser-plugin",
     'toolVersion': null,
     'toolName': null,
     'useraleVersion': null,

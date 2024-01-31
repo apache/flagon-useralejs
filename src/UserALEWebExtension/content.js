@@ -42,6 +42,7 @@ function storeCallback(item) {
   injectScript({
     url: item.userAleHost,
     userId: item.toolUser,
+    appId: "browser-plugin",
     sessionID: item.sessionId,
     toolName: item.toolName,
     toolVersion: item.toolVersion
