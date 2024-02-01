@@ -19,59 +19,13 @@
  eslint-disable
  */
 
-import * as globals from './globals';
 import * as MessageTypes from './messageTypes.js';
-import { timeStampScale } from '../getInitialSettings.js';
-import { extractTimeFields, initPackager, packageLog } from '../packageLogs.js';
-import { initSender } from '../sendLogs.js';
+import * as userale from '../main.js';
+import { browser } from './globals.js';
 
-// inherent dependency on globals.js, loaded by the webext
-
-// browser is defined in firefox, but not in chrome. In chrome, they use
-// the 'chrome' global instead. Let's map it to browser so we don't have
-// to have if-conditions all over the place.
-
-var browser = browser || chrome;
-var logs = [];
-var config = {
-  autostart: true,
-  url: 'http://localhost:8000',
-  transmitInterval: 5000,
-  logCountThreshold: 5,
-  userId: null,
-  version: null,
-  resolution: 500,
-  time: timeStampScale({}),
-  on: true,
-};
-var sessionId = 'session_' + Date.now();
-
-var getTimestamp = ((typeof performance !== 'undefined') && (typeof performance.now !== 'undefined'))
-  ? function () { return performance.now() + performance.timing.navigationStart; }
-  : Date.now;
-
-browser.storage.local.set({ sessionId: sessionId });
-
-var store = browser.storage.local.get({
-  userAleHost: globals.userAleHost,
-  userAleScript: globals.userAleScript,
-  toolUser: globals.toolUser,
-  toolName: globals.toolName,
-  toolVersion: globals.toolVersion,
-}, storeCallback);
-        
-function storeCallback(item) {
-  config = Object.assign({}, config, {
-    url: item.userAleHost,
-    userId: item.toolUser,
-    sessionID: sessionId,
-    toolName: item.toolName,
-    toolVersion: item.toolVersion
-  });
-
-  initPackager(logs, config);
-  initSender(logs, config);
-}
+browser.storage.local.get("useraleConfig", (res) => {
+  userale.options(res.config);
+});
 
 function dispatchTabMessage(message) {
   browser.tabs.query({}, function (tabs) {
@@ -81,47 +35,15 @@ function dispatchTabMessage(message) {
   });
 }
 
-function packageBrowserLog(type, logDetail) {
-  var timeFields = extractTimeFields(getTimestamp());
-
-  logs.push({
-    'target' : null,
-    'path' : null,
-    'clientTime' : timeFields.milli,
-    'microTime' : timeFields.micro,
-    'location' : null,
-    'type' : 'browser.' + type,
-    'logType': 'raw',
-    'userAction' : true,
-    'details' : logDetail,
-    'userId' : globals.toolUser,
-    'toolVersion': null,
-    'toolName': null,
-    'useraleVersion': null,
-    'sessionID': sessionId,
-  });
-}
-
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     case MessageTypes.CONFIG_CHANGE:
-      (function () {
-        var updatedConfig = Object.assign({}, config, {
-          url: message.payload.userAleHost,
-          userId: message.payload.toolUser,
-          toolName: message.payload.toolName,
-          toolVersion: message.payload.toolVersion
-        });
-        initPackager(logs, updatedConfig);
-        initSender(logs, updatedConfig);
+        userale.options(message.payload)
         dispatchTabMessage(message);
-      })();
       break;
 
     case MessageTypes.ADD_LOG:
-      (function () {
-        logs.push(message.payload);
-      })();
+        userale.log(message.payload);
       break;
 
     default:
@@ -129,69 +51,50 @@ browser.runtime.onMessage.addListener(function (message) {
   }
 });
 
-function getTabDetailById(tabId, onReady) {
-  browser.tabs.get(tabId, function (tab) {
-    onReady({
-      active: tab.active,
-      audible: tab.audible,
-      incognito: tab.incognito,
-      index: tab.index,
-      muted: tab.mutedInfo ? tab.mutedInfo.muted : null,
-      pinned: tab.pinned,
-      selected: tab.selected,
-      tabId: tab.id,
-      title: tab.title,
-      url: tab.url,
-      windowId: tab.windowId,
-    });
+// Helper functions for logging tab events
+function packageTabLog(tabId, data, type) {
+  browser.tabs.get(tabId, (tab) => {
+    packageDetailedTabLog(tab, data, type);
   });
 }
 
-browser.tabs.onActivated.addListener(function (e) {
-  getTabDetailById(e.tabId, function (detail) {
-    packageBrowserLog('tabs.onActivated', detail);
-  });
+function packageDetailedTabLog(tab, data, type) {
+  Object.assign(data, {'type': type});
+  userale.packageCustomLog(data, ()=>{return tab}, true);
+}
+
+// Attach Handlers for tab events
+// https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs
+browser.tabs.onActivated.addListener((activeInfo) => {
+  packageTabLog(activeInfo.tabId, activeInfo, "tabs.onActivated");
 });
 
-browser.tabs.onCreated.addListener(function (tab, e) {
-  packageBrowserLog('tabs.onCreated', {
-    active: tab.active,
-    audible: tab.audible,
-    incognito: tab.incognito,
-    index: tab.index,
-    muted: tab.mutedInfo ? tab.mutedInfo.muted : null,
-    pinned: tab.pinned,
-    selected: tab.selected,
-    tabId: tab.id,
-    title: tab.title,
-    url: tab.url,
-    windowId: tab.windowId,
-  });
+browser.tabs.onAttached.addListener((tabId, attachInfo) => {
+  packageTabLog(tabId, attachInfo, "tabs.onAttached");
 });
 
-browser.tabs.onDetached.addListener(function (tabId) {
-  getTabDetailById(tabId, function (detail) {
-    packageBrowserLog('tabs.onDetached', detail);
-  });
+browser.tabs.onCreated.addListener((tab) => {
+  packageDetailedTabLog(tab, {}, "tabs.onCreated");
 });
 
-browser.tabs.onMoved.addListener(function (tabId) {
-  getTabDetailById(tabId, function (detail) {
-    packageBrowserLog('tabs.onMoved', detail);
-  });
+browser.tabs.onDetached.addListener((tabId, detachInfo) => {
+  packageTabLog(tabId, detachInfo, "tabs.onDetached");
 });
 
-browser.tabs.onRemoved.addListener(function (tabId) {
-  packageBrowserLog('tabs.onRemoved', { tabId: tabId });
+browser.tabs.onMoved.addListener((tabId, moveInfo) => {
+  packageTabLog(tabId, moveInfo, "tabs.onMoved");
 });
 
-browser.tabs.onZoomChange.addListener(function (e) {
-  getTabDetailById(e.tabId, function (detail) {
-    packageBrowserLog('tabs.onZoomChange', Object.assign({}, {
-      oldZoomFactor: e.oldZoomFactor,
-      newZoomFactor: e.newZoomFactor,
-    }, detail));
-  });
+browser.tabs.onRemoved.addListener((tabId, removeInfo) => {
+  packageDetailedTabLog({id: tabId}, removeInfo, "tabs.onRemoved");
+});
+
+browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  packageDetailedTabLog(tab, changeInfo, "tabs.onUpdated");
+});
+
+browser.tabs.onZoomChange.addListener((ZoomChangeInfo) => {
+  packageTabLog(ZoomChangeInfo.tabId, ZoomChangeInfo, "tabs.onZoomChange");
 });
 
 /*

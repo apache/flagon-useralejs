@@ -15,34 +15,6 @@
 * limitations under the License.
 */
 
-/* eslint-disable */
-
-// these are default values, which can be overridden by the user on the options page
-var userAleHost = 'http://localhost:8000';
-var userAleScript = 'userale-2.4.0.min.js';
-var toolUser = 'nobody';
-var toolName = 'test_app';
-var toolVersion = '2.4.0';
-
-/* eslint-enable */
-
-/*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-    * this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-    * the License.  You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
@@ -1108,6 +1080,36 @@ function options(newConfig) {
 }
 
 /*
+* Licensed to the Apache Software Foundation (ASF) under one or more
+* contributor license agreements.  See the NOTICE file distributed with
+    * this work for additional information regarding copyright ownership.
+* The ASF licenses this file to You under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with
+    * the License.  You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+// browser is defined in firefox, but chrome uses the 'chrome' global.
+var browser = browser || chrome;
+function rerouteLog(log) {
+  browser.runtime.sendMessage({
+    type: ADD_LOG,
+    payload: log
+  });
+  return false;
+}
+
+/* eslint-enable */
+
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -1124,59 +1126,15 @@ function options(newConfig) {
  * limitations under the License.
  */
 
-
-// browser is defined in firefox, but not in chrome. In chrome, they use
-// the 'chrome' global instead. Let's map it to browser so we don't have
-// to have if-conditions all over the place.
-
-var browser = browser || chrome;
-
-// creates a Future for retrieval of the named keys
-// the value specified is the default value if one doesn't exist in the storage
-browser.storage.local.get({
-  sessionId: null,
-  userAleHost: userAleHost,
-  userAleScript: userAleScript,
-  toolUser: toolUser,
-  toolName: toolName,
-  toolVersion: toolVersion
-}, storeCallback);
-function storeCallback(item) {
-  injectScript({
-    url: item.userAleHost,
-    userId: item.toolUser,
-    sessionID: item.sessionId,
-    toolName: item.toolName,
-    toolVersion: item.toolVersion
-  });
-}
-function queueLog(log) {
-  browser.runtime.sendMessage({
-    type: ADD_LOG,
-    payload: log
-  });
-}
-function injectScript(config) {
-  options(config);
-  //  start();  not necessary given that autostart in place, and option is masked from WebExt users
+browser.storage.local.get("useraleConfig", function (res) {
+  options(res.config);
   addCallbacks({
-    "function": function _function(log) {
-      queueLog(Object.assign({}, log, {
-        pageUrl: document.location.href
-      }));
-      console.log(log);
-      return false;
-    }
+    reroute: rerouteLog
   });
-}
+});
 browser.runtime.onMessage.addListener(function (message) {
   if (message.type === CONFIG_CHANGE) {
-    options({
-      url: message.payload.userAleHost,
-      userId: message.payload.toolUser,
-      toolName: message.payload.toolName,
-      toolVersion: message.payload.toolVersion
-    });
+    options(message.payload);
   }
 });
 
