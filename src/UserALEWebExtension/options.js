@@ -20,16 +20,9 @@ import * as MessageTypes from './messageTypes.js';
 import * as userale from '../main.js'
 import { rerouteLog, browser } from './globals.js';
 
-const defaultConfig = {useraleConfig: {
-  url: 'http://localhost:8000',
-  userId: 'nobody',
-  toolName: 'useralePlugin',
-  version: userale.version,
-}};
-
 userale.addCallbacks({reroute: rerouteLog});
 
-async function setConfig(e) {
+function setConfig(e) {
   browser.storage.local.set(
     {useraleConfig: {
       url: document.getElementById("url").value,
@@ -42,7 +35,7 @@ async function setConfig(e) {
 }
 
 function getConfig() {
-  browser.storage.local.get(defaultConfig, (res) => {
+  browser.storage.local.get("useraleConfig", (res) => {
     let config = res.useraleConfig;
   
     document.getElementById("url").value = config.url;

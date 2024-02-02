@@ -23,8 +23,16 @@ import * as MessageTypes from './messageTypes.js';
 import * as userale from '../main.js';
 import { browser } from './globals.js';
 
-browser.storage.local.get("useraleConfig", (res) => {
-  userale.options(res.config);
+// Initalize userale plugin options
+const defaultConfig = {useraleConfig: {
+  url: 'http://localhost:8000',
+  userId: 'pluginUser',
+  toolName: 'useralePlugin',
+  version: userale.version,
+}};
+
+browser.storage.local.get(defaultConfig, (res) => {
+  userale.options(res.useraleConfig);
 });
 
 function dispatchTabMessage(message) {
@@ -38,12 +46,13 @@ function dispatchTabMessage(message) {
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     case MessageTypes.CONFIG_CHANGE:
-        userale.options(message.payload)
-        dispatchTabMessage(message);
+      userale.options(message.payload)
+      dispatchTabMessage(message);
       break;
 
+    // Handles logs rerouted from content and option scripts 
     case MessageTypes.ADD_LOG:
-        userale.log(message.payload);
+      userale.log(message.payload);
       break;
 
     default:
@@ -59,7 +68,7 @@ function packageTabLog(tabId, data, type) {
 }
 
 function packageDetailedTabLog(tab, data, type) {
-  Object.assign(data, {'type': type});
+  Object.assign(data, {'tabEvent': type});
   userale.packageCustomLog(data, ()=>{return tab}, true);
 }
 

@@ -22,7 +22,7 @@ import * as userale from '../main.js';
 import { rerouteLog, browser } from './globals.js';
 
 browser.storage.local.get("useraleConfig", (res) => {
-  userale.options(res.config);
+  userale.options(res.useraleConfig);
   userale.addCallbacks({reroute: rerouteLog});
 });
 

@@ -29,7 +29,7 @@ function _typeof(o) {
   }, _typeof(o);
 }
 
-var version = "2.4.0";
+var version$1 = "2.4.0";
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -1019,7 +1019,7 @@ var started = false;
 
 // Start up Userale
 config.on = false;
-config.useraleVersion = version;
+config.useraleVersion = version$1;
 configure(config, getInitialSettings());
 initPackager(logs, config);
 if (config.autostart) {
@@ -1051,6 +1051,9 @@ function setup(config) {
     }, 100);
   }
 }
+
+// Export the Userale API
+var version = version$1;
 
 /**
  * Updates the current configuration
@@ -1119,8 +1122,18 @@ var browser = browser || chrome;
  * limitations under the License.
  */
 
-browser.storage.local.get("useraleConfig", function (res) {
-  options(res.config);
+
+// Initalize userale plugin options
+var defaultConfig = {
+  useraleConfig: {
+    url: 'http://localhost:8000',
+    userId: 'pluginUser',
+    toolName: 'useralePlugin',
+    version: version
+  }
+};
+browser.storage.local.get(defaultConfig, function (res) {
+  options(res.useraleConfig);
 });
 function dispatchTabMessage(message) {
   browser.tabs.query({}, function (tabs) {
@@ -1135,6 +1148,8 @@ browser.runtime.onMessage.addListener(function (message) {
       options(message.payload);
       dispatchTabMessage(message);
       break;
+
+    // Handles logs rerouted from content and option scripts 
     case ADD_LOG:
       log(message.payload);
       break;
@@ -1151,7 +1166,7 @@ function packageTabLog(tabId, data, type) {
 }
 function packageDetailedTabLog(tab, data, type) {
   Object.assign(data, {
-    'type': type
+    'tabEvent': type
   });
   packageCustomLog(data, function () {
     return tab;
