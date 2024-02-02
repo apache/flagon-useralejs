@@ -17,6 +17,7 @@
 
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
+var AUTH_CHANGE = prefix + 'AUTH_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
 var version = "2.4.0";
@@ -1100,7 +1101,6 @@ function options(newConfig) {
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = browser || chrome;
 function rerouteLog(log) {
-  console.log(log);
   browser.runtime.sendMessage({
     type: ADD_LOG,
     payload: log
@@ -1131,16 +1131,24 @@ addCallbacks({
   reroute: rerouteLog
 });
 function setConfig(e) {
+  var user = document.getElementById("user").value;
+  var password = document.getElementById("password").value;
   browser.storage.local.set({
     useraleConfig: {
       url: document.getElementById("url").value,
-      userId: document.getElementById("user").value,
+      userId: user,
       toolName: document.getElementById("tool").value,
       version: document.getElementById("version").value
     }
   }, function () {
     getConfig();
   });
+  if (user && password) {
+    browser.runtime.sendMessage({
+      type: AUTH_CHANGE,
+      payload: "Basic " + btoa("".concat(user, ":").concat(password))
+    });
+  }
 }
 function getConfig() {
   browser.storage.local.get("useraleConfig", function (res) {

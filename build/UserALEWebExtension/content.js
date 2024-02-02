@@ -1100,7 +1100,6 @@ function options(newConfig) {
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = browser || chrome;
 function rerouteLog(log) {
-  console.log(log);
   browser.runtime.sendMessage({
     type: ADD_LOG,
     payload: log

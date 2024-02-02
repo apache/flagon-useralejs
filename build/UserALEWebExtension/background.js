@@ -17,6 +17,7 @@
 
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
+var AUTH_CHANGE = prefix + 'AUTH_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
 function _typeof(o) {
@@ -1144,14 +1145,18 @@ function dispatchTabMessage(message) {
 }
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
+    // Handles logs rerouted from content and option scripts 
+    case ADD_LOG:
+      log(message.payload);
+      break;
     case CONFIG_CHANGE:
       options(message.payload);
       dispatchTabMessage(message);
       break;
-
-    // Handles logs rerouted from content and option scripts 
-    case ADD_LOG:
-      log(message.payload);
+    case AUTH_CHANGE:
+      options({
+        authHeader: message.payload
+      });
       break;
     default:
       console.log('got unknown message type ', message);

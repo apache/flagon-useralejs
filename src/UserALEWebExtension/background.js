@@ -45,14 +45,18 @@ function dispatchTabMessage(message) {
 
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
+    // Handles logs rerouted from content and option scripts 
+    case MessageTypes.ADD_LOG:
+      userale.log(message.payload);
+      break;
+
     case MessageTypes.CONFIG_CHANGE:
       userale.options(message.payload)
       dispatchTabMessage(message);
       break;
 
-    // Handles logs rerouted from content and option scripts 
-    case MessageTypes.ADD_LOG:
-      userale.log(message.payload);
+    case MessageTypes.AUTH_CHANGE:
+      userale.options({authHeader: message.payload});
       break;
 
     default:

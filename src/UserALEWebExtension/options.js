@@ -23,15 +23,24 @@ import { rerouteLog, browser } from './globals.js';
 userale.addCallbacks({reroute: rerouteLog});
 
 function setConfig(e) {
+  let user = document.getElementById("user").value;
+  let password = document.getElementById("password").value;
+
   browser.storage.local.set(
     {useraleConfig: {
       url: document.getElementById("url").value,
-      userId: document.getElementById("user").value,
+      userId: user,
       toolName: document.getElementById("tool").value,
       version: document.getElementById("version").value
     }},
     () => {getConfig()}
   );
+
+  if(user && password) {
+    browser.runtime.sendMessage({type: MessageTypes.AUTH_CHANGE,
+      payload: "Basic " + btoa(`${user}:${password}`)
+    });
+  }
 }
 
 function getConfig() {
