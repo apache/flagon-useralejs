@@ -17,7 +17,6 @@
 
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
-var AUTH_CHANGE = prefix + 'AUTH_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
 var version = "2.4.0";
@@ -63,6 +62,7 @@ function getInitialSettings() {
   settings.transmitInterval = +get('data-interval') || 5000;
   settings.logCountThreshold = +get('data-threshold') || 5;
   settings.userId = get('data-user') || null;
+  settings.password = get('data-password') || null;
   settings.version = get('data-version') || null;
   settings.logDetails = get('data-log-details') === 'true' ? true : false;
   settings.resolution = +get('data-resolution') || 500;
@@ -1001,6 +1001,11 @@ function sendLogs(logs, config, retries) {
   var req = new XMLHttpRequest();
   var data = JSON.stringify(logs);
   req.open("POST", config.url);
+
+  // Update headers
+  if (config.userId && config.password) {
+    req.setRequestHeader("Authorization", "Basic " + btoa("".concat(config.userId, ":").concat(config.password)));
+  }
   if (config.authHeader) {
     req.setRequestHeader("Authorization", config.authHeader);
   }
@@ -1131,30 +1136,24 @@ addCallbacks({
   reroute: rerouteLog
 });
 function setConfig(e) {
-  var user = document.getElementById("user").value;
-  var password = document.getElementById("password").value;
   browser.storage.local.set({
     useraleConfig: {
       url: document.getElementById("url").value,
-      userId: user,
+      userId: document.getElementById("user").value,
+      password: document.getElementById("password").value,
       toolName: document.getElementById("tool").value,
       version: document.getElementById("version").value
     }
   }, function () {
     getConfig();
   });
-  if (user && password) {
-    browser.runtime.sendMessage({
-      type: AUTH_CHANGE,
-      payload: "Basic " + btoa("".concat(user, ":").concat(password))
-    });
-  }
 }
 function getConfig() {
   browser.storage.local.get("useraleConfig", function (res) {
     var config = res.useraleConfig;
     document.getElementById("url").value = config.url;
     document.getElementById("user").value = config.userId;
+    document.getElementById("password").value = config.password;
     document.getElementById("tool").value = config.toolName;
     document.getElementById("version").value = config.version;
     options(config);

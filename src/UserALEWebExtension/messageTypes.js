@@ -15,8 +15,7 @@
 * limitations under the License.
 */
 
-var prefix = 'USERALE_';
+const prefix = 'USERALE_';
 
-export var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
-export var AUTH_CHANGE = prefix + 'AUTH_CHANGE';
-export var ADD_LOG = prefix + 'ADD_LOG';
+export const CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
+export const ADD_LOG = prefix + 'ADD_LOG';

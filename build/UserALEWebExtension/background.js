@@ -17,7 +17,6 @@
 
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
-var AUTH_CHANGE = prefix + 'AUTH_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
 
 function _typeof(o) {
@@ -73,6 +72,7 @@ function getInitialSettings() {
   settings.transmitInterval = +get('data-interval') || 5000;
   settings.logCountThreshold = +get('data-threshold') || 5;
   settings.userId = get('data-user') || null;
+  settings.password = get('data-password') || null;
   settings.version = get('data-version') || null;
   settings.logDetails = get('data-log-details') === 'true' ? true : false;
   settings.resolution = +get('data-resolution') || 500;
@@ -987,6 +987,11 @@ function sendLogs(logs, config, retries) {
   var req = new XMLHttpRequest();
   var data = JSON.stringify(logs);
   req.open("POST", config.url);
+
+  // Update headers
+  if (config.userId && config.password) {
+    req.setRequestHeader("Authorization", "Basic " + btoa("".concat(config.userId, ":").concat(config.password)));
+  }
   if (config.authHeader) {
     req.setRequestHeader("Authorization", config.authHeader);
   }
@@ -1152,11 +1157,6 @@ browser.runtime.onMessage.addListener(function (message) {
     case CONFIG_CHANGE:
       options(message.payload);
       dispatchTabMessage(message);
-      break;
-    case AUTH_CHANGE:
-      options({
-        authHeader: message.payload
-      });
       break;
     default:
       console.log('got unknown message type ', message);

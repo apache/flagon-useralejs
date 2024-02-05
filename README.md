@@ -132,6 +132,7 @@ The complete list of configurable parameters that can be configured via `userale
 | transmitInterval | Delay between transmit checks | 5000 (ms) |
 | logCountThreshold | Minimum number of logs to send | 5 |
 | userId | User identifier | null |
+| password | Used with userId for basic authentication auth header, overwritten by authHeader | null |
 | sessionID | Session identifier | null |
 | version | Application version identifier | null |
 | logDetails | Toggle detailed logs (keys pressed and input/change values) | false |
@@ -161,6 +162,7 @@ You have access to the same parameters listed above, however, naming conventions
 | data-interval | Delay between transmit checks | 5000 (ms) |
 | data-threshold | Minimum number of logs to send | 5 |
 | data-user | User identifier | null |
+| data-password | Used with user for basic authentication auth header, overwritten by auth | null |
 | data-version | Application version identifier | null |
 | data-log-details | Toggle detailed logs (keys pressed and input/change values) | false |
 | data-resolution | Delay between instances of high frequency logs (mouseover, scroll, etc.) | 500 (ms) |

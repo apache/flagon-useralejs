@@ -51,12 +51,8 @@ browser.runtime.onMessage.addListener(function (message) {
       break;
 
     case MessageTypes.CONFIG_CHANGE:
-      userale.options(message.payload)
+      userale.options(message.payload);
       dispatchTabMessage(message);
-      break;
-
-    case MessageTypes.AUTH_CHANGE:
-      userale.options({authHeader: message.payload});
       break;
 
     default:
