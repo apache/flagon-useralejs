@@ -16,51 +16,40 @@
 */
 
 /* eslint-disable */
-import * as globals from './globals.js';
 import * as MessageTypes from './messageTypes.js';
+import * as userale from '../main.js'
+import { rerouteLog, browser } from './globals.js';
 
-if (chrome) {
-  browser = chrome;
+userale.addCallbacks({reroute: rerouteLog});
+
+function setConfig(e) {
+  browser.storage.local.set(
+    {useraleConfig: {
+      url: document.getElementById("url").value,
+      userId: document.getElementById("user").value,
+      toolName: document.getElementById("tool").value,
+      version: document.getElementById("version").value
+    }},
+    () => {getConfig()}
+  );
 }
 
-// creates a Future for retrieval of the named keys
-// the value specified is the default value if one doesn't exist in the storage
-let store = browser.storage.local.get({
-  userAleHost: globals.userAleHost,
-  userAleScript: globals.userAleScript,
-  toolUser: globals.toolUser,
-  toolName: globals.toolName,
-  toolVersion: globals.toolVersion,
-}, storeCallback);
+function getConfig() {
+  browser.storage.local.get("useraleConfig", (res) => {
+    let config = res.useraleConfig;
+  
+    document.getElementById("url").value = config.url;
+    document.getElementById("user").value = config.userId;
+    document.getElementById("tool").value = config.toolName;
+    document.getElementById("version").value = config.version;
 
-function storeCallback(item) {
-  document.getElementById("host").value = item.userAleHost;
-  document.getElementById("clientScript").value = item.userAleScript;
-  document.getElementById("toolUser").value = item.toolUser;
-  document.getElementById("toolName").value = item.toolName;
-  document.getElementById("toolVersion").value = item.toolVersion;
+    userale.options(config);
+    browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload: config });
+
+  });
 }
 
-function onError(error) {
-  console.log(error);
-}
-
-function saveOptions(e) {
-  const updatedConfig = {
-    userAleHost: document.getElementById("host").value,
-    userAleScript: document.getElementById("clientScript").value,
-    toolUser: document.getElementById("toolUser").value,
-    toolName: document.getElementById("toolName").value,
-    toolVersion: document.getElementById("toolVersion").value,
-  };
-
-  browser.storage.local.set(updatedConfig);
-
-  browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload: updatedConfig });
-}
-
-document.addEventListener("submit", function() {
-  saveOptions();
-});
+document.addEventListener('DOMContentLoaded', getConfig);
+document.addEventListener("submit", setConfig);
 
 /* eslint-enable */
