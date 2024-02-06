@@ -31,7 +31,6 @@ describe('Userale API', () => {
             'transmitInterval',
             'logCountThreshold',
             'userId',
-            'password',
             'sessionID',
             'version',
             'logDetails',

@@ -89,12 +89,6 @@ export function sendLogs(logs, config, retries) {
   req.open("POST", config.url);
 
   // Update headers
-  if( config.userId && config.password) {
-    req.setRequestHeader(
-      "Authorization", "Basic " + btoa(`${config.userId}:${config.password}`)
-    );
-  }
-
   updateAuthHeader(config);
   if (config.authHeader) {
     req.setRequestHeader("Authorization", config.authHeader);

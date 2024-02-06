@@ -42,7 +42,6 @@ export function getInitialSettings() {
     settings.transmitInterval = +get('data-interval') || 5000;
     settings.logCountThreshold = +get('data-threshold') || 5;
     settings.userId = get('data-user') || null;
-    settings.password = get('data-password') || null;
     settings.version = get('data-version') || null;
     settings.logDetails = get('data-log-details') === 'true' ? true : false;
     settings.resolution = +get('data-resolution') || 500;

@@ -75,7 +75,6 @@
     settings.transmitInterval = +get('data-interval') || 5000;
     settings.logCountThreshold = +get('data-threshold') || 5;
     settings.userId = get('data-user') || null;
-    settings.password = get('data-password') || null;
     settings.version = get('data-version') || null;
     settings.logDetails = get('data-log-details') === 'true' ? true : false;
     settings.resolution = +get('data-resolution') || 500;
@@ -1163,9 +1162,6 @@
     req.open("POST", config.url);
 
     // Update headers
-    if (config.userId && config.password) {
-      req.setRequestHeader("Authorization", "Basic " + btoa("".concat(config.userId, ":").concat(config.password)));
-    }
     updateAuthHeader(config);
     if (config.authHeader) {
       req.setRequestHeader("Authorization", config.authHeader);
