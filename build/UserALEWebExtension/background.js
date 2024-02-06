@@ -1128,6 +1128,7 @@ var defaultConfig = {
   useraleConfig: {
     url: 'http://localhost:8000',
     userId: 'pluginUser',
+    authHeader: null,
     toolName: 'useralePlugin',
     version: version
   }

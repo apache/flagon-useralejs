@@ -27,6 +27,7 @@ import { browser } from './globals.js';
 const defaultConfig = {useraleConfig: {
   url: 'http://localhost:8000',
   userId: 'pluginUser',
+  authHeader: null,
   toolName: 'useralePlugin',
   version: userale.version,
 }};
