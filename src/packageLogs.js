@@ -33,6 +33,7 @@ export let filterHandler = null;
 export let mapHandler = null;
 export let cbHandlers = {};
 
+
 /**
  * Assigns a handler to filter logs out of the queue.
  * @deprecated Use addCallbacks and removeCallbacks instead
@@ -105,12 +106,27 @@ export function initPackager(newLogs, newConfig) {
 }
 
 /**
+ * Get the tabID from local storage
+ */
+function getTabId() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get("tabId", function(result) {
+      if (result.tabId !== undefined) {
+        resolve(result.tabId);
+      } else {
+        reject('tabId not found');
+      }
+    });
+  });
+}
+
+/**
  * Transforms the provided HTML event into a log and appends it to the log queue.
  * @param  {Object} e         The event to be logged.
  * @param  {Function} detailFcn The function to extract additional log parameters from the event.
  * @return {boolean}           Whether the event was logged.
  */
-export function packageLog(e, detailFcn) {
+export async function packageLog(e, detailFcn) {
   if (!config.on) {
     return false;
   }
@@ -123,6 +139,8 @@ export function packageLog(e, detailFcn) {
   const timeFields = extractTimeFields(
     (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
   );
+
+  const tabId = await getTabId();
 
   let log = {
     'target' : getSelector(e.target),
@@ -143,6 +161,7 @@ export function packageLog(e, detailFcn) {
     'toolVersion' : config.version,
     'toolName' : config.toolName,
     'useraleVersion': config.useraleVersion,
+    'tabId': tabId,
     'sessionID': config.sessionID,
   };
 
@@ -174,7 +193,7 @@ export function packageLog(e, detailFcn) {
  * @param  {boolean} userAction     Indicates user behavior (true) or system behavior (false)
  * @return {boolean}           Whether the event was logged.
  */
-export function packageCustomLog(customLog, detailFcn, userAction) {
+export async function packageCustomLog(customLog, detailFcn, userAction) {
     if (!config.on) {
         return false;
     }
@@ -183,6 +202,8 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
     if (detailFcn) {
         details = detailFcn();
     }
+
+    const tabId = await getTabId();
 
     const metaData = {
         'pageUrl': window.location.href,
@@ -198,6 +219,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'toolVersion' : config.version,
         'toolName' : config.toolName,
         'useraleVersion': config.useraleVersion,
+        'tabId': tabId,
         'sessionID': config.sessionID
     };
 
@@ -243,7 +265,7 @@ export function extractTimeFields(timeStamp) {
  * @param {Object} e
  * @return boolean
  */
-export function packageIntervalLog(e) {
+export async function packageIntervalLog(e) {
     const target = getSelector(e.target);
     const path = buildPath(e);
     const type = e.type;
@@ -257,6 +279,8 @@ export function packageIntervalLog(e) {
         intervalTimer = timestamp;
         intervalCounter = 0;
     }
+
+    const tabId = await getTabId();
 
     if (intervalID !== target || intervalType !== type) {
         // When to create log? On transition end
@@ -282,6 +306,7 @@ export function packageIntervalLog(e) {
             'toolVersion': config.version,
             'toolName': config.toolName,
             'useraleVersion': config.useraleVersion,
+            'tabId': tabId,
             'sessionID': config.sessionID
         };
 

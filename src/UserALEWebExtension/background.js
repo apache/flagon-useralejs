@@ -75,6 +75,9 @@ function packageDetailedTabLog(tab, data, type) {
 // Attach Handlers for tab events
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs
 browser.tabs.onActivated.addListener((activeInfo) => {
+  browser.storage.local.set({ "tabId": e.tabId }, function() {
+    console.log("The tabID has been set in storage.local");
+  });
   packageTabLog(activeInfo.tabId, activeInfo, "tabs.onActivated");
 });
 
