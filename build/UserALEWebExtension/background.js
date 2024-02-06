@@ -1149,6 +1149,7 @@ browser.runtime.onMessage.addListener(function (message) {
       log(message.payload);
       break;
     case CONFIG_CHANGE:
+      console.log(message);
       options(message.payload);
       dispatchTabMessage(message);
       break;

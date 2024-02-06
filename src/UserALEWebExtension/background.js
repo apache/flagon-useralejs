@@ -51,6 +51,7 @@ browser.runtime.onMessage.addListener(function (message) {
       break;
 
     case MessageTypes.CONFIG_CHANGE:
+      console.log(message);
       userale.options(message.payload);
       dispatchTabMessage(message);
       break;
