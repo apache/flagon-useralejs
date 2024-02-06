@@ -16,7 +16,7 @@
  */
 
 import { detect } from 'detect-browser';
-const browser = detect();
+const browserInfo = detect();
 
 export let logs;
 let config;
@@ -108,9 +108,10 @@ export function initPackager(newLogs, newConfig) {
 /**
  * Get the tabID from local storage
  */
-function getTabId() {
+export function getTabId() {
+  const api = (typeof browser !== 'undefined') ? browser : chrome;
   return new Promise((resolve, reject) => {
-    chrome.storage.local.get("tabId", function(result) {
+    api.storage.local.get("tabId", function(result) {
       if (result.tabId !== undefined) {
         resolve(result.tabId);
       } else {
@@ -416,7 +417,7 @@ export function selectorizePath(path) {
 
 export function detectBrowser() {
     return {
-        'browser': browser ? browser.name : '',
-        'version': browser ? browser.version : ''
+        'browser': browserInfo ? browserInfo.name : '',
+        'version': browserInfo ? browserInfo.version : ''
     };
 }
