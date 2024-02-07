@@ -24,17 +24,27 @@ import * as userale from '../main.js';
 import { browser } from './globals.js';
 
 // Initalize userale plugin options
-const defaultConfig = {useraleConfig: {
-  url: 'http://localhost:8000',
-  userId: 'pluginUser',
-  authHeader: null,
-  toolName: 'useralePlugin',
-  version: userale.version,
-}};
+const defaultConfig = {
+  useraleConfig: {
+    url: 'http://localhost:8000',
+    userId: 'pluginUser',
+    authHeader: null,
+    toolName: 'useralePlugin',
+    version: userale.version,
+  },
+  pluginConfig: {
+    // Default to a regex that will match no string
+    urlWhitelist: '(?!x)x'
+  }
+};
 
-browser.storage.local.get(defaultConfig, (res) => {
-  userale.options(res.useraleConfig);
-});
+var urlWhitelist;
+
+function updateConfig(config) {
+  urlWhitelist = new RegExp(config.pluginConfig.urlWhitelist);
+  userale.options(config.useraleConfig);
+  dispatchTabMessage(config.useraleConfig);
+}
 
 function dispatchTabMessage(message) {
   browser.tabs.query({}, function (tabs) {
@@ -44,6 +54,30 @@ function dispatchTabMessage(message) {
   });
 }
 
+function filterUrl(log) {
+  if(urlWhitelist.test(log.pageUrl)) {
+    return log
+  }
+  return false;
+}
+
+browser.storage.local.get(defaultConfig, (res) => {
+  userale.addCallbacks({filterUrl:filterUrl});
+  updateConfig(res);
+});
+
+function filterUrl(log) {
+  if(urlWhitelist.test(log.pageUrl)) {
+    return log
+  }
+  return false;
+}
+
+browser.storage.local.get(defaultConfig, (res) => {
+  userale.addCallbacks({filterUrl:filterUrl});
+  updateConfig(res);
+});
+
 browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
     // Handles logs rerouted from content and option scripts 
@@ -52,13 +86,14 @@ browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
       if("tab" in sender && "id" in sender.tab) {
         log["tabId"] = sender.tab.id;
       }
-      userale.log(log);
+      log = filterUrl(log);
+      if(log) {
+        userale.log(log);
+      }
       break;
 
     case MessageTypes.CONFIG_CHANGE:
-      console.log(message);
-      userale.options(message.payload);
-      dispatchTabMessage(message);
+      updateConfig(message.payload);
       break;
 
     default:

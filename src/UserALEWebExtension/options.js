@@ -39,9 +39,14 @@ function setConfig() {
     config.authHeader = "Basic " + btoa(`${config.userId}:${password}`);
   }
 
-  browser.storage.local.set({useraleConfig: config}, () => {
+  let payload = {
+    useraleConfig: config,
+    pluginConfig: {urlWhitelist: document.getElementById("filter").value}
+  };
+
+  browser.storage.local.set(payload, () => {
     userale.options(config);
-    browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload: config });
+    browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload: payload });
   });
 }
 
@@ -54,6 +59,9 @@ function getConfig() {
     document.getElementById("user").value = config.userId;
     document.getElementById("tool").value = config.toolName;
     document.getElementById("version").value = config.version;
+  });
+  browser.storage.local.get("pluginConfig", (res) => {
+    document.getElementById("filter").value = res.pluginConfig.urlWhitelist;
   });
 }
 

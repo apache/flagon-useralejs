@@ -429,6 +429,30 @@ var intervalLog;
 var cbHandlers = {};
 
 /**
+ * Adds named callbacks to be executed when logging.
+ * @param  {Object } newCallbacks An object containing named callback functions.
+ */
+function addCallbacks() {
+  for (var _len = arguments.length, newCallbacks = new Array(_len), _key = 0; _key < _len; _key++) {
+    newCallbacks[_key] = arguments[_key];
+  }
+  newCallbacks.forEach(function (source) {
+    var descriptors = Object.keys(source).reduce(function (descriptors, key) {
+      descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
+      return descriptors;
+    }, {});
+    Object.getOwnPropertySymbols(source).forEach(function (sym) {
+      var descriptor = Object.getOwnPropertyDescriptor(source, sym);
+      if (descriptor.enumerable) {
+        descriptors[sym] = descriptor;
+      }
+    });
+    Object.defineProperties(cbHandlers, descriptors);
+  });
+  return cbHandlers;
+}
+
+/**
  * Assigns the config and log container to be used by the logging functions.
  * @param  {Array} newLogs   Log container.
  * @param  {Object} newConfig Configuration to use while logging.
@@ -1131,11 +1155,18 @@ var defaultConfig = {
     authHeader: null,
     toolName: 'useralePlugin',
     version: version
+  },
+  pluginConfig: {
+    // Default to a regex that will match no string
+    urlWhitelist: '(?!x)x'
   }
 };
-browser.storage.local.get(defaultConfig, function (res) {
-  options(res.useraleConfig);
-});
+var urlWhitelist;
+function updateConfig(config) {
+  urlWhitelist = new RegExp(config.pluginConfig.urlWhitelist);
+  options(config.useraleConfig);
+  dispatchTabMessage(config.useraleConfig);
+}
 function dispatchTabMessage(message) {
   browser.tabs.query({}, function (tabs) {
     tabs.forEach(function (tab) {
@@ -1143,20 +1174,33 @@ function dispatchTabMessage(message) {
     });
   });
 }
-browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+function filterUrl(log) {
+  if (urlWhitelist.test(log.pageUrl)) {
+    return log;
+  }
+  return false;
+}
+browser.storage.local.get(defaultConfig, function (res) {
+  addCallbacks({
+    filterUrl: filterUrl
+  });
+  updateConfig(res);
+});
+browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
     // Handles logs rerouted from content and option scripts 
     case ADD_LOG:
-      var log$1 = message.payload;
+      var var log$1 = filterUrl$1 = message.payload;
       if ("tab" in sender && "id" in sender.tab) {
         log$1["tabId"] = sender.tab.id;
       }
       log(log$1);
+      if (log$1) {
+        log(log$1);
+      }
       break;
     case CONFIG_CHANGE:
-      console.log(message);
-      options(message.payload);
-      dispatchTabMessage(message);
+      updateConfig(message.payload);
       break;
     default:
       console.log('got unknown message type ', message);
