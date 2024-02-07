@@ -415,7 +415,7 @@ function createVersionParts(count) {
  * limitations under the License.
  */
 
-var browser$1 = detect();
+var browserInfo = detect();
 var logs$1;
 var config$1;
 
@@ -706,8 +706,8 @@ function selectorizePath(path) {
 }
 function detectBrowser() {
   return {
-    'browser': browser$1 ? browser$1.name : '',
-    'version': browser$1 ? browser$1.version : ''
+    'browser': browserInfo ? browserInfo.name : '',
+    'version': browserInfo ? browserInfo.version : ''
   };
 }
 
@@ -1142,7 +1142,7 @@ function dispatchTabMessage(message) {
     });
   });
 }
-browser.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
     case CONFIG_CHANGE:
       options(message.payload);
@@ -1151,7 +1151,11 @@ browser.runtime.onMessage.addListener(function (message) {
 
     // Handles logs rerouted from content and option scripts 
     case ADD_LOG:
-      log(message.payload);
+      var log$1 = message.payload;
+      if ("tab" in sender && "id" in sender.tab) {
+        log$1["tabId"] = sender.tab.id;
+      }
+      log(log$1);
       break;
     default:
       console.log('got unknown message type ', message);

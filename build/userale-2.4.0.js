@@ -418,7 +418,7 @@
    * limitations under the License.
    */
 
-  var browser = detect();
+  var browserInfo = detect();
   var logs$1;
   var config$1;
 
@@ -745,8 +745,8 @@
   }
   function detectBrowser() {
     return {
-      'browser': browser ? browser.name : '',
-      'version': browser ? browser.version : ''
+      'browser': browserInfo ? browserInfo.name : '',
+      'version': browserInfo ? browserInfo.version : ''
     };
   }
 

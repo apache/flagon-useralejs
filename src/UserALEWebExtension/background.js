@@ -43,7 +43,7 @@ function dispatchTabMessage(message) {
   });
 }
 
-browser.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
     case MessageTypes.CONFIG_CHANGE:
       userale.options(message.payload)
@@ -52,7 +52,11 @@ browser.runtime.onMessage.addListener(function (message) {
 
     // Handles logs rerouted from content and option scripts 
     case MessageTypes.ADD_LOG:
-      userale.log(message.payload);
+      let log = message.payload;
+      if("tab" in sender && "id" in sender.tab) {
+        log["tabId"] = sender.tab.id;
+      }
+      userale.log(log);
       break;
 
     default:
@@ -75,7 +79,6 @@ function packageDetailedTabLog(tab, data, type) {
 // Attach Handlers for tab events
 // https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/tabs
 browser.tabs.onActivated.addListener((activeInfo) => {
-  browser.storage.local.set({ "tabId": activeInfo.tabId });
   packageTabLog(activeInfo.tabId, activeInfo, "tabs.onActivated");
 });
 
