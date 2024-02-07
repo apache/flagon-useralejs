@@ -1128,6 +1128,7 @@ var defaultConfig = {
   useraleConfig: {
     url: 'http://localhost:8000',
     userId: 'pluginUser',
+    authHeader: null,
     toolName: 'useralePlugin',
     version: version
   }
@@ -1144,14 +1145,14 @@ function dispatchTabMessage(message) {
 }
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
-    case CONFIG_CHANGE:
-      options(message.payload);
-      dispatchTabMessage(message);
-      break;
-
     // Handles logs rerouted from content and option scripts 
     case ADD_LOG:
       log(message.payload);
+      break;
+    case CONFIG_CHANGE:
+      console.log(message);
+      options(message.payload);
+      dispatchTabMessage(message);
       break;
     default:
       console.log('got unknown message type ', message);

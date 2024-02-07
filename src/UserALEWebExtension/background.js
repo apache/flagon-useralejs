@@ -27,6 +27,7 @@ import { browser } from './globals.js';
 const defaultConfig = {useraleConfig: {
   url: 'http://localhost:8000',
   userId: 'pluginUser',
+  authHeader: null,
   toolName: 'useralePlugin',
   version: userale.version,
 }};
@@ -45,14 +46,15 @@ function dispatchTabMessage(message) {
 
 browser.runtime.onMessage.addListener(function (message) {
   switch (message.type) {
-    case MessageTypes.CONFIG_CHANGE:
-      userale.options(message.payload)
-      dispatchTabMessage(message);
-      break;
-
     // Handles logs rerouted from content and option scripts 
     case MessageTypes.ADD_LOG:
       userale.log(message.payload);
+      break;
+
+    case MessageTypes.CONFIG_CHANGE:
+      console.log(message);
+      userale.options(message.payload);
+      dispatchTabMessage(message);
       break;
 
     default:

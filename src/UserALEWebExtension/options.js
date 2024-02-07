@@ -22,34 +22,42 @@ import { rerouteLog, browser } from './globals.js';
 
 userale.addCallbacks({reroute: rerouteLog});
 
-function setConfig(e) {
-  browser.storage.local.set(
-    {useraleConfig: {
-      url: document.getElementById("url").value,
-      userId: document.getElementById("user").value,
-      toolName: document.getElementById("tool").value,
-      version: document.getElementById("version").value
-    }},
-    () => {getConfig()}
-  );
+// TODO: Warn users when setting credentials with unsecured connection.
+const mitmWarning = "Setting credentials with http will expose you to a MITM attack. Are you sure you want to continue?";
+
+function setConfig() {
+  let config = {
+    url: document.getElementById("url").value,
+    userId: document.getElementById("user").value,
+    toolName: document.getElementById("tool").value,
+    version: document.getElementById("version").value
+  };
+
+  // Set a basic auth header if given credentials.
+  const password = document.getElementById("password").value;
+  if(config.userId && password) {
+    config.authHeader = "Basic " + btoa(`${config.userId}:${password}`);
+  }
+
+  browser.storage.local.set({useraleConfig: config}, () => {
+    userale.options(config);
+    browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload: config });
+  });
 }
 
 function getConfig() {
   browser.storage.local.get("useraleConfig", (res) => {
     let config = res.useraleConfig;
   
+    userale.options(config);
     document.getElementById("url").value = config.url;
     document.getElementById("user").value = config.userId;
     document.getElementById("tool").value = config.toolName;
     document.getElementById("version").value = config.version;
-
-    userale.options(config);
-    browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload: config });
-
   });
 }
 
-document.addEventListener('DOMContentLoaded', getConfig);
+document.addEventListener("DOMContentLoaded", getConfig);
 document.addEventListener("submit", setConfig);
 
 /* eslint-enable */

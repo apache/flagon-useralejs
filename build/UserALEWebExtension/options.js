@@ -1100,7 +1100,6 @@ function options(newConfig) {
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = browser || chrome;
 function rerouteLog(log) {
-  console.log(log);
   browser.runtime.sendMessage({
     type: ADD_LOG,
     payload: log
@@ -1130,25 +1129,22 @@ function rerouteLog(log) {
 addCallbacks({
   reroute: rerouteLog
 });
-function setConfig(e) {
+function setConfig() {
+  var config = {
+    url: document.getElementById("url").value,
+    userId: document.getElementById("user").value,
+    toolName: document.getElementById("tool").value,
+    version: document.getElementById("version").value
+  };
+
+  // Set a basic auth header if given credentials.
+  var password = document.getElementById("password").value;
+  if (config.userId && password) {
+    config.authHeader = "Basic " + btoa("".concat(config.userId, ":").concat(password));
+  }
   browser.storage.local.set({
-    useraleConfig: {
-      url: document.getElementById("url").value,
-      userId: document.getElementById("user").value,
-      toolName: document.getElementById("tool").value,
-      version: document.getElementById("version").value
-    }
+    useraleConfig: config
   }, function () {
-    getConfig();
-  });
-}
-function getConfig() {
-  browser.storage.local.get("useraleConfig", function (res) {
-    var config = res.useraleConfig;
-    document.getElementById("url").value = config.url;
-    document.getElementById("user").value = config.userId;
-    document.getElementById("tool").value = config.toolName;
-    document.getElementById("version").value = config.version;
     options(config);
     browser.runtime.sendMessage({
       type: CONFIG_CHANGE,
@@ -1156,7 +1152,17 @@ function getConfig() {
     });
   });
 }
-document.addEventListener('DOMContentLoaded', getConfig);
+function getConfig() {
+  browser.storage.local.get("useraleConfig", function (res) {
+    var config = res.useraleConfig;
+    options(config);
+    document.getElementById("url").value = config.url;
+    document.getElementById("user").value = config.userId;
+    document.getElementById("tool").value = config.toolName;
+    document.getElementById("version").value = config.version;
+  });
+}
+document.addEventListener("DOMContentLoaded", getConfig);
 document.addEventListener("submit", setConfig);
 
 /* eslint-enable */
