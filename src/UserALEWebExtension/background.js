@@ -44,11 +44,15 @@ function dispatchTabMessage(message) {
   });
 }
 
-browser.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
     // Handles logs rerouted from content and option scripts 
     case MessageTypes.ADD_LOG:
-      userale.log(message.payload);
+      let log = message.payload;
+      if("tab" in sender && "id" in sender.tab) {
+        log["tabId"] = sender.tab.id;
+      }
+      userale.log(log);
       break;
 
     case MessageTypes.CONFIG_CHANGE:
