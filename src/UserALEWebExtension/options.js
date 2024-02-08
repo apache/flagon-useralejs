@@ -20,7 +20,7 @@ import * as MessageTypes from './messageTypes.js';
 import * as userale from '../main.js'
 import { rerouteLog, browser } from './globals.js';
 
-userale.addCallbacks(rerouteLog);
+userale.addCallbacks({rerouteLog});
 
 // TODO: Warn users when setting credentials with unsecured connection.
 const mitmWarning = "Setting credentials with http will expose you to a MITM attack. Are you sure you want to continue?";

@@ -23,7 +23,7 @@ import { rerouteLog, browser } from './globals.js';
 
 browser.storage.local.get("useraleConfig", (res) => {
   userale.options(res.useraleConfig);
-  userale.addCallbacks(rerouteLog);
+  userale.addCallbacks({rerouteLog});
 });
 
 browser.runtime.onMessage.addListener(function (message) {

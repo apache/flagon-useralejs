@@ -1100,6 +1100,7 @@ function options(newConfig) {
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = browser || chrome;
 function rerouteLog(log) {
+  console.log("reroute");
   browser.runtime.sendMessage({
     type: ADD_LOG,
     payload: log
@@ -1128,7 +1129,9 @@ function rerouteLog(log) {
 
 browser.storage.local.get("useraleConfig", function (res) {
   options(res.useraleConfig);
-  addCallbacks(rerouteLog);
+  addCallbacks({
+    rerouteLog: rerouteLog
+  });
 });
 browser.runtime.onMessage.addListener(function (message) {
   if (message.type === CONFIG_CHANGE) {
