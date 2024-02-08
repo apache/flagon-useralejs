@@ -1100,6 +1100,7 @@ function options(newConfig) {
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = browser || chrome;
 function rerouteLog(log) {
+  console.log("reroute");
   browser.runtime.sendMessage({
     type: ADD_LOG,
     payload: log
@@ -1127,7 +1128,7 @@ function rerouteLog(log) {
 */
 
 addCallbacks({
-  reroute: rerouteLog
+  rerouteLog: rerouteLog
 });
 function setConfig() {
   var config = {
@@ -1142,13 +1143,17 @@ function setConfig() {
   if (config.userId && password) {
     config.authHeader = "Basic " + btoa("".concat(config.userId, ":").concat(password));
   }
-  browser.storage.local.set({
-    useraleConfig: config
-  }, function () {
+  var payload = {
+    useraleConfig: config,
+    pluginConfig: {
+      urlWhitelist: document.getElementById("filter").value
+    }
+  };
+  browser.storage.local.set(payload, function () {
     options(config);
     browser.runtime.sendMessage({
       type: CONFIG_CHANGE,
-      payload: config
+      payload: payload
     });
   });
 }
@@ -1160,6 +1165,9 @@ function getConfig() {
     document.getElementById("user").value = config.userId;
     document.getElementById("tool").value = config.toolName;
     document.getElementById("version").value = config.version;
+  });
+  browser.storage.local.get("pluginConfig", function (res) {
+    document.getElementById("filter").value = res.pluginConfig.urlWhitelist;
   });
 }
 document.addEventListener("DOMContentLoaded", getConfig);
