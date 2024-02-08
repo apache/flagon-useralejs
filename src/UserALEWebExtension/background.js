@@ -69,31 +69,16 @@ browser.storage.local.get(defaultConfig, (res) => {
   updateConfig(res);
 });
 
-function filterUrl(log) {
-  if(urlWhitelist.test(log.pageUrl)) {
-    return log
-  }
-  return false;
-}
-
-browser.storage.local.get(defaultConfig, (res) => {
-  userale.addCallbacks({filterUrl:filterUrl});
-  updateConfig(res);
-});
-
 browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
     // Handles logs rerouted from content and option scripts.
     case MessageTypes.ADD_LOG:
-<<<<<<< HEAD
       let log = message.payload;
       if("tab" in sender && "id" in sender.tab) {
         log["tabId"] = sender.tab.id;
       }
       // Apply url filter to logs generated outside the background page.
       log = filterUrl(log);
-=======
->>>>>>> 9f626ab (Updates from feedback)
       if(log) {
         userale.log(log);
       }

@@ -1165,6 +1165,7 @@ var urlWhitelist;
 function updateConfig(config) {
   urlWhitelist = new RegExp(config.pluginConfig.urlWhitelist);
   options(config.useraleConfig);
+  // TODO: tabs need a page load to apply this config change.
   dispatchTabMessage(config.useraleConfig);
 }
 function dispatchTabMessage(message) {
@@ -1187,12 +1188,16 @@ browser.storage.local.get(defaultConfig, function (res) {
   addCallbacks(filterUrl);
   updateConfig(res);
 });
-browser.runtime.onMessage.addListener(function (message) {
+browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   switch (message.type) {
     // Handles logs rerouted from content and option scripts.
     case ADD_LOG:
+      var log$1 = message.payload;
+      if ("tab" in sender && "id" in sender.tab) {
+        log$1["tabId"] = sender.tab.id;
+      }
       // Apply url filter to logs generated outside the background page.
-      var log$1 = filterUrl(message.payload);
+      log$1 = filterUrl(log$1);
       if (log$1) {
         log(log$1);
       }
