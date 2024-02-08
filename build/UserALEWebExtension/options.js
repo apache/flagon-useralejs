@@ -1126,9 +1126,7 @@ function rerouteLog(log) {
 * limitations under the License.
 */
 
-addCallbacks({
-  reroute: rerouteLog
-});
+addCallbacks(rerouteLog);
 function setConfig() {
   var config = {
     url: document.getElementById("url").value,

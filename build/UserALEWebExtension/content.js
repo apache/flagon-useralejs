@@ -1128,9 +1128,7 @@ function rerouteLog(log) {
 
 browser.storage.local.get("useraleConfig", function (res) {
   options(res.useraleConfig);
-  addCallbacks({
-    reroute: rerouteLog
-  });
+  addCallbacks(rerouteLog);
 });
 browser.runtime.onMessage.addListener(function (message) {
   if (message.type === CONFIG_CHANGE) {
