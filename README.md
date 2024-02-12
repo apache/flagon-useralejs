@@ -249,7 +249,7 @@ document.addEventListener('change', function(e) {
             customField1: 'foo',
             customField2: 'bar',
             userId: userale.options().userId,
-            toolVersion: userale.options().version,
+            toolVersion: userale.options().toolVersion,
             toolName: userale.options().toolName,
             useraleVersion: userale.options().useraleVersion,
             sessionID: userale.options().sessionID,

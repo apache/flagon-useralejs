@@ -77,6 +77,8 @@ function getData(url, resolve) {
           userAction: 'false',
           details: JSON.parse(req.response),
           userId: userale.options().userId,
+          toolVersion: userale.options().toolVersion,
+          toolName: userale.options().toolName,
           useraleVersion: userale.options().useraleVersion,
           sessionID: userale.options().sessionID,
           traceId: trace.getSpan(context.active())._spanContext.traceId
