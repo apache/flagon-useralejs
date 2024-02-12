@@ -42,11 +42,11 @@ const defaultConfig = {
 var urlWhitelist;
 
 function updateConfig(config) {
-  if ((config.toolName || "") === "") {
+  if (!config.toolName) {
     throw "Please set the tool name before use.";
   }
   
-  if ((config.toolVersion || "") === "") {
+  if (!config.toolVersion) {
     throw "Please set the app version before use.";
   }
   

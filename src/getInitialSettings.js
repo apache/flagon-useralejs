@@ -53,11 +53,11 @@ export function getInitialSettings() {
     settings.custIndex = get('data-index') || null;
     settings.headers = get('data-headers') || null;
  
-    if ((settings.toolName || "") === "") {
+    if (!settings.toolName) {
         throw "Please set the tool name before use.";
     }
 
-    if ((settings.toolVersion || "") === "") {
+    if (!settings.toolVersion) {
         throw "Please set the app version before use.";
     }
     
