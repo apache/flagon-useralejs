@@ -22,6 +22,7 @@ const changeMe = "me";
 window.userale.options({
     'userId': changeMe,
     'logDetails': true,
+    'toolVersion': '2.3.0',
     'toolName': 'Apache UserALE.js Example (Custom)'
 });
 

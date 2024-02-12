@@ -30,7 +30,7 @@ function setConfig() {
     url: document.getElementById("url").value,
     userId: document.getElementById("user").value,
     toolName: document.getElementById("tool").value,
-    version: document.getElementById("version").value
+    toolVersion: document.getElementById("version").value
   };
 
   // Set a basic auth header if given credentials.
@@ -58,7 +58,7 @@ function getConfig() {
     document.getElementById("url").value = config.url;
     document.getElementById("user").value = config.userId;
     document.getElementById("tool").value = config.toolName;
-    document.getElementById("version").value = config.version;
+    document.getElementById("version").value = config.toolVersion;
   });
   browser.storage.local.get("pluginConfig", (res) => {
     document.getElementById("filter").value = res.pluginConfig.urlWhitelist;

@@ -30,6 +30,7 @@ const defaultConfig = {
     userId: 'pluginUser',
     authHeader: null,
     toolName: 'useralePlugin',
+    toolVersion: '2.4.0',
     version: userale.version,
   },
   pluginConfig: {
@@ -41,6 +42,14 @@ const defaultConfig = {
 var urlWhitelist;
 
 function updateConfig(config) {
+  if ((config.toolName || "") === "") {
+    throw "Please set the tool name before use.";
+  }
+  
+  if ((config.toolVersion || "") === "") {
+    throw "Please set the app version before use.";
+  }
+  
   urlWhitelist = new RegExp(config.pluginConfig.urlWhitelist);
   userale.options(config.useraleConfig);
   // TODO: tabs need a page load to apply this config change.

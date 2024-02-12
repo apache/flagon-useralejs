@@ -42,7 +42,7 @@ export function getInitialSettings() {
     settings.transmitInterval = +get('data-interval') || 5000;
     settings.logCountThreshold = +get('data-threshold') || 5;
     settings.userId = get('data-user') || null;
-    settings.version = get('data-version') || null;
+    settings.toolVersion = get('data-version') || null;
     settings.logDetails = get('data-log-details') === 'true' ? true : false;
     settings.resolution = +get('data-resolution') || 500;
     settings.toolName = get('data-tool') || null;
@@ -52,6 +52,15 @@ export function getInitialSettings() {
     settings.authHeader = get('data-auth') || null;
     settings.custIndex = get('data-index') || null;
     settings.headers = get('data-headers') || null;
+ 
+    if ((settings.toolName || "") === "") {
+        throw "Please set the tool name before use.";
+    }
+
+    if ((settings.toolVersion || "") === "") {
+        throw "Please set the app version before use.";
+    }
+    
     return settings;
 }
 
