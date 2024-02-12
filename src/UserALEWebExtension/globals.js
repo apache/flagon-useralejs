@@ -21,7 +21,7 @@
 export var userAleHost = 'http://localhost:8000';
 export var userAleScript = 'userale-2.4.0.min.js';
 export var toolUser = 'nobody';
-export var toolName = 'test_app';
+export var toolName = 'browser-plugin';
 export var toolVersion = '2.4.0';
 
 /* eslint-enable */

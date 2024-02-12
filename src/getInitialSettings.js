@@ -52,10 +52,9 @@ export function getInitialSettings() {
     settings.sessionID = get('data-session') || sessionId;
     settings.authHeader = get('data-auth') || null;
     settings.custIndex = get('data-index') || null;
-    settings.appId = get('data-appId') || null;
 
-    if (settings.appId === null || settings.appId === "") {
-        throw "Please set the application id (appId) in the script tag before use.";
+    if (settings.toolName === null || settings.toolName === "") {
+        throw "Please set the tool name before use.";
     }
 
     return settings;
