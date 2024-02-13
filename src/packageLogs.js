@@ -144,6 +144,8 @@ export function packageLog(e, detailFcn) {
     'toolName' : config.toolName,
     'useraleVersion': config.useraleVersion,
     'sessionID': config.sessionID,
+    'httpSessionId': config.httpSessionId,
+    'browserSessionId': config.browserSessionId,
   };
 
   if ((typeof filterHandler === 'function') && !filterHandler(log)) {
@@ -198,7 +200,9 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'toolVersion' : config.version,
         'toolName' : config.toolName,
         'useraleVersion': config.useraleVersion,
-        'sessionID': config.sessionID
+        'sessionID': config.sessionID,
+        'httpSessionId': config.httpSessionId,
+        'browserSessionId': config.browserSessionId,
     };
 
     let log = Object.assign(metaData, customLog);
@@ -282,7 +286,9 @@ export function packageIntervalLog(e) {
             'toolVersion': config.version,
             'toolName': config.toolName,
             'useraleVersion': config.useraleVersion,
-            'sessionID': config.sessionID
+            'sessionID': config.sessionID,
+            'httpSessionId': config.httpSessionId,
+            'browserSessionId': config.browserSessionId,
         };
 
         if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
