@@ -39,6 +39,7 @@ describe('Userale API', () => {
             'userFromParams',
             'time',
             'authHeader',
+            'headers',
             'custIndex'
         ]);
         dom.window.close();

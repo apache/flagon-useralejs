@@ -6,6 +6,9 @@ logging information about a specific feature.
 
 ## Adding Custom Labels to Logs
 
+#### Important Note
+Please be aware that when adding custom logs without disabling raw logging for those specific logs, duplicate log entries will be generated: one for raw logs and another for custom logs.
+
 ### Example 1
 
 Consider the following HTML:

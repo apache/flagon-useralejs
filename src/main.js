@@ -32,6 +32,7 @@ window.onload = function () {
 
 export let started = false;
 export {defineCustomDetails as details} from './attachHandlers.js';
+export {registerAuthCallback as registerAuthCallback} from './utils';
 export {
     addCallbacks as addCallbacks,
     removeCallbacks as removeCallbacks,
@@ -69,7 +70,6 @@ function setup(config) {
                 started = config.on = true;
                 packageCustomLog({
                     type: 'load',
-                    logType: 'raw',
                     details: {pageLoadTime: endLoadTimestamp - startLoadTimestamp}
                     }, () => {},false)
             } else {

@@ -14,11 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {expect} from 'chai';
+import chai, {expect} from 'chai';
+import chaiSubset from 'chai-subset';
 import {JSDOM} from 'jsdom';
 import sinon from 'sinon';
-import {sendOnInterval, sendOnClose} from '../src/sendLogs';
+import {initSender, sendOnInterval, sendOnClose} from '../src/sendLogs';
+import {registerAuthCallback, registerHeadersCallback} from '../src/utils';
 import 'global-jsdom/register'
+
+chai.use(chaiSubset);
 
 describe('sendLogs', () => {
     it('sends logs on an interval', (done) => {
@@ -110,4 +114,81 @@ describe('sendLogs', () => {
         global.window.dispatchEvent(new window.CustomEvent('pagehide'))
         sinon.assert.notCalled(sendBeaconSpy)
     });
+
+    it('sends logs with proper auth header when using registerAuthCallback', (done) => {
+        let requests = []
+        const originalXMLHttpRequest = global.XMLHttpRequest;
+        const conf = { on: true, transmitInterval: 500, url: 'test', logCountThreshold: 1 };
+        const logs = [];
+        const clock = sinon.useFakeTimers();
+        const xhr = sinon.useFakeXMLHttpRequest();
+        global.XMLHttpRequest = xhr;
+        xhr.onCreate = (xhr) => {
+            requests.push(xhr);
+        };
+    
+        // Mock the authCallback function
+        const authCallback = sinon.stub().returns('fakeAuthToken');
+        
+        // Register the authCallback
+        registerAuthCallback(authCallback);
+    
+        // Initialize sender with logs and config
+        initSender(logs, conf);
+    
+        // Simulate log entry
+        logs.push({ foo: 'bar' });
+    
+        // Trigger interval to send logs
+        clock.tick(conf.transmitInterval);
+
+        // Verify that the request has the proper auth header
+        expect(requests.length).to.equal(1);
+        expect(requests[0].requestHeaders.Authorization).to.equal('fakeAuthToken');
+    
+        // Restore XMLHttpRequest and clock
+        xhr.restore();
+        clock.restore();
+        global.XMLHttpRequest = originalXMLHttpRequest;
+        done()
+      });
+
+      it('sends logs with proper custom headers when using registerHeadersCallback', (done) => {
+        let requests = []
+        const originalXMLHttpRequest = global.XMLHttpRequest;
+        const conf = { on: true, transmitInterval: 500, url: 'test', logCountThreshold: 1 };
+        const logs = [];
+        const clock = sinon.useFakeTimers();
+        const xhr = sinon.useFakeXMLHttpRequest();
+        global.XMLHttpRequest = xhr;
+        xhr.onCreate = (xhr) => {
+            requests.push(xhr);
+        };
+    
+        // Mock the authCallback function
+        const customHeaders = {'x-api-token': 'someString', 'x-abc-def': 'someOtherString'}
+        const headersCallback = sinon.stub().returns(customHeaders);
+        
+        // Register the authCallback
+        registerHeadersCallback(headersCallback);
+    
+        // Initialize sender with logs and config
+        initSender(logs, conf);
+    
+        // Simulate log entry
+        logs.push({ foo: 'bar' });
+    
+        // Trigger interval to send logs
+        clock.tick(conf.transmitInterval);
+
+        // Verify that the request has the proper auth header
+        expect(requests.length).to.equal(1);
+        expect(requests[0].requestHeaders).to.containSubset(customHeaders);
+    
+        // Restore XMLHttpRequest and clock
+        xhr.restore();
+        clock.restore();
+        global.XMLHttpRequest = originalXMLHttpRequest;
+        done()
+      });
 });

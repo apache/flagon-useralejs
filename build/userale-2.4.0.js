@@ -84,6 +84,7 @@
     settings.sessionID = get('data-session') || sessionId;
     settings.authHeader = get('data-auth') || null;
     settings.custIndex = get('data-index') || null;
+    settings.headers = get('data-headers') || null;
     return settings;
   }
 
@@ -417,7 +418,7 @@
    * limitations under the License.
    */
 
-  var browser = detect();
+  var browserInfo = detect();
   var logs$1;
   var config$1;
 
@@ -744,8 +745,8 @@
   }
   function detectBrowser() {
     return {
-      'browser': browser ? browser.name : '',
-      'version': browser ? browser.version : ''
+      'browser': browserInfo ? browserInfo.name : '',
+      'version': browserInfo ? browserInfo.version : ''
     };
   }
 
@@ -968,6 +969,61 @@
     return true;
   }
 
+  function _arrayWithHoles(arr) {
+    if (Array.isArray(arr)) return arr;
+  }
+
+  function _iterableToArrayLimit(r, l) {
+    var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+    if (null != t) {
+      var e,
+        n,
+        i,
+        u,
+        a = [],
+        f = !0,
+        o = !1;
+      try {
+        if (i = (t = t.call(r)).next, 0 === l) {
+          if (Object(t) !== t) return;
+          f = !1;
+        } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+      } catch (r) {
+        o = !0, n = r;
+      } finally {
+        try {
+          if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+        } finally {
+          if (o) throw n;
+        }
+      }
+      return a;
+    }
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+    return arr2;
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _nonIterableRest() {
+    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
+  function _slicedToArray(arr, i) {
+    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+  }
+
   /*
    * Licensed to the Apache Software Foundation (ASF) under one or more
    * contributor license agreements.  See the NOTICE file distributed with
@@ -975,15 +1031,68 @@
    * The ASF licenses this file to You under the Apache License, Version 2.0
    * (the "License"); you may not use this file except in compliance with
    * the License.  You may obtain a copy of the License at
-   * 
+   *
    *   http://www.apache.org/licenses/LICENSE-2.0
-   * 
+   *
    * Unless required by applicable law or agreed to in writing, software
    * distributed under the License is distributed on an "AS IS" BASIS,
    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    * See the License for the specific language governing permissions and
    * limitations under the License.
    */
+
+  var authCallback = null;
+
+  /**
+   * Fetches the most up-to-date auth header string from the auth callback
+   * and updates the config object with the new value.
+   * @param {Object} config Configuration object to be updated.
+   * @param {Function} authCallback Callback used to fetch the newest header.
+   * @returns {void}
+   */
+  function updateAuthHeader(config) {
+    if (authCallback) {
+      try {
+        config.authHeader = authCallback();
+      } catch (e) {
+        // We should emit the error, but otherwise continue as this could be a temporary issue
+        // due to network connectivity or some logic inside the authCallback which is the user's
+        // responsibility.
+        console.error("Error encountered while setting the auth header: ".concat(e));
+      }
+    }
+  }
+
+  /**
+   * Registers the provided callback to be used when updating the auth header.
+   * @param {Function} callback Callback used to fetch the newest header. Should return a string.
+   * @returns {boolean} Whether the operation succeeded.
+   */
+  function registerAuthCallback(callback) {
+    try {
+      verifyCallback(callback);
+      authCallback = callback;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /**
+   * Verify that the provided callback is a function which returns a string
+   * @param {Function} callback Callback used to fetch the newest header. Should return a string.
+   * @throws {Error} If the callback is not a function or does not return a string.
+   * @returns {void}
+   */
+  function verifyCallback(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("Userale auth callback must be a function");
+    }
+    var result = callback();
+    if (typeof result !== "string") {
+      throw new Error("Userale auth callback must return a string");
+    }
+  }
 
   var sendIntervalId = null;
 
@@ -1025,8 +1134,13 @@
    * @param  {Object} config Configuration object to be read from.
    */
   function sendOnClose(logs, config) {
-    window.addEventListener('pagehide', function () {
+    window.addEventListener("pagehide", function () {
       if (config.on && logs.length > 0) {
+        // NOTE: sendBeacon does not support auth headers,
+        // so this will fail if auth is required.
+        // The alternative is to use fetch() with keepalive: true
+        // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#description
+        // https://stackoverflow.com/a/73062712/9263449
         navigator.sendBeacon(config.url, JSON.stringify(logs));
         logs.splice(0); // clear log queue
       }
@@ -1044,14 +1158,23 @@
   // @todo expose config object to sendLogs replate url with config.url
   function sendLogs(logs, config, retries) {
     var req = new XMLHttpRequest();
-
-    // @todo setRequestHeader for Auth
     var data = JSON.stringify(logs);
-    req.open('POST', config.url);
+    req.open("POST", config.url);
+
+    // Update headers
+    updateAuthHeader(config);
     if (config.authHeader) {
-      req.setRequestHeader('Authorization', config.authHeader);
+      req.setRequestHeader("Authorization", config.authHeader);
     }
-    req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+    req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    if (config.headers) {
+      Object.entries(config.headers).forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+          header = _ref2[0],
+          value = _ref2[1];
+        req.setRequestHeader(header, value);
+      });
+    }
     req.onreadystatechange = function () {
       if (req.readyState === 4 && req.status !== 200) {
         if (retries > 0) {
@@ -1095,7 +1218,6 @@
           exports.started = config.on = true;
           packageCustomLog({
             type: 'load',
-            logType: 'raw',
             details: {
               pageLoadTime: endLoadTimestamp - startLoadTimestamp
             }
@@ -1164,6 +1286,7 @@
   exports.options = options;
   exports.packageCustomLog = packageCustomLog;
   exports.packageLog = packageLog;
+  exports.registerAuthCallback = registerAuthCallback;
   exports.removeCallbacks = removeCallbacks;
   exports.start = start;
   exports.stop = stop;

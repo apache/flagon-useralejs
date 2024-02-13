@@ -15,34 +15,6 @@
 * limitations under the License.
 */
 
-/* eslint-disable */
-
-// these are default values, which can be overridden by the user on the options page
-var userAleHost = 'http://localhost:8000';
-var userAleScript = 'userale-2.4.0.min.js';
-var toolUser = 'nobody';
-var toolName = 'test_app';
-var toolVersion = '2.4.0';
-
-/* eslint-enable */
-
-/*
-* Licensed to the Apache Software Foundation (ASF) under one or more
-* contributor license agreements.  See the NOTICE file distributed with
-    * this work for additional information regarding copyright ownership.
-* The ASF licenses this file to You under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with
-    * the License.  You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
 var prefix = 'USERALE_';
 var CONFIG_CHANGE = prefix + 'CONFIG_CHANGE';
 var ADD_LOG = prefix + 'ADD_LOG';
@@ -99,6 +71,7 @@ function getInitialSettings() {
   settings.sessionID = get('data-session') || sessionId;
   settings.authHeader = get('data-auth') || null;
   settings.custIndex = get('data-index') || null;
+  settings.headers = get('data-headers') || null;
   return settings;
 }
 
@@ -432,7 +405,7 @@ function createVersionParts(count) {
  * limitations under the License.
  */
 
-var browser$1 = detect();
+var browserInfo = detect();
 var logs$1;
 var config$1;
 
@@ -747,8 +720,8 @@ function selectorizePath(path) {
 }
 function detectBrowser() {
   return {
-    'browser': browser$1 ? browser$1.name : '',
-    'version': browser$1 ? browser$1.version : ''
+    'browser': browserInfo ? browserInfo.name : '',
+    'version': browserInfo ? browserInfo.version : ''
   };
 }
 
@@ -906,22 +879,60 @@ function attachHandlers(config) {
   return true;
 }
 
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- * 
- *   http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
+function _iterableToArrayLimit(r, l) {
+  var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"];
+  if (null != t) {
+    var e,
+      n,
+      i,
+      u,
+      a = [],
+      f = !0,
+      o = !1;
+    try {
+      if (i = (t = t.call(r)).next, 0 === l) {
+        if (Object(t) !== t) return;
+        f = !1;
+      } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0);
+    } catch (r) {
+      o = !0, n = r;
+    } finally {
+      try {
+        if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return;
+      } finally {
+        if (o) throw n;
+      }
+    }
+    return a;
+  }
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+}
+
+function _nonIterableRest() {
+  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+function _slicedToArray(arr, i) {
+  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
+}
 
 var sendIntervalId = null;
 
@@ -963,8 +974,13 @@ function sendOnInterval(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 function sendOnClose(logs, config) {
-  window.addEventListener('pagehide', function () {
+  window.addEventListener("pagehide", function () {
     if (config.on && logs.length > 0) {
+      // NOTE: sendBeacon does not support auth headers,
+      // so this will fail if auth is required.
+      // The alternative is to use fetch() with keepalive: true
+      // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#description
+      // https://stackoverflow.com/a/73062712/9263449
       navigator.sendBeacon(config.url, JSON.stringify(logs));
       logs.splice(0); // clear log queue
     }
@@ -982,14 +998,20 @@ function sendOnClose(logs, config) {
 // @todo expose config object to sendLogs replate url with config.url
 function sendLogs(logs, config, retries) {
   var req = new XMLHttpRequest();
-
-  // @todo setRequestHeader for Auth
   var data = JSON.stringify(logs);
-  req.open('POST', config.url);
+  req.open("POST", config.url);
   if (config.authHeader) {
-    req.setRequestHeader('Authorization', config.authHeader);
+    req.setRequestHeader("Authorization", config.authHeader);
   }
-  req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+  req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+  if (config.headers) {
+    Object.entries(config.headers).forEach(function (_ref) {
+      var _ref2 = _slicedToArray(_ref, 2),
+        header = _ref2[0],
+        value = _ref2[1];
+      req.setRequestHeader(header, value);
+    });
+  }
   req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status !== 200) {
       if (retries > 0) {
@@ -1033,7 +1055,6 @@ function setup(config) {
         started = config.on = true;
         packageCustomLog({
           type: 'load',
-          logType: 'raw',
           details: {
             pageLoadTime: endLoadTimestamp - startLoadTimestamp
           }
@@ -1059,6 +1080,37 @@ function options(newConfig) {
 }
 
 /*
+* Licensed to the Apache Software Foundation (ASF) under one or more
+* contributor license agreements.  See the NOTICE file distributed with
+    * this work for additional information regarding copyright ownership.
+* The ASF licenses this file to You under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with
+    * the License.  You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+// browser is defined in firefox, but chrome uses the 'chrome' global.
+var browser = browser || chrome;
+function rerouteLog(log) {
+  console.log("reroute");
+  browser.runtime.sendMessage({
+    type: ADD_LOG,
+    payload: log
+  });
+  return false;
+}
+
+/* eslint-enable */
+
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -1075,59 +1127,15 @@ function options(newConfig) {
  * limitations under the License.
  */
 
-
-// browser is defined in firefox, but not in chrome. In chrome, they use
-// the 'chrome' global instead. Let's map it to browser so we don't have
-// to have if-conditions all over the place.
-
-var browser = browser || chrome;
-
-// creates a Future for retrieval of the named keys
-// the value specified is the default value if one doesn't exist in the storage
-browser.storage.local.get({
-  sessionId: null,
-  userAleHost: userAleHost,
-  userAleScript: userAleScript,
-  toolUser: toolUser,
-  toolName: toolName,
-  toolVersion: toolVersion
-}, storeCallback);
-function storeCallback(item) {
-  injectScript({
-    url: item.userAleHost,
-    userId: item.toolUser,
-    sessionID: item.sessionId,
-    toolName: item.toolName,
-    toolVersion: item.toolVersion
-  });
-}
-function queueLog(log) {
-  browser.runtime.sendMessage({
-    type: ADD_LOG,
-    payload: log
-  });
-}
-function injectScript(config) {
-  options(config);
-  //  start();  not necessary given that autostart in place, and option is masked from WebExt users
+browser.storage.local.get("useraleConfig", function (res) {
+  options(res.useraleConfig);
   addCallbacks({
-    "function": function _function(log) {
-      queueLog(Object.assign({}, log, {
-        pageUrl: document.location.href
-      }));
-      console.log(log);
-      return false;
-    }
+    rerouteLog: rerouteLog
   });
-}
+});
 browser.runtime.onMessage.addListener(function (message) {
   if (message.type === CONFIG_CHANGE) {
-    options({
-      url: message.payload.userAleHost,
-      userId: message.payload.toolUser,
-      toolName: message.payload.toolName,
-      toolVersion: message.payload.toolVersion
-    });
+    options(message.payload);
   }
 });
 

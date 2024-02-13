@@ -14,24 +14,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-/* eslint-disable */
-
-import * as MessageTypes from './messageTypes.js';
-import * as userale from '../main.js';
-import { rerouteLog, browser } from './globals.js';
-
-browser.storage.local.get("useraleConfig", (res) => {
-  userale.options(res.useraleConfig);
-  userale.addCallbacks({rerouteLog});
-});
-
-browser.runtime.onMessage.addListener(function (message) {
-  if (message.type === MessageTypes.CONFIG_CHANGE) {
-    userale.options(message.payload);
-  }
-});
-
-/*
- eslint-enable
- */
+export {
+    authCallback,
+    updateAuthHeader, 
+    registerAuthCallback, 
+    resetAuthCallback, 
+    verifyCallback as verifyAuthCallback
+} from "./auth";
+export { 
+    headersCallback,
+    updateCustomHeaders,
+    registerHeadersCallback,
+    resetHeadersCallback,
+    verifyCallback as verifyHeadersCallback
+} from "./headers";

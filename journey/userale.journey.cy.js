@@ -14,6 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { validate } from 'jsonschema';
+
 describe('Userale logging', () => {
     beforeEach(() => {
         cy.intercept('POST', 'http://localhost:8000/').as('backend')
@@ -26,7 +28,7 @@ describe('Userale logging', () => {
             const pageLoadLog = body[0]
             expect(pageLoadLog['details']['pageLoadTime']).to.be.greaterThan(0)
             expect(pageLoadLog).to.contain({
-                logType: 'raw',
+                logType: 'custom',
                 type: 'load'
             })
         })
@@ -62,4 +64,24 @@ describe('Userale logging', () => {
             expect(actualValue).to.equal(expectedValue)
         })
     });
+
+    it('produces valid logs', () => {
+        cy.visit('http://localhost:8000');
+        cy.wait('@backend').then(xhr => {
+            var schema = require('../example/log.schema.json');
+            for(const log of xhr.request.body) {
+                const result = validate(log, schema);
+                expect(result.valid, result.errors).to.equal(true);
+            }
+        })
+        cy.contains(/click me/i).click();
+        cy.wait('@backend').then(xhr => {
+            var schema = require('../example/log.schema.json');
+            for(const log of xhr.request.body) {
+                const result = validate(log, schema);
+                expect(result.valid, result.errors).to.equal(true);
+            }
+        })
+    });
+
 });
