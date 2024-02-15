@@ -22,6 +22,7 @@ const changeMe = "me";
 window.userale.options({
     'userId': changeMe,
     'logDetails': true,
+    'toolVersion': '2.3.0',
     'toolName': 'Apache UserALE.js Example (Custom)'
 });
 
@@ -100,7 +101,7 @@ document.addEventListener('change', function(e) {
             customField1: 'I can make this log look like anything I want',
             customField2: 'foo',
             userId: window.userale.options().userId,
-            toolVersion: window.userale.options().version,
+            toolVersion: window.userale.options().toolVersion,
             toolName: window.userale.options().toolName,
             useraleVersion: window.userale.options().useraleVersion,
             sessionID: window.userale.options().sessionID,

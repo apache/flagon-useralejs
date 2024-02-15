@@ -32,7 +32,7 @@ describe('Userale API', () => {
             'logCountThreshold',
             'userId',
             'sessionID',
-            'version',
+            'toolVersion',
             'logDetails',
             'resolution',
             'toolName',

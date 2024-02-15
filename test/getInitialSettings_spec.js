@@ -68,7 +68,7 @@ describe('getInitialSettings', () => {
             expect(config).to.have.property('transmitInterval', 100);
             expect(config).to.have.property('logCountThreshold', 10);
             expect(config).to.have.property('userId', 'testuser');
-            expect(config).to.have.property('version', '1.0.0');
+            expect(config).to.have.property('toolVersion', '1.0.0');
             expect(config).to.have.property('logDetails', false);
             expect(config).to.have.property('resolution', 100);
             expect(config).to.have.property('toolName', 'testtool');

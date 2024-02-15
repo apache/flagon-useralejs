@@ -30,7 +30,7 @@ const changeMe = "me";
 userale.options({
     'userId': changeMe,
     'url': 'http://localhost:8000/',
-    'version': '2.3.0',
+    'toolVersion': '2.3.0',
     'logDetails': true,
     'toolName': 'Apache UserALE.js Example (Custom)',
     'logCountThreshold': '1',
@@ -112,7 +112,7 @@ document.addEventListener('change', function(e) {
             customField1: 'I can make this log look like anything I want',
             customField2: 'foo',
             userId: userale.options().userId,
-            toolVersion: userale.options().version,
+            toolVersion: userale.options().toolVersion,
             toolName: userale.options().toolName,
             useraleVersion: userale.options().useraleVersion,
             sessionID: userale.options().sessionID,

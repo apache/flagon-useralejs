@@ -140,7 +140,7 @@ export function packageLog(e, detailFcn) {
     'userAction' : true,
     'details' : details,
     'userId' : config.userId,
-    'toolVersion' : config.version,
+    'toolVersion' : config.toolVersion,
     'toolName' : config.toolName,
     'useraleVersion': config.useraleVersion,
     'sessionID': config.sessionID,
@@ -195,7 +195,7 @@ export function packageCustomLog(customLog, detailFcn, userAction) {
         'userAction' : userAction,
         'details' : details,
         'userId' : config.userId,
-        'toolVersion' : config.version,
+        'toolVersion' : config.toolVersion,
         'toolName' : config.toolName,
         'useraleVersion': config.useraleVersion,
         'sessionID': config.sessionID
@@ -279,7 +279,7 @@ export function packageIntervalLog(e) {
             'typeChange': intervalType !== type,
             'userAction': false,
             'userId': config.userId,
-            'toolVersion': config.version,
+            'toolVersion': config.toolVersion,
             'toolName': config.toolName,
             'useraleVersion': config.useraleVersion,
             'sessionID': config.sessionID
