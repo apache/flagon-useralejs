@@ -24,6 +24,10 @@ import { rerouteLog, browser } from './globals.js';
 browser.storage.local.get("useraleConfig", (res) => {
   userale.options(res.useraleConfig);
   userale.addCallbacks({rerouteLog});
+  
+  // Send httpSession to background scirpt to inject into tab events.
+  let payload = JSON.parse(window.sessionStorage.getItem('userAleHttpSessionId'));
+  browser.runtime.sendMessage({type: MessageTypes.HTTP_SESSION, payload});
 });
 
 browser.runtime.onMessage.addListener(function (message) {

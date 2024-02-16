@@ -32,6 +32,8 @@ describe('Userale API', () => {
             'logCountThreshold',
             'userId',
             'sessionID',
+            'httpSessionId',
+            'browserSessionId',
             'version',
             'logDetails',
             'resolution',

@@ -8,7 +8,7 @@
     "pretest": "npm run lint && npm run clean && npm run build",
     "test": "mocha --require @babel/register && npm run journey:ci",
     "build": "rollup -c --bundleConfigAsCjs rollup.config.js",
-    "clean": "rm -r ./build",
+    "clean": "rm -rf ./build",
     "journey": "cypress run",
     "journey:debug": "cypress open",
     "journey:ci": "start-server-and-test example:run 8000 journey",
