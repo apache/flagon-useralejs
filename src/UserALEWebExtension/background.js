@@ -42,6 +42,11 @@ var urlWhitelist;
 var tabToHttpSession = {};
 var browserSessionId = null;
 
+/**
+ * Apply the extension config to both the background and content instances of userale
+ * @param {Object} config The extension config to apply
+ * @return {undefined}
+ */
 function updateConfig(config) {
   urlWhitelist = new RegExp(config.pluginConfig.urlWhitelist);
   userale.options(config.useraleConfig);
@@ -49,6 +54,11 @@ function updateConfig(config) {
   dispatchTabMessage(config.useraleConfig);
 }
 
+/**
+ * Send a message to all tabs
+ * @param {Object} message The message to send
+ * @return {undefined}
+ */
 function dispatchTabMessage(message) {
   browser.tabs.query({}, function (tabs) {
     tabs.forEach(function (tab) {
@@ -57,7 +67,11 @@ function dispatchTabMessage(message) {
   });
 }
 
-// Filter out logs with urls that do not match the regex defined in extension options.
+/**
+ * Callback for filtering out logs with urls that do not match the regex defined in extension options.
+ * @param {Object} log The candidate log
+ * @return {Object} The transformed log
+ */
 function filterUrl(log) {
   if(urlWhitelist.test(log.pageUrl)) {
     return log
@@ -65,7 +79,11 @@ function filterUrl(log) {
   return false;
 }
 
-// Sets http session id of tab logs to that of the target tab
+/**
+ * Callback for setting the session id's of tab logs to that of the target tab
+ * @param {Object} log The candidate log
+ * @return {Object} The transformed log
+ */
 function injectSessions(log) {
     let id = log.details.id;
     if(id in tabToHttpSession) {
@@ -112,13 +130,26 @@ browser.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   }
 });
 
-// Helper functions for logging tab events
+/**
+ * Extract tab details then log a tab event
+ * @param {integer} tabId The id of the target tab
+ * @param {Object} data The data of the tab event
+ * @param {String} type The type of tab event
+ * @return {undefined}
+ */
 function packageTabLog(tabId, data, type) {
   browser.tabs.get(tabId, (tab) => {
     packageDetailedTabLog(tab, data, type);
   });
 }
 
+/**
+ * Log a tab event with tab details
+ * @param {Object} tab The target tab object
+ * @param {Object} data The data of the tab event
+ * @param {String} type The type of tab event
+ * @return {undefined}
+ */
 function packageDetailedTabLog(tab, data, type) {
   Object.assign(data, {type});
   userale.packageCustomLog(data, ()=>{return tab}, true);
