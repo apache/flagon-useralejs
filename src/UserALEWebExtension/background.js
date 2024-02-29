@@ -87,9 +87,9 @@ function filterUrl(log) {
 function injectSessions(log) {
     let id = log.details.id;
     if(id in tabToHttpSession) {
-      log.httpSession = tabToHttpSession[id];
+      log.httpSessionId = tabToHttpSession[id];
     } else {
-      log.httpSession = null
+      log.httpSessionId = null
     }
     log.browserSessionId = browserSessionId;
     return log;
