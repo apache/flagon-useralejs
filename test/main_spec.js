@@ -32,6 +32,8 @@ describe('Userale API', () => {
             'logCountThreshold',
             'userId',
             'sessionID',
+            'httpSessionId',
+            'browserSessionId',
             'version',
             'logDetails',
             'resolution',
@@ -39,6 +41,7 @@ describe('Userale API', () => {
             'userFromParams',
             'time',
             'authHeader',
+            'headers',
             'custIndex'
         ]);
         dom.window.close();

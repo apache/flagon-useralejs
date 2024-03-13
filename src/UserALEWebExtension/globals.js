@@ -16,12 +16,14 @@
 */
 
 /* eslint-disable */
+import * as MessageTypes from './messageTypes.js';
 
-// these are default values, which can be overridden by the user on the options page
-export var userAleHost = 'http://localhost:8000';
-export var userAleScript = 'userale-2.4.0.min.js';
-export var toolUser = 'nobody';
-export var toolName = 'test_app';
-export var toolVersion = '2.4.0';
+// browser is defined in firefox, but chrome uses the 'chrome' global.
+export var browser = browser || chrome;
+
+export function rerouteLog(log) {
+  browser.runtime.sendMessage({ type: MessageTypes.ADD_LOG, payload: log });
+  return false;
+}
 
 /* eslint-enable */

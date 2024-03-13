@@ -5,15 +5,18 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import { updateAuthHeader } from "./utils";
+import { updateCustomHeaders } from "./utils/headers";
 
 let sendIntervalId = null;
 
@@ -39,7 +42,7 @@ export function initSender(logs, config) {
  * @return {Number}        The newly created interval id.
  */
 export function sendOnInterval(logs, config) {
-  return setInterval(function() {
+  return setInterval(function () {
     if (!config.on) {
       return;
     }
@@ -57,8 +60,13 @@ export function sendOnInterval(logs, config) {
  * @param  {Object} config Configuration object to be read from.
  */
 export function sendOnClose(logs, config) {
-  window.addEventListener('pagehide', function () {
+  window.addEventListener("pagehide", function () {
     if (config.on && logs.length > 0) {
+      // NOTE: sendBeacon does not support auth headers,
+      // so this will fail if auth is required.
+      // The alternative is to use fetch() with keepalive: true
+      // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#description
+      // https://stackoverflow.com/a/73062712/9263449
       navigator.sendBeacon(config.url, JSON.stringify(logs));
       logs.splice(0); // clear log queue
     }
@@ -76,18 +84,27 @@ export function sendOnClose(logs, config) {
 // @todo expose config object to sendLogs replate url with config.url
 export function sendLogs(logs, config, retries) {
   const req = new XMLHttpRequest();
-
-  // @todo setRequestHeader for Auth
   const data = JSON.stringify(logs);
 
-  req.open('POST', config.url);
+  req.open("POST", config.url);
+
+  // Update headers
+  updateAuthHeader(config);
   if (config.authHeader) {
-    req.setRequestHeader('Authorization', config.authHeader)
+    req.setRequestHeader("Authorization", config.authHeader);
+  }
+  req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+
+  // Update custom headers last to allow them to over-write the defaults. This assumes
+  // the user knows what they are doing and may want to over-write the defaults.
+  updateCustomHeaders(config);
+  if (config.headers) {
+    Object.entries(config.headers).forEach(([header, value]) => {
+      req.setRequestHeader(header, value);
+    });
   }
 
-  req.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
-
-  req.onreadystatechange = function() {
+  req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status !== 200) {
       if (retries > 0) {
         sendLogs(logs, config, retries--);

@@ -16,6 +16,7 @@
  */
 
 let sessionId = null;
+let httpSessionId = null;
 
 /**
  * Extracts the initial configuration settings from the
@@ -27,6 +28,10 @@ export function getInitialSettings() {
 
     if (sessionId === null) {
         sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
+    }
+
+    if (httpSessionId === null) {
+        httpSessionId = getSessionId('userAleHttpSessionId', generateHttpSessionId());
     }
 
     const script = document.currentScript || (function () {
@@ -49,8 +54,11 @@ export function getInitialSettings() {
     settings.userFromParams = get('data-user-from-params') || null;
     settings.time = timeStampScale(document.createEvent('CustomEvent'));
     settings.sessionID = get('data-session') || sessionId;
+    settings.httpSessionId = httpSessionId;
+    settings.browserSessionId = null;
     settings.authHeader = get('data-auth') || null;
     settings.custIndex = get('data-index') || null;
+    settings.headers = get('data-headers') || null;
     return settings;
 }
 
@@ -68,7 +76,6 @@ export function getSessionId(sessionKey, value) {
 
     return JSON.parse(window.sessionStorage.getItem(sessionKey));
 }
-
 
 /**
  * Creates a function to normalize the timestamp of the provided event.
@@ -106,4 +113,20 @@ export function timeStampScale(e) {
     }
 
     return tsScaler;
+}
+
+/**
+ * Creates a cryptographiclly random string to represent this http session.
+ * @return {String}   A random 32 digit hex string
+ */
+function generateHttpSessionId() {
+    // 32 digit hex -> 128 bits of info -> 2^64 ~= 10^19 sessions needed for 50% chance of collison
+    let len = 32;
+    var arr = new Uint8Array(len / 2);
+    window.crypto.getRandomValues(arr);
+    return Array.from(arr,
+        (dec) => {
+            return dec.toString(16).padStart(2, "0");
+        }
+    ).join('');
 }
