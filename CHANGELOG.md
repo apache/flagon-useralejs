@@ -2,7 +2,7 @@ Changelog
 =========
 
 
-Apache Flagon UserALE.js (Incubating) 2.4.0 (2023-XX-XX)
+Apache Flagon UserALE.js 2.4.0 (2023-XX-XX)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.4.0
 * [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/9)
@@ -11,6 +11,10 @@ Apache Flagon UserALE.js (Incubating) 2.4.0 (2023-XX-XX)
     * Adds additional examples (callback functions)
     * Updates to update deprecated downstream dev dependencies
     * Changes to documentation, updated examples
+    * New browser extension setting, password, for basic auth.
+    * New log fields httpSessionId and browserSessionId
+    * Callbacks for auth headers and custom headers.
+    * Example json schema added.
 
 Apache Flagon UserALE.js (Incubating) 2.3.0 (2022-04-05)
 -------------------------------
