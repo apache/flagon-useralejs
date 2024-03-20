@@ -301,11 +301,22 @@ you will need to rebuild the UserALE.js script (and run tests).
 To (re)build UserALE.js:
 
 ```
+make build
+```
+Alternatively,
+```
+npm install
 npm run build
 ```
 
 To run UserALE.js unit tests:
 ```
+make test
+```
+Alternatively,
+```
+npm install
+npm run build
 npm run test
 ```
 
