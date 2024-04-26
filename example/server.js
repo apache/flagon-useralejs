@@ -66,6 +66,11 @@ app.get('/', function (req, res) {
 
 app.post('/', function (req, res) {
   const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body
+
+  const isEmptyArray = (Array.isArray(body) && body.length === 0);
+  const isEmptyObject = (typeof body === 'object' && body !== null && Object.keys(body).length === 0);
+  if (isEmptyArray || isEmptyObject) return
+
   console.log(body)
 
   let delimiter = ',\n\t';
