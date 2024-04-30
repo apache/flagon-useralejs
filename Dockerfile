@@ -8,4 +8,6 @@ RUN --mount=type=bind,target=./package.json,src=./package.json \
 COPY ./src src/
 COPY ./example example/
 
+EXPOSE 8000
+
 CMD ["node", "example/server.js"]
