@@ -62,18 +62,20 @@ export function sendOnInterval(logs, config) {
 export function sendOnClose(logs, config) {
   window.addEventListener("pagehide", function () {
     if (config.on && logs.length > 0) {
-
-      let header_options = config.authHeader ? 
-        {'Content-Type': 'application/json;charset=UTF-8', 'Authorization': config.authHeader} 
-        : {'content-type': 'application/json;charset=UTF-8'};
+      let header_options = config.authHeader
+        ? {
+            "Content-Type": "application/json;charset=UTF-8",
+            Authorization: config.authHeader,
+          }
+        : { "content-type": "application/json;charset=UTF-8" };
 
       fetch(config.url, {
         keepalive: true,
-        method: 'POST',
+        method: "POST",
         headers: header_options,
         body: JSON.stringify(logs),
-      })
-      
+      });
+
       logs.splice(0); // clear log queue
     }
   });

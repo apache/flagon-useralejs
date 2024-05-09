@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,19 +22,19 @@
  * @param  {Object} newConfig Configuration object to merge into the current config.
  */
 export function configure(config, newConfig) {
-  const configAutostart = config['autostart'];
-  const newConfigAutostart = newConfig['autostart'];
+  const configAutostart = config["autostart"];
+  const newConfigAutostart = newConfig["autostart"];
   Object.keys(newConfig).forEach(function (option) {
-      if (option === 'userFromParams') {
-        const userId = getUserIdFromParams(newConfig[option]);
-        if (userId) {
-          config.userId = userId;
-        }
+    if (option === "userFromParams") {
+      const userId = getUserIdFromParams(newConfig[option]);
+      if (userId) {
+        config.userId = userId;
       }
-      config[option] = newConfig[option];
-    });
+    }
+    config[option] = newConfig[option];
+  });
   if (configAutostart === false || newConfigAutostart === false) {
-    config['autostart'] = false;
+    config["autostart"] = false;
   }
 }
 
@@ -45,11 +45,11 @@ export function configure(config, newConfig) {
  */
 export function getUserIdFromParams(param) {
   const userField = param;
-  const regex = new RegExp('[?&]' + userField + '(=([^&#]*)|&|#|$)');
+  const regex = new RegExp("[?&]" + userField + "(=([^&#]*)|&|#|$)");
   const results = window.location.href.match(regex);
 
   if (results && results[2]) {
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
   } else {
     return null;
   }

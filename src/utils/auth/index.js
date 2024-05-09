@@ -27,12 +27,12 @@ export let authCallback = null;
 export function updateAuthHeader(config) {
   if (authCallback) {
     try {
-        config.authHeader = authCallback();
+      config.authHeader = authCallback();
     } catch (e) {
-        // We should emit the error, but otherwise continue as this could be a temporary issue
-        // due to network connectivity or some logic inside the authCallback which is the user's
-        // responsibility.
-        console.error(`Error encountered while setting the auth header: ${e}`);
+      // We should emit the error, but otherwise continue as this could be a temporary issue
+      // due to network connectivity or some logic inside the authCallback which is the user's
+      // responsibility.
+      console.error(`Error encountered while setting the auth header: ${e}`);
     }
   }
 }

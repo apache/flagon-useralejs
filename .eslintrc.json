@@ -5,13 +5,15 @@
       "modules" : true
     }
   },
+  "plugins": ["@typescript-eslint"],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "env" : {
     "browser" : true,
     "es6" : true
   },
-  "extends" : "eslint:recommended",
   "rules" : {
-    "no-cond-assign" : 0,
-    "no-constant-condition" : 0
-  }
+    "no-cond-assign" : "warn",
+    "no-constant-condition" : "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+  },
 }
