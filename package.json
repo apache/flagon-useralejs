@@ -7,7 +7,7 @@
     "format": "prettier --ignore-path .gitignore --write src/",
     "lint": "eslint ./src --fix",
     "pretest": "npm run lint && npm run clean && npm run build",
-    "test": "npm run pretest && mocha --require @babel/register && npm run journey:ci",
+    "test": "mocha --require @babel/register && npm run journey:ci",
     "build": "rollup -c --bundleConfigAsCjs rollup.config.js",
     "clean": "rm -rf ./build",
     "journey": "cypress run",
