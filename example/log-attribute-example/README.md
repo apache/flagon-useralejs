@@ -18,7 +18,7 @@
 -->
 # HTML attribute logging
 
-The following is an example outlining how to log HTML attributes with UserALE.js, and parse some common syntaxs found in attributes.
+The following is an example outlining how to log HTML attributes with UserALE, and parse some common syntaxs found in attributes.
 
 ## Common syntaxes
 
@@ -79,7 +79,7 @@ export function buildCSS(e) {
     return properties;
 }
 ```
-The above functions can be used in the below snippet to add the results to each log message. In turn, this snippet can be added to a custom.js script to modify core UserALE.js behavior. See the 'index.js' example in this dir. 
+The above functions can be used in the below snippet to add the results to each log message. In turn, this snippet can be added to a custom.js script to modify core UserALE behavior. See the 'index.js' example in this dir. 
 
 ```js
 window.userale.addCallbacks({

@@ -14,12 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import commonjs from "@rollup/plugin-commonjs";
 import json from '@rollup/plugin-json';
 import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
-import commonjs from "@rollup/plugin-commonjs";
+import typescript from '@rollup/plugin-typescript';
 import license from 'rollup-plugin-license'
 import copy from 'rollup-plugin-copy'
+import {dts} from "rollup-plugin-dts";
 import {version} from './package.json';
 
 const srcWebExtensionDir = 'src/UserALEWebExtension/'
@@ -44,41 +46,69 @@ const banner = 'Licensed to the Apache Software Foundation (ASF) under one or mo
 
 export default [
     {
-        input: 'src/main.js',
+        input: 'src/main.ts',
         output: [
             {
                 format: 'umd',
                 file: `build/userale-${version}.js`,
                 name: 'userale',
-            }, {
+                sourcemap: true,
+            },
+            {
                 format: 'umd',
                 file: `build/userale-${version}.min.js`,
                 name: 'userale',
                 plugins: [terser()]
-            }
+            },
         ],
-        plugins: [license({banner}), json(), nodeResolve(), commonjs({include: /node_modules/}),
+        plugins: [
+            license({banner}),
+            json(),
+            nodeResolve(),
+            commonjs({include: /node_modules/}),
+            typescript({
+                tsconfig: "./tsconfig.json",
+                exclude: ["./test/**/*"]
+            }),
             rollupBabel({
                 babelHelpers: "runtime",
                 exclude: /node_modules/,
                 plugins: ["@babel/plugin-transform-block-scoping"]
             })]
     },
-    ...['content.js', 'background.js', 'options.js'].map(fileName => ({
-        input: srcWebExtensionDir + fileName,
+    {
+        input: "src/types.d.ts",
+        cache: false,
+        output: {
+            format: 'es',
+            file: "build/userale.d.ts",
+        },
+        plugins: [dts()]
+    },
+    ...['content', 'background', 'options'].map(fileName => ({
+        input: srcWebExtensionDir + fileName + '.ts',
         output: {
             format: 'esm',
-            file: buildWebExtensionDir + fileName,
+            file: buildWebExtensionDir + fileName + '.js',
+            sourcemap: true,
             name: 'user-ale-ext-content',
         },
-        plugins: [copy({
-            targets: [
-                {src: srcWebExtensionDir + 'icons/**/*.*', dest: buildWebExtensionDir + 'icons'},
-                {src: srcWebExtensionDir + 'manifest.json', dest: buildWebExtensionDir},
-                {src: srcWebExtensionDir + 'optionsPage.html', dest: buildWebExtensionDir}
-            ],
-            copyOnce: true
-        }), json(), nodeResolve(), commonjs({include: /node_modules/}),
+        plugins: [
+            copy({
+                targets: [
+                    {src: srcWebExtensionDir + 'icons/**/*.*', dest: buildWebExtensionDir + 'icons'},
+                    {src: srcWebExtensionDir + 'manifest.json', dest: buildWebExtensionDir},
+                    {src: srcWebExtensionDir + 'optionsPage.html', dest: buildWebExtensionDir}
+                ],
+                copyOnce: true
+            }),
+            json(),
+            nodeResolve(),
+            commonjs({include: /node_modules/}),
+            typescript({
+                tsconfig: "./tsconfig.json",
+                exclude: ["./test/**/*"]
+            }),
             rollupBabel({
                 babelHelpers: "runtime",
                 exclude: /node_modules/,

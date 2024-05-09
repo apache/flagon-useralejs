@@ -28,7 +28,7 @@ function App() {
     autostart: false,
     logCountThreshold: '1',
     transmitInterval: '1000',
-    toolName: "Apache UserALE.js React Example"
+    toolName: "Apache UserALE React Example"
   })
 
   userale.filter(function (log) {

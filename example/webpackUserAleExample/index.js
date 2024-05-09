@@ -11,15 +11,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as userale from 'flagon-userale';
+import * as userale from "flagon-userale";
 
 //or use require
 //const userale = require('flagon-userale');
 
-
 /** Options API
  *
- * the 'options' API allows you to dynamically change UserALE.js params and set meta data values
+ * the 'options' API allows you to dynamically change UserALE params and set meta data values
  * pass in variables or properties into the options object, such as from sessionStorage or localStorage
  * NOTE1: if you are using userale in a package bundler, you will need to set options via this API, including
  * "url" to tell userale where to send your logs!
@@ -28,13 +27,13 @@ import * as userale from 'flagon-userale';
  */
 const changeMe = "me";
 userale.options({
-    'userId': changeMe,
-    'url': 'http://localhost:8000/',
-    'version': '2.3.0',
-    'logDetails': true,
-    'toolName': 'Apache UserALE.js Example (Custom)',
-    'logCountThreshold': '1',
-    'transmitInterval': '1000'
+  userId: changeMe,
+  url: "http://localhost:8000/",
+  version: "2.3.0",
+  logDetails: true,
+  toolName: "Apache UserALE Example (Custom)",
+  logCountThreshold: "1",
+  transmitInterval: "1000",
 });
 
 /**Filter API
@@ -47,14 +46,24 @@ userale.options({
  * the same is true for the 'map' API. See examples below:
  */
 userale.addCallbacks({
-    filter(log) {
-        var type_array = ['mouseup', 'mouseover', 'mousedown', 'keydown', 'dblclick', 'blur', 'focus', 'input', 'wheel'];
-        var logType_array = ['interval'];
-        if(type_array.includes(log.type) || logType_array.includes(log.logType)) {
-            return false;
-        }
-        return log;
+  filter(log) {
+    var type_array = [
+      "mouseup",
+      "mouseover",
+      "mousedown",
+      "keydown",
+      "dblclick",
+      "blur",
+      "focus",
+      "input",
+      "wheel",
+    ];
+    var logType_array = ["interval"];
+    if (type_array.includes(log.type) || logType_array.includes(log.logType)) {
+      return false;
     }
+    return log;
+  },
 });
 
 /**Log Mapping API
@@ -62,20 +71,23 @@ userale.addCallbacks({
  * the 'map' API allows you to add or modify new fields to your logs
  * this example works with the "Click Me!" button at the top of index.html
  */
-document.addEventListener('click', function(e){
-    if (e.target.innerHTML === 'Click Me!') {
-        userale.addCallbacks({
-            map(log) {
-                return Object.assign({}, log, { logType: 'custom', customLabel: 'map & packageLog Example' });
-            }
+document.addEventListener("click", function (e) {
+  if (e.target.innerHTML === "Click Me!") {
+    userale.addCallbacks({
+      map(log) {
+        return Object.assign({}, log, {
+          logType: "custom",
+          customLabel: "map & packageLog Example",
         });
-        userale.packageLog(e, userale.details(userale.options(),e.type));
-        /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
-         * the callback may be applied to other events of the same class (e.g., click) */
-        userale.removeCallbacks(["map"]);
-    } else {
-        return false
-    }
+      },
+    });
+    userale.packageLog(e, userale.details(userale.options(), e.type));
+    /**you'll want to reset the map callback function, or set a conditional (e.g., return log), else
+     * the callback may be applied to other events of the same class (e.g., click) */
+    userale.removeCallbacks(["map"]);
+  } else {
+    return false;
+  }
 });
 
 /** Alternate Log Mapping API Example
@@ -99,62 +111,71 @@ document.addEventListener('click', function(e){
  * utilize 'options' and other functions to streamline populating custom logs
  * type 'log' into the 'API Test Field' to see this custom log sent to our example server
  */
-document.addEventListener('change', function(e) {
-    if (e.target.value === 'log') {
-        userale.log({
-            target: userale.getSelector(e.target),
-            path: userale.buildPath(e),
-            clientTime: Date.now(),
-            type: e.type,
-            logType: 'custom',
-            userAction: false,
-            details: {'foo': 'bar', 'bar': 'foo'},
-            customField1: 'I can make this log look like anything I want',
-            customField2: 'foo',
-            userId: userale.options().userId,
-            toolVersion: userale.options().version,
-            toolName: userale.options().toolName,
-            useraleVersion: userale.options().useraleVersion,
-            sessionID: userale.options().sessionID,
-            customLabel: "Custom Log Example"
-        });
-    }
+document.addEventListener("change", function (e) {
+  if (e.target.value === "log") {
+    userale.log({
+      target: userale.getSelector(e.target),
+      path: userale.buildPath(e),
+      clientTime: Date.now(),
+      type: e.type,
+      logType: "custom",
+      userAction: false,
+      details: { foo: "bar", bar: "foo" },
+      customField1: "I can make this log look like anything I want",
+      customField2: "foo",
+      userId: userale.options().userId,
+      toolVersion: userale.options().version,
+      toolName: userale.options().toolName,
+      useraleVersion: userale.options().useraleVersion,
+      sessionId: userale.options().sessionId,
+      customLabel: "Custom Log Example",
+    });
+  }
 });
 
-/**you can also use UserALE.js' own packaging function for HTML events to strive for standardization
+/**you can also use UserALE' own packaging function for HTML events to strive for standardization
  * type 'packageLog into the 'API Test Field' to see this custom log sent to our example server
  */
-document.addEventListener('change', function(e){
-    if (e.target.value === 'packageLog') {
-        /**You can then use the 'Mapping' API function to modify custom logs created with the packageLog function*/
-        userale.addCallbacks({changeMap(log) {
-            var targetsForLabels = ['change'];
-            if (targetsForLabels.includes(log.type)) {
-                return Object.assign({}, log, { logType: 'custom', customLabel: 'packageLog Example' });
-            } else {
-                return log;
-            }
-        }});
-        /**You can also use the details function to package additional log meta data, or add custom details*/
-        userale.packageLog(e, userale.details(userale.options(),e.type));
-    } else {
-        return false
-    }
+document.addEventListener("change", function (e) {
+  if (e.target.value === "packageLog") {
+    /**You can then use the 'Mapping' API function to modify custom logs created with the packageLog function*/
+    userale.addCallbacks({
+      changeMap(log) {
+        var targetsForLabels = ["change"];
+        if (targetsForLabels.includes(log.type)) {
+          return Object.assign({}, log, {
+            logType: "custom",
+            customLabel: "packageLog Example",
+          });
+        } else {
+          return log;
+        }
+      },
+    });
+    /**You can also use the details function to package additional log meta data, or add custom details*/
+    userale.packageLog(e, userale.details(userale.options(), e.type));
+  } else {
+    return false;
+  }
 });
 
-/**you can also just add boilerplate UserALE.js meta data to custom logs with the packageCustomLog function
+/**you can also just add boilerplate UserALE meta data to custom logs with the packageCustomLog function
  * type 'packageCustomLog into the 'API Test Field' to see this custom log sent to our example server
  */
-document.addEventListener('change', function(e) {
-    if (e.target.value === 'packageCustomLog') {
-        userale.packageCustomLog({
-            customLabel: 'packageCustomLog Example',
-            customField1: 'foo',
-            customField2: 'bar'},
-            function(){return {'foo': 'bar', 'bar': 'foo'}},
-            true
-            );
-    } else {
-        return false
-    }
+document.addEventListener("change", function (e) {
+  if (e.target.value === "packageCustomLog") {
+    userale.packageCustomLog(
+      {
+        customLabel: "packageCustomLog Example",
+        customField1: "foo",
+        customField2: "bar",
+      },
+      function () {
+        return { foo: "bar", bar: "foo" };
+      },
+      true
+    );
+  } else {
+    return false;
+  }
 });

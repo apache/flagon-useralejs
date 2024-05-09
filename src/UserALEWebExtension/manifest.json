@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "User ALE Extension",
   "version": "2.4.0",
-  "description": "Injects UserALE.js into every page for testing & user research purposes",
+  "description": "Injects UserALE into every page for testing & user research purposes",
   "icons": {
     "48": "icons/border-48.png"
   },

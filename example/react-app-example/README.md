@@ -18,7 +18,7 @@
 -->
 # Apache Flagon UseraALE.js React Example
 
-This example was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It demonstrates UserALE.js `autostart` configurations and `start()`, `stop()` exports.
+This example was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). It demonstrates UserALE `autostart` configurations and `start()`, `stop()` exports.
 
 ## Using this Example
 
@@ -36,7 +36,7 @@ npm run start
 
 This will start the React App in "developer mode", which will open in your browser.
 
-Click the text on the page to execute the UserALE.js `start()` export and start logging behaviors.
+Click the text on the page to execute the UserALE `start()` export and start logging behaviors.
 
 Or, modify `App.js` in `src` to experiment with `autostart` and `stop()` exports.
 
