@@ -62,12 +62,18 @@ export function sendOnInterval(logs, config) {
 export function sendOnClose(logs, config) {
   window.addEventListener("pagehide", function () {
     if (config.on && logs.length > 0) {
-      // NOTE: sendBeacon does not support auth headers,
-      // so this will fail if auth is required.
-      // The alternative is to use fetch() with keepalive: true
-      // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/sendBeacon#description
-      // https://stackoverflow.com/a/73062712/9263449
-      navigator.sendBeacon(config.url, JSON.stringify(logs));
+
+      let header_options = config.authHeader ? 
+        {'Content-Type': 'application/json;charset=UTF-8', 'Authorization': config.authHeader} 
+        : {'content-type': 'application/json;charset=UTF-8'};
+
+      fetch(config.url, {
+        keepalive: true,
+        method: 'POST',
+        headers: header_options,
+        body: JSON.stringify(logs),
+      })
+      
       logs.splice(0); // clear log queue
     }
   });

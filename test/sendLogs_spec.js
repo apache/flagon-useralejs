@@ -94,25 +94,23 @@ describe('sendLogs', () => {
         done();
     });
 
-    it('sends logs on page exit with navigator', () => {
-        const sendBeaconSpy = sinon.spy()
-        global.navigator = {
-            sendBeacon: sendBeaconSpy
-        };
+    it('sends logs on page exit with fetch', () => {
+        const fetchSpy = sinon.spy()
+        global.fetch = fetchSpy
+
         sendOnClose([], {on: true, url: 'test'})
         sendOnClose([{foo: 'bar'}], {on: true, url: 'test'});
         global.window.dispatchEvent(new window.CustomEvent('pagehide'))
-        sinon.assert.calledOnce(sendBeaconSpy)
+        sinon.assert.calledOnce(fetchSpy)
     });
 
     it('does not send logs on page exit when config is off', () => {
-        const sendBeaconSpy = sinon.spy()
-        global.navigator = {
-            sendBeacon: sendBeaconSpy
-        };
+        const fetchSpy = sinon.spy()
+        global.fetch = fetchSpy
+
         sendOnClose([{foo: 'bar'}], {on: false, url: 'test'});
         global.window.dispatchEvent(new window.CustomEvent('pagehide'))
-        sinon.assert.notCalled(sendBeaconSpy)
+        sinon.assert.notCalled(fetchSpy)
     });
 
     it('sends logs with proper auth header when using registerAuthCallback', (done) => {
