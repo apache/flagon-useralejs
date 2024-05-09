@@ -80,7 +80,9 @@ jobs:
         run: npm ci # clean install
 
       - name: Build
-        run: npm run build
+        run: |
+          export PATH=${PATH}:`go env GOPATH`/bin
+          npm run build
 
       - name: Test
         run: npm run test

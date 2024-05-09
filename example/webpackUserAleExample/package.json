@@ -1,7 +1,7 @@
 {
   "name": "flagon-userale-example",
   "version": "0.1.0",
-  "description": "NODE Example for Apache UserALE.js: the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
+  "description": "NODE Example for Apache UserALE: the UserALE client for DOM and JavaScript-based applications. It automatically attaches event handlers to log every user interaction on a web page, including rich JS single-page apps.",
   "main": "index.js",
   "scripts": {
     "test-example": "echo \"Error: no test specified\" && exit 1",
