@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 export {
-    authCallback,
-    updateAuthHeader, 
-    registerAuthCallback, 
-    resetAuthCallback, 
-    verifyCallback as verifyAuthCallback
+  authCallback,
+  updateAuthHeader,
+  registerAuthCallback,
+  resetAuthCallback,
+  verifyCallback as verifyAuthCallback,
 } from "./auth";
-export { 
-    headersCallback,
-    updateCustomHeaders,
-    registerHeadersCallback,
-    resetHeadersCallback,
-    verifyCallback as verifyHeadersCallback
+export {
+  headersCallback,
+  updateCustomHeaders,
+  registerHeadersCallback,
+  resetHeadersCallback,
+  verifyCallback as verifyHeadersCallback,
 } from "./headers";

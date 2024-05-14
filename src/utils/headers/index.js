@@ -27,12 +27,12 @@ export let headersCallback = null;
 export function updateCustomHeaders(config) {
   if (headersCallback) {
     try {
-        config.headers = headersCallback();
+      config.headers = headersCallback();
     } catch (e) {
-        // We should emit the error, but otherwise continue as this could be a temporary issue
-        // due to network connectivity or some logic inside the headersCallback which is the user's
-        // responsibility.
-        console.error(`Error encountered while setting the headers: ${e}`);
+      // We should emit the error, but otherwise continue as this could be a temporary issue
+      // due to network connectivity or some logic inside the headersCallback which is the user's
+      // responsibility.
+      console.error(`Error encountered while setting the headers: ${e}`);
     }
   }
 }
@@ -68,7 +68,9 @@ export function verifyCallback(callback) {
   }
   for (const [key, value] of Object.entries(result)) {
     if (typeof key !== "string" || typeof value !== "string") {
-      throw new Error("Userale header callback must return an object with string keys and values");
+      throw new Error(
+        "Userale header callback must return an object with string keys and values",
+      );
     }
   }
 }

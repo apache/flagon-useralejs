@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the 'License'); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an 'AS IS' BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,42 +24,52 @@ let httpSessionId = null;
  * @return {Object} The extracted configuration object
  */
 export function getInitialSettings() {
-    const settings = {};
+  const settings = {};
 
-    if (sessionId === null) {
-        sessionId = getSessionId('userAleSessionId', 'session_' + String(Date.now()));
-    }
+  if (sessionId === null) {
+    sessionId = getSessionId(
+      "userAleSessionId",
+      "session_" + String(Date.now()),
+    );
+  }
 
-    if (httpSessionId === null) {
-        httpSessionId = getSessionId('userAleHttpSessionId', generateHttpSessionId());
-    }
+  if (httpSessionId === null) {
+    httpSessionId = getSessionId(
+      "userAleHttpSessionId",
+      generateHttpSessionId(),
+    );
+  }
 
-    const script = document.currentScript || (function () {
-        const scripts = document.getElementsByTagName('script');
-        return scripts[scripts.length - 1];
+  const script =
+    document.currentScript ||
+    (function () {
+      const scripts = document.getElementsByTagName("script");
+      return scripts[scripts.length - 1];
     })();
 
-    const get = script ? script.getAttribute.bind(script) : function () {
+  const get = script
+    ? script.getAttribute.bind(script)
+    : function () {
         return null;
-    };
-    settings.autostart = get('data-autostart') === 'false' ? false : true;
-    settings.url = get('data-url') || 'http://localhost:8000';
-    settings.transmitInterval = +get('data-interval') || 5000;
-    settings.logCountThreshold = +get('data-threshold') || 5;
-    settings.userId = get('data-user') || null;
-    settings.version = get('data-version') || null;
-    settings.logDetails = get('data-log-details') === 'true' ? true : false;
-    settings.resolution = +get('data-resolution') || 500;
-    settings.toolName = get('data-tool') || null;
-    settings.userFromParams = get('data-user-from-params') || null;
-    settings.time = timeStampScale(document.createEvent('CustomEvent'));
-    settings.sessionID = get('data-session') || sessionId;
-    settings.httpSessionId = httpSessionId;
-    settings.browserSessionId = null;
-    settings.authHeader = get('data-auth') || null;
-    settings.custIndex = get('data-index') || null;
-    settings.headers = get('data-headers') || null;
-    return settings;
+      };
+  settings.autostart = get("data-autostart") === "false" ? false : true;
+  settings.url = get("data-url") || "http://localhost:8000";
+  settings.transmitInterval = +get("data-interval") || 5000;
+  settings.logCountThreshold = +get("data-threshold") || 5;
+  settings.userId = get("data-user") || null;
+  settings.version = get("data-version") || null;
+  settings.logDetails = get("data-log-details") === "true" ? true : false;
+  settings.resolution = +get("data-resolution") || 500;
+  settings.toolName = get("data-tool") || null;
+  settings.userFromParams = get("data-user-from-params") || null;
+  settings.time = timeStampScale(document.createEvent("CustomEvent"));
+  settings.sessionID = get("data-session") || sessionId;
+  settings.httpSessionId = httpSessionId;
+  settings.browserSessionId = null;
+  settings.authHeader = get("data-auth") || null;
+  settings.custIndex = get("data-index") || null;
+  settings.headers = get("data-headers") || null;
+  return settings;
 }
 
 /**
@@ -69,12 +79,12 @@ export function getInitialSettings() {
  *
  */
 export function getSessionId(sessionKey, value) {
-    if (window.sessionStorage.getItem(sessionKey) === null) {
-        window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
-        return value;
-    }
+  if (window.sessionStorage.getItem(sessionKey) === null) {
+    window.sessionStorage.setItem(sessionKey, JSON.stringify(value));
+    return value;
+  }
 
-    return JSON.parse(window.sessionStorage.getItem(sessionKey));
+  return JSON.parse(window.sessionStorage.getItem(sessionKey));
 }
 
 /**
@@ -83,36 +93,36 @@ export function getSessionId(sessionKey, value) {
  * @return {timeStampScale~tsScaler}   The timestamp normalizing function.
  */
 export function timeStampScale(e) {
-    let tsScaler;
-    if (e.timeStamp && e.timeStamp > 0) {
-        const delta = Date.now() - e.timeStamp;
-        /**
-         * Returns a timestamp depending on various browser quirks.
-         * @param  {?Number} ts A timestamp to use for normalization.
-         * @return {Number} A normalized timestamp.
-         */
+  let tsScaler;
+  if (e.timeStamp && e.timeStamp > 0) {
+    const delta = Date.now() - e.timeStamp;
+    /**
+     * Returns a timestamp depending on various browser quirks.
+     * @param  {?Number} ts A timestamp to use for normalization.
+     * @return {Number} A normalized timestamp.
+     */
 
-        if (delta < 0) {
-            tsScaler = function () {
-                return e.timeStamp / 1000;
-            };
-        } else if (delta > e.timeStamp) {
-            const navStart = performance.timing.navigationStart;
-            tsScaler = function (ts) {
-                return ts + navStart;
-            }
-        } else {
-            tsScaler = function (ts) {
-                return ts;
-            }
-        }
+    if (delta < 0) {
+      tsScaler = function () {
+        return e.timeStamp / 1000;
+      };
+    } else if (delta > e.timeStamp) {
+      const navStart = performance.timing.navigationStart;
+      tsScaler = function (ts) {
+        return ts + navStart;
+      };
     } else {
-        tsScaler = function () {
-            return Date.now();
-        };
+      tsScaler = function (ts) {
+        return ts;
+      };
     }
+  } else {
+    tsScaler = function () {
+      return Date.now();
+    };
+  }
 
-    return tsScaler;
+  return tsScaler;
 }
 
 /**
@@ -120,13 +130,11 @@ export function timeStampScale(e) {
  * @return {String}   A random 32 digit hex string
  */
 function generateHttpSessionId() {
-    // 32 digit hex -> 128 bits of info -> 2^64 ~= 10^19 sessions needed for 50% chance of collison
-    let len = 32;
-    var arr = new Uint8Array(len / 2);
-    window.crypto.getRandomValues(arr);
-    return Array.from(arr,
-        (dec) => {
-            return dec.toString(16).padStart(2, "0");
-        }
-    ).join('');
+  // 32 digit hex -> 128 bits of info -> 2^64 ~= 10^19 sessions needed for 50% chance of collison
+  let len = 32;
+  var arr = new Uint8Array(len / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, (dec) => {
+    return dec.toString(16).padStart(2, "0");
+  }).join("");
 }

@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { detect } from 'detect-browser';
+import { detect } from "detect-browser";
 const browserInfo = detect();
 
 export let logs;
@@ -39,7 +39,9 @@ export let cbHandlers = {};
  * @param  {Function} callback The handler to invoke when logging.
  */
 export function setLogFilter(callback) {
-  console.warn("setLogFilter() is deprecated and will be removed in a futre release");
+  console.warn(
+    "setLogFilter() is deprecated and will be removed in a futre release",
+  );
   filterHandler = callback;
 }
 
@@ -49,7 +51,9 @@ export function setLogFilter(callback) {
  * @param  {Function} callback The handler to invoke when logging.
  */
 export function setLogMapper(callback) {
-  console.warn("setLogMapper() is deprecated and will be removed in a futre release");
+  console.warn(
+    "setLogMapper() is deprecated and will be removed in a futre release",
+  );
   mapHandler = callback;
 }
 
@@ -80,8 +84,8 @@ export function addCallbacks(...newCallbacks) {
  * @param  {String[]} targetKeys A list of names of functions to remove.
  */
 export function removeCallbacks(targetKeys) {
-  targetKeys.forEach(key => {
-    if(Object.hasOwn(cbHandlers, key)) {
+  targetKeys.forEach((key) => {
+    if (Object.hasOwn(cbHandlers, key)) {
       delete cbHandlers[key];
     }
   });
@@ -121,45 +125,45 @@ export function packageLog(e, detailFcn) {
   }
 
   const timeFields = extractTimeFields(
-    (e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now()
+    e.timeStamp && e.timeStamp > 0 ? config.time(e.timeStamp) : Date.now(),
   );
 
   let log = {
-    'target' : getSelector(e.target),
-    'path' : buildPath(e),
-    'pageUrl': window.location.href,
-    'pageTitle': document.title,
-    'pageReferrer': document.referrer,
-    'browser': detectBrowser(),
-    'clientTime' : timeFields.milli,
-    'microTime' : timeFields.micro,
-    'location' : getLocation(e),
-    'scrnRes' : getSreenRes(),
-    'type' : e.type,
-    'logType': 'raw',
-    'userAction' : true,
-    'details' : details,
-    'userId' : config.userId,
-    'toolVersion' : config.version,
-    'toolName' : config.toolName,
-    'useraleVersion': config.useraleVersion,
-    'sessionID': config.sessionID,
-    'httpSessionId': config.httpSessionId,
-    'browserSessionId': config.browserSessionId,
+    target: getSelector(e.target),
+    path: buildPath(e),
+    pageUrl: window.location.href,
+    pageTitle: document.title,
+    pageReferrer: document.referrer,
+    browser: detectBrowser(),
+    clientTime: timeFields.milli,
+    microTime: timeFields.micro,
+    location: getLocation(e),
+    scrnRes: getSreenRes(),
+    type: e.type,
+    logType: "raw",
+    userAction: true,
+    details: details,
+    userId: config.userId,
+    toolVersion: config.version,
+    toolName: config.toolName,
+    useraleVersion: config.useraleVersion,
+    sessionID: config.sessionID,
+    httpSessionId: config.httpSessionId,
+    browserSessionId: config.browserSessionId,
   };
 
-  if ((typeof filterHandler === 'function') && !filterHandler(log)) {
+  if (typeof filterHandler === "function" && !filterHandler(log)) {
     return false;
   }
 
-  if (typeof mapHandler === 'function') {
+  if (typeof mapHandler === "function") {
     log = mapHandler(log, e);
   }
 
   for (const func of Object.values(cbHandlers)) {
-    if (typeof func === 'function') {
+    if (typeof func === "function") {
       log = func(log, e);
-      if(!log) {
+      if (!log) {
         return false;
       }
     }
@@ -177,56 +181,56 @@ export function packageLog(e, detailFcn) {
  * @return {boolean}           Whether the event was logged.
  */
 export function packageCustomLog(customLog, detailFcn, userAction) {
-    if (!config.on) {
+  if (!config.on) {
+    return false;
+  }
+
+  let details = null;
+  if (detailFcn) {
+    details = detailFcn();
+  }
+
+  const metaData = {
+    pageUrl: window.location.href,
+    pageTitle: document.title,
+    pageReferrer: document.referrer,
+    browser: detectBrowser(),
+    clientTime: Date.now(),
+    scrnRes: getSreenRes(),
+    logType: "custom",
+    userAction: userAction,
+    details: details,
+    userId: config.userId,
+    toolVersion: config.version,
+    toolName: config.toolName,
+    useraleVersion: config.useraleVersion,
+    sessionID: config.sessionID,
+    httpSessionId: config.httpSessionId,
+    browserSessionId: config.browserSessionId,
+  };
+
+  let log = Object.assign(metaData, customLog);
+
+  if (typeof filterHandler === "function" && !filterHandler(log)) {
+    return false;
+  }
+
+  if (typeof mapHandler === "function") {
+    log = mapHandler(log);
+  }
+
+  for (const func of Object.values(cbHandlers)) {
+    if (typeof func === "function") {
+      log = func(log, null);
+      if (!log) {
         return false;
-    }
-
-    let details = null;
-    if (detailFcn) {
-        details = detailFcn();
-    }
-
-    const metaData = {
-        'pageUrl': window.location.href,
-        'pageTitle': document.title,
-        'pageReferrer': document.referrer,
-        'browser': detectBrowser(),
-        'clientTime' : Date.now(),
-        'scrnRes' : getSreenRes(),
-        'logType': 'custom',
-        'userAction' : userAction,
-        'details' : details,
-        'userId' : config.userId,
-        'toolVersion' : config.version,
-        'toolName' : config.toolName,
-        'useraleVersion': config.useraleVersion,
-        'sessionID': config.sessionID,
-        'httpSessionId': config.httpSessionId,
-        'browserSessionId': config.browserSessionId,
-    };
-
-    let log = Object.assign(metaData, customLog);
-
-    if ((typeof filterHandler === 'function') && !filterHandler(log)) {
-        return false;
-    }
-
-    if (typeof mapHandler === 'function') {
-        log = mapHandler(log);
-    }
-
-    for (const func of Object.values(cbHandlers)) {
-      if (typeof func === 'function') {
-        log = func(log, null);
-        if(!log) {
-          return false;
-        }
       }
     }
+  }
 
-    logs.push(log);
+  logs.push(log);
 
-    return true;
+  return true;
 }
 
 /**
@@ -248,82 +252,84 @@ export function extractTimeFields(timeStamp) {
  * @return boolean
  */
 export function packageIntervalLog(e) {
-    const target = getSelector(e.target);
-    const path = buildPath(e);
-    const type = e.type;
-    const timestamp = Math.floor((e.timeStamp && e.timeStamp > 0) ? config.time(e.timeStamp) : Date.now());
+  const target = getSelector(e.target);
+  const path = buildPath(e);
+  const type = e.type;
+  const timestamp = Math.floor(
+    e.timeStamp && e.timeStamp > 0 ? config.time(e.timeStamp) : Date.now(),
+  );
 
-    // Init - this should only happen once on initialization
-    if (intervalID == null) {
-        intervalID = target;
-        intervalType = type;
-        intervalPath = path;
-        intervalTimer = timestamp;
-        intervalCounter = 0;
+  // Init - this should only happen once on initialization
+  if (intervalID == null) {
+    intervalID = target;
+    intervalType = type;
+    intervalPath = path;
+    intervalTimer = timestamp;
+    intervalCounter = 0;
+  }
+
+  if (intervalID !== target || intervalType !== type) {
+    // When to create log? On transition end
+    // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
+
+    intervalLog = {
+      target: intervalID,
+      path: intervalPath,
+      pageUrl: window.location.href,
+      pageTitle: document.title,
+      pageReferrer: document.referrer,
+      browser: detectBrowser(),
+      count: intervalCounter,
+      duration: timestamp - intervalTimer, // microseconds
+      startTime: intervalTimer,
+      endTime: timestamp,
+      type: intervalType,
+      logType: "interval",
+      targetChange: intervalID !== target,
+      typeChange: intervalType !== type,
+      userAction: false,
+      userId: config.userId,
+      toolVersion: config.version,
+      toolName: config.toolName,
+      useraleVersion: config.useraleVersion,
+      sessionID: config.sessionID,
+      httpSessionId: config.httpSessionId,
+      browserSessionId: config.browserSessionId,
+    };
+
+    if (typeof filterHandler === "function" && !filterHandler(intervalLog)) {
+      return false;
     }
 
-    if (intervalID !== target || intervalType !== type) {
-        // When to create log? On transition end
-        // @todo Possible for intervalLog to not be pushed in the event the interval never ends...
+    if (typeof mapHandler === "function") {
+      intervalLog = mapHandler(intervalLog, e);
+    }
 
-        intervalLog = {
-            'target': intervalID,
-            'path': intervalPath,
-            'pageUrl': window.location.href,
-            'pageTitle': document.title,
-            'pageReferrer': document.referrer,
-            'browser': detectBrowser(),
-            'count': intervalCounter,
-            'duration': timestamp - intervalTimer,  // microseconds
-            'startTime': intervalTimer,
-            'endTime': timestamp,
-            'type': intervalType,
-            'logType': 'interval',    
-            'targetChange': intervalID !== target,
-            'typeChange': intervalType !== type,
-            'userAction': false,
-            'userId': config.userId,
-            'toolVersion': config.version,
-            'toolName': config.toolName,
-            'useraleVersion': config.useraleVersion,
-            'sessionID': config.sessionID,
-            'httpSessionId': config.httpSessionId,
-            'browserSessionId': config.browserSessionId,
-        };
-
-        if (typeof filterHandler === 'function' && !filterHandler(intervalLog)) {
+    for (const func of Object.values(cbHandlers)) {
+      if (typeof func === "function") {
+        intervalLog = func(intervalLog, null);
+        if (!intervalLog) {
           return false;
         }
-
-        if (typeof mapHandler === 'function') {
-          intervalLog = mapHandler(intervalLog, e);
-        }
-
-        for (const func of Object.values(cbHandlers)) {
-          if (typeof func === 'function') {
-            intervalLog = func(intervalLog, null);
-            if(!intervalLog) {
-              return false;
-            }
-          }
-        }
-
-        logs.push(intervalLog);
-
-        // Reset
-        intervalID = target;
-        intervalType = type;
-        intervalPath = path;
-        intervalTimer = timestamp;
-        intervalCounter = 0;
+      }
     }
 
-    // Interval is still occuring, just update counter
-    if (intervalID == target && intervalType == type) {
-        intervalCounter = intervalCounter + 1;
-    }
+    logs.push(intervalLog);
 
-    return true;
+    // Reset
+    intervalID = target;
+    intervalType = type;
+    intervalPath = path;
+    intervalTimer = timestamp;
+    intervalCounter = 0;
+  }
+
+  // Interval is still occuring, just update counter
+  if (intervalID == target && intervalType == type) {
+    intervalCounter = intervalCounter + 1;
+  }
+
+  return true;
 }
 
 /**
@@ -334,11 +340,14 @@ export function packageIntervalLog(e) {
  */
 export function getLocation(e) {
   if (e.pageX != null) {
-    return { 'x' : e.pageX, 'y' : e.pageY };
+    return { x: e.pageX, y: e.pageY };
   } else if (e.clientX != null) {
-    return { 'x' : document.documentElement.scrollLeft + e.clientX, 'y' : document.documentElement.scrollTop + e.clientY };
+    return {
+      x: document.documentElement.scrollLeft + e.clientX,
+      y: document.documentElement.scrollTop + e.clientY,
+    };
   } else {
-    return { 'x' : null, 'y' : null };
+    return { x: null, y: null };
   }
 }
 
@@ -347,7 +356,7 @@ export function getLocation(e) {
  * @return {Object} An object containing the innerWidth and InnerHeight
  */
 export function getSreenRes() {
-    return { 'width': window.innerWidth, 'height': window.innerHeight};
+  return { width: window.innerWidth, height: window.innerHeight };
 }
 
 /**
@@ -357,10 +366,24 @@ export function getSreenRes() {
  */
 export function getSelector(ele) {
   if (ele.localName) {
-    return ele.localName + (ele.id ? ('#' + ele.id) : '') + (ele.className ? ('.' + ele.className) : '');
+    return (
+      ele.localName +
+      (ele.id ? "#" + ele.id : "") +
+      (ele.className ? "." + ele.className : "")
+    );
   } else if (ele.nodeName) {
-    return ele.nodeName + (ele.id ? ('#' + ele.id) : '') + (ele.className ? ('.' + ele.className) : '');
-  } else if (ele && ele.document && ele.location && ele.alert && ele.setInterval) {
+    return (
+      ele.nodeName +
+      (ele.id ? "#" + ele.id : "") +
+      (ele.className ? "." + ele.className : "")
+    );
+  } else if (
+    ele &&
+    ele.document &&
+    ele.location &&
+    ele.alert &&
+    ele.setInterval
+  ) {
     return "Window";
   } else {
     return "Unknown";
@@ -373,10 +396,10 @@ export function getSelector(ele) {
  * @return {HTMLElement[]}   Array of elements, starting at the event target, ending at the root element.
  */
 export function buildPath(e) {
-    if (e instanceof window.Event) {
-        const path = e.composedPath();
-        return selectorizePath(path);
-    }
+  if (e instanceof window.Event) {
+    const path = e.composedPath();
+    return selectorizePath(path);
+  }
 }
 
 /**
@@ -388,16 +411,19 @@ export function selectorizePath(path) {
   let i = 0;
   let pathEle;
   const pathSelectors = [];
-  while (pathEle = path[i]) {
+
+  pathEle = path[i];
+  while (pathEle) {
     pathSelectors.push(getSelector(pathEle));
     ++i;
+    pathEle = path[i];
   }
   return pathSelectors;
 }
 
 export function detectBrowser() {
-    return {
-        'browser': browserInfo ? browserInfo.name : '',
-        'version': browserInfo ? browserInfo.version : ''
-    };
+  return {
+    browser: browserInfo ? browserInfo.name : "",
+    version: browserInfo ? browserInfo.version : "",
+  };
 }
