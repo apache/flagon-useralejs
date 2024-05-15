@@ -5,9 +5,9 @@
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,33 +15,32 @@
  * limitations under the License.
  */
 
-import {version as userAleVersion} from '../package.json';
-import {getInitialSettings} from './getInitialSettings.js';
-import {configure} from './configure.js';
-import {attachHandlers} from './attachHandlers.js';
-import {initPackager, packageCustomLog} from './packageLogs.js';
-import {initSender} from './sendLogs.js';
+import { version as userAleVersion } from "../package.json";
+import { getInitialSettings } from "./getInitialSettings.js";
+import { configure } from "./configure.js";
+import { attachHandlers } from "./attachHandlers.js";
+import { initPackager, packageCustomLog } from "./packageLogs.js";
+import { initSender } from "./sendLogs.js";
 
 const config = {};
 const logs = [];
-const startLoadTimestamp = Date.now()
-let endLoadTimestamp
+const startLoadTimestamp = Date.now();
+let endLoadTimestamp;
 window.onload = function () {
-    endLoadTimestamp = Date.now()
-}
+  endLoadTimestamp = Date.now();
+};
 
 export let started = false;
-export {defineCustomDetails as details} from './attachHandlers.js';
-export {registerAuthCallback as registerAuthCallback} from './utils';
+export { defineCustomDetails as details } from "./attachHandlers.js";
+export { registerAuthCallback as registerAuthCallback } from "./utils";
 export {
-    addCallbacks as addCallbacks,
-    removeCallbacks as removeCallbacks,
-    packageLog as packageLog,
-    packageCustomLog as packageCustomLog,
-    getSelector as getSelector,
-    buildPath as buildPath,
-} from './packageLogs.js';
-
+  addCallbacks as addCallbacks,
+  removeCallbacks as removeCallbacks,
+  packageLog as packageLog,
+  packageCustomLog as packageCustomLog,
+  getSelector as getSelector,
+  buildPath as buildPath,
+} from "./packageLogs.js";
 
 // Start up Userale
 config.on = false;
@@ -51,7 +50,7 @@ configure(config, getInitialSettings());
 initPackager(logs, config);
 
 if (config.autostart) {
-    setup(config);
+  setup(config);
 }
 
 /**
@@ -60,25 +59,31 @@ if (config.autostart) {
  * @param  {Object} config Configuration settings for the logger
  */
 function setup(config) {
-    if (!started) {
-        setTimeout(function () {
-            const state = document.readyState;
+  if (!started) {
+    setTimeout(function () {
+      const state = document.readyState;
 
-            if (config.autostart && (state === 'interactive' || state === 'complete')) {
-                attachHandlers(config);
-                initSender(logs, config);
-                started = config.on = true;
-                packageCustomLog({
-                    type: 'load',
-                    details: {pageLoadTime: endLoadTimestamp - startLoadTimestamp}
-                    }, () => {},false)
-            } else {
-                setup(config);
-            }
-        }, 100);
-    }
+      if (
+        config.autostart &&
+        (state === "interactive" || state === "complete")
+      ) {
+        attachHandlers(config);
+        initSender(logs, config);
+        started = config.on = true;
+        packageCustomLog(
+          {
+            type: "load",
+            details: { pageLoadTime: endLoadTimestamp - startLoadTimestamp },
+          },
+          () => {},
+          false,
+        );
+      } else {
+        setup(config);
+      }
+    }, 100);
+  }
 }
-
 
 // Export the Userale API
 export const version = userAleVersion;
@@ -88,18 +93,18 @@ export const version = userAleVersion;
  * autostart configuration option is set to false.
  */
 export function start() {
-    if (!started || config.autostart === false) {
-        started = config.on = true;
-        config.autostart = true;
-    }
+  if (!started || config.autostart === false) {
+    started = config.on = true;
+    config.autostart = true;
+  }
 }
 
 /**
  * Halts the logging process. Logs will no longer be sent.
  */
 export function stop() {
-    started = config.on = false;
-    config.autostart = false;
+  started = config.on = false;
+  config.autostart = false;
 }
 
 /**
@@ -109,11 +114,11 @@ export function stop() {
  * @return {Object}           Returns the updated configuration.
  */
 export function options(newConfig) {
-    if (newConfig !== undefined) {
-        configure(config, newConfig);
-    }
+  if (newConfig !== undefined) {
+    configure(config, newConfig);
+  }
 
-    return config;
+  return config;
 }
 
 /**
@@ -122,10 +127,10 @@ export function options(newConfig) {
  * @return {boolean}          Whether the operation succeeded.
  */
 export function log(customLog) {
-    if (customLog !== null && typeof customLog === 'object') {
-        logs.push(customLog);
-        return true;
-    } else {
-        return false;
-    }
+  if (customLog !== null && typeof customLog === "object") {
+    logs.push(customLog);
+    return true;
+  } else {
+    return false;
+  }
 }
