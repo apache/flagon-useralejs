@@ -29,6 +29,7 @@ header:
     - '**/*.json'
     - '**/*.mjs'
     - 'KEYS'
+    - '**/*.js.map'
 
   comment: on-failure
 

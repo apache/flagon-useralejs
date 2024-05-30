@@ -90,7 +90,7 @@
         "useraleVersion": {
           "type": "string"
         },
-        "sessionID": {
+        "sessionId": {
           "type": "string"
         }
     },
@@ -108,7 +108,7 @@
         "toolVersion",
         "toolName",
         "useraleVersion",
-        "sessionID"
+        "sessionId"
     ],
     "if": {
         "properties": { "logType": { "const": "raw" } }

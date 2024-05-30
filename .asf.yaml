@@ -16,7 +16,7 @@
 #
 
 github:
-  description: "Apache Flagon UserALE.js is a comprehensive, thin-client behavioral logging tool"
+  description: "Apache Flagon UserALE is a comprehensive, thin-client behavioral logging tool"
   homepage: https://flagon.apache.org/
   labels:
     - flagon

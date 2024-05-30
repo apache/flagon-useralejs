@@ -16,16 +16,16 @@
     specific language governing permissions and limitations
     under the License.
 -->
-# The UserALE.js Webpack Example Utility
+# The UserALE Webpack Example Utility
 
 This example provides: 
- * example usage for UserALE.js imported as a **module** into a simple HTML Webpage and built with a package bundler (Webpack);
+ * example usage for UserALE imported as a **module** into a simple HTML Webpage and built with a package bundler (Webpack);
  * a testing utility for developers to evaluate UserALE modifications to logged events;
  * a means of viewing log event structure within a simple UserALE logging server;
- * a means of testing UserALE.js API functions within a simple HTML Webpage. 
+ * a means of testing UserALE API functions within a simple HTML Webpage. 
 
 If you are interested in examples for a **script tag** deployment methodology, see the README in the [/examples directory](https://github.com/apache/flagon-useralejs/tree/master/example). For details about our web extension, see 
-our [UserALE.js WebExtension documentation](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension).
+our [UserALE WebExtension documentation](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension).
 
 ## Prerequisites
 
@@ -33,13 +33,13 @@ Ensure that you have [node.js](https://nodejs.org/) installed.
 
 You will need to `npm install` the [flagon-userale](https://www.npmjs.com/package/flagon-userale) npm package.
 
-From `./example/webpackUserAleExample` directory, `npm install` dependencies to run this Example Utility. Note that the UserALE.js Webpack Example has it's own package.json file, that is separate from the larger `flagon-userale` package.
+From `./example/webpackUserAleExample` directory, `npm install` dependencies to run this Example Utility. Note that the UserALE Webpack Example has it's own package.json file, that is separate from the larger `flagon-userale` package.
 
 Please follow [Installation directions](https://github.com/apache/flagon-useralejs#installation) if you run into issues.
 
 ## Using the Example Page 
 
-The Example Page is a simple HTML Webpage with UserALE.js included as a module import. 
+The Example Page is a simple HTML Webpage with UserALE included as a module import. 
 
 The example is pre-built and requires no modification to work. 
 
@@ -49,7 +49,7 @@ On this page, all user events will be captured and sent to the logging server. S
 
 ## Capturing Logs Using the Logging Server
 
-The UserALE.js Example page works with a simple logging server, which receives log from any UserALE.js instrumented page or application at `localhost:8000`.
+The UserALE Example page works with a simple logging server, which receives log from any UserALE instrumented page or application at `localhost:8000`.
 
 From the `/example` directory or its parent directory (not `example/webpackUserAleExample`) run the following:
 
@@ -72,9 +72,9 @@ UserAle Local running on port 8000
 
 The server allows you to watch as logs are sent from the client to the server, as well as review a flat-file of saved logs, which you can view @ `/logs` in the flagon-userale parent directory.
 
-This means you can test logs from your own instrumented application, the [UserALE.js WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension), or the UserALE.js Example Page, so long as you have not changed the UserALE.js `url` configuration option from `localhost:8000` (instructions below). This is the default setting for userale; logs generated from module, script tag, or WebExtension deployments will always ship logs to `localhost:8000` unless modified via the `userale.options` (API) configuration, HTML script tag parameter (data-url), or the WebExtension options page.
+This means you can test logs from your own instrumented application, the [UserALE WebExtension](https://github.com/apache/flagon-useralejs/tree/master/src/UserALEWebExtension), or the UserALE Example Page, so long as you have not changed the UserALE `url` configuration option from `localhost:8000` (instructions below). This is the default setting for userale; logs generated from module, script tag, or WebExtension deployments will always ship logs to `localhost:8000` unless modified via the `userale.options` (API) configuration, HTML script tag parameter (data-url), or the WebExtension options page.
 
-Start using your instrumented application, browser, or the UserALE.js Example Page, and you will see logs propagating in the terminal:
+Start using your instrumented application, browser, or the UserALE Example Page, and you will see logs propagating in the terminal:
 
 ```
 
@@ -87,7 +87,7 @@ Start using your instrumented application, browser, or the UserALE.js Example Pa
     details: null,
     userId: 'example-user',
     toolVersion: '2.1.0',
-    toolName: 'Apache UserALE.js Example',
+    toolName: 'Apache UserALE Example',
     useraleVersion: '2.1.0' },
  ...
 ]
@@ -97,9 +97,9 @@ Kill the logging script with `^C` or as you would any bash script.
 
 ## Modifying the Example Page (Dev Instructions)
 
-Beyond providing you in situ examples of UserALE.js in action and API usage examples, the test utility is useful for prototyping code blocks for use in your own applications. 
+Beyond providing you in situ examples of UserALE in action and API usage examples, the test utility is useful for prototyping code blocks for use in your own applications. 
  
-Below are a few notes that are useful as you begin to modify the UserALE.js **module** imoort example. 
+Below are a few notes that are useful as you begin to modify the UserALE **module** imoort example. 
  
 * the `userale` object imports directly into `index.js` with the following import statement:
 
@@ -117,7 +117,7 @@ const userale = require('flagon-userale');
 <script src="dist/main.js"></script>
 ```
 
-* the UserALE.js **module** import example is structured like an npm project--it has its own `package.json` file. This means than any npm commands used for install, built, etc., must be done so within this directory, *not* its parent directories.
+* the UserALE **module** import example is structured like an npm project--it has its own `package.json` file. This means than any npm commands used for install, built, etc., must be done so within this directory, *not* its parent directories.
 
 * any modifications of `index.js` will require that you rebuild `main.js`, then reload `index.html`. Run the following within the `/example/webpackUserAleExample directory`:
 
@@ -125,9 +125,9 @@ const userale = require('flagon-userale');
 $npm run build-example
 ```
 
-## Experimenting with UserALE.js Exports (API)
+## Experimenting with UserALE Exports (API)
 
-* UserALE.js features a robust set of exported functions to support modification and customization of your logs. They can be called as attributes of the userale object (e.g., userale.[function])
+* UserALE features a robust set of exported functions to support modification and customization of your logs. They can be called as attributes of the userale object (e.g., userale.[function])
 
 * See the top level README for examples and parameters for exports, but a list of exported functions follows:
 
@@ -147,10 +147,10 @@ $npm run build-example
 | userale.start | used to start the logging process if | unecessary if 'autostart' is set to true in initial setting (default) |
 | userale.stop | halts the logging process. Logs will no longer be sent | will need to invoke userale.start to restart logging |
 
-* additional, annotated examples for most exports can be found embedded within `index.js` the UserALE.js **module** import example. 
+* additional, annotated examples for most exports can be found embedded within `index.js` the UserALE **module** import example. 
 
 See the [Flagon website](http://flagon.apache.org/) for additional documentation on the [API](http://flagon.apache.org/docs/useralejs/API/) and [testing for scale](http://flagon.apache.org/docs/stack/scaling/).
 
 ## Contributing
 
-Contributions are welcome!  Simply [submit an issue](https://github.com/apache/flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.js.
+Contributions are welcome!  Simply [submit an issue](https://github.com/apache/flagon-useralejs/issues) for problems you encounter or submit a pull request for your feature or bug fix.  The core team will review it and work with you to incorporate it into UserALE.

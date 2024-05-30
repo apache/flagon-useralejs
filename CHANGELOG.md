@@ -61,7 +61,7 @@ Apache Flagon UserALE.js (Incubating) 2.1.1 (2021-02-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.1.1
 * [Closed Tickets](https://github.com/apache/incubator-flagon-useralejs/projects/3)
-    * Fixes bug in SessionID creation at initial PageLoad
+    * Fixes bug in sessionId creation at initial PageLoad
     * Updates Node.js/NPM Engine support (tested 12.x, 13.x, 14.x, 15.x)
     * Minor updates to resolve extant vulnerabilities in dependency tree
     * Minor updates to update deprecated downstream dev dependencies
@@ -116,7 +116,7 @@ Apache Flagon UserALE.js (Incubating) 2.1.0 (2020-02-07)
     * [FLAGON-471] - SetRequestHeader should include an Authorization option
     * [FLAGON-473] - update packagefile for new version and engines
     * [FLAGON-475] - Print Browser Types, Version
-    
+
 Apache Flagon UserALE.js (Incubating) 2.0.2 (2019-08-06)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.0.2
@@ -124,7 +124,7 @@ Apache Flagon UserALE.js (Incubating) 2.0.2 (2019-08-06)
 
 * Sub-task
     * [FLAGON-423] - Update Package File to Fix Down Stream Dependencies
-    
+
 * Bug
     * [FLAGON-422] - Update NPM modules to fix prototype pollution issues in npm packages
     * [FLAGON-433] - FIx Package.json and Package-Log.json to resolve npm packaging issue
@@ -135,12 +135,12 @@ Apache Flagon UserALE.js (Incubating) 2.0.2 (2019-08-06)
 * Task
     * [FLAGON-424] - Update Gulp to 4.0.2 as matter of protocol post Prototype Pollution.
     * [FLAGON-425] - Update gulp-eslint
-    * [FLAGON-426] - update rollup 
+    * [FLAGON-426] - update rollup
     * [FLAGON-427] - update nodemon
     * [FLAGON-428] - update sinon
     * [FLAGON-429] - test userale.js builds and artifacts on npm 6.10
     * [FLAGON-430] - update rollup-plugin-license
-    
+
 Apache Flagon UserALE.js (Incubating) 2.0.0 (2019-06-20)
 -------------------------------
 * Release Notes - Flagon - Version UserALE.js 2.0.0
@@ -152,10 +152,10 @@ Apache Flagon UserALE.js (Incubating) 2.0.0 (2019-06-20)
     * [FLAGON-240] - Update Elasticsearch mapping to accurately parse clientTime variable from userale.js
     * [FLAGON-333] - Add pageURL to UserALE.js logs
     * [FLAGON-334] - Add pageTitle to UserALE.js
-    * [FLAGON-337] - Add pageReferrer to UserALE.js 
+    * [FLAGON-337] - Add pageReferrer to UserALE.js
 
 * Bug
-    * [FLAGON-79] - clientTime is not properly formmated 
+    * [FLAGON-79] - clientTime is not properly formmated
     * [FLAGON-167] - Browser plugin CORS permissions
     * [FLAGON-169] - Browser Blocking Mixed Content
     * [FLAGON-221] - Elasticsearch 5.x does not support microsecond precision
@@ -163,7 +163,7 @@ Apache Flagon UserALE.js (Incubating) 2.0.0 (2019-06-20)
     * [FLAGON-322] - minimatch deprecation: ReDOS vulnerability
     * [FLAGON-323] - Update to Gulp 4.0.0
     * [FLAGON-324] - Example Page Does Not Generate Logs
-    * [FLAGON-338] - Mocha unit tests treat 'document' and 'window' as 'Undefinied' vars 
+    * [FLAGON-338] - Mocha unit tests treat 'document' and 'window' as 'Undefinied' vars
     * [FLAGON-340] - UserALE.js fails to build on Branch-336
 
 * New Feature

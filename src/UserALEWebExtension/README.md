@@ -19,7 +19,7 @@
 
 # UserALE Web Extension
 
-The UserALE.js Web Extension is designed to enable user activity logging across any page they visit, regardless of domain. To achieve this, we repackaged our UserALE.js library into a WebExtension compliant format to allow portability between browsers.
+The UserALE Web Extension is designed to enable user activity logging across any page they visit, regardless of domain. To achieve this, we repackaged our UserALE library into a WebExtension compliant format to allow portability between browsers.
 
 ## Folder/file structure
 

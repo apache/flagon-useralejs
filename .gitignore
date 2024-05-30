@@ -15,9 +15,12 @@
 # specific language governing permissions and limitations
 # under the License.
 .idea
+.vscode
 /node_modules/*
 /logs/*
 /.git/*
 npm-debug.log
 DS_store
 cypress
+tsconfig.tsbuildinfo
+.rollup.cache
