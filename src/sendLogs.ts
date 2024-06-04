@@ -68,8 +68,27 @@ export function sendOnClose(
   config: Configuration,
 ): void {
   window.addEventListener("pagehide", function () {
-    if (config.on && logs.length > 0) {
-      navigator.sendBeacon(config.url, JSON.stringify(logs));
+    if (!config.on) {
+      return;
+    }
+
+    if (logs.length > 0) {
+      const headers: HeadersInit = new Headers();
+      headers.set("Content-Type", "applicaiton/json;charset=UTF-8");
+
+      if (config.authHeader) {
+        headers.set("Authorization", config.authHeader.toString());
+      }
+
+      fetch(config.url, {
+        keepalive: true,
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(logs),
+      }).catch((error) => {
+        console.error(error);
+      });
+
       logs.splice(0); // clear log queue
     }
   });
