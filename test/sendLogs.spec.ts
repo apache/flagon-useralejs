@@ -100,12 +100,14 @@ describe("sendLogs", () => {
     done();
   });
 
-  it("sends logs on page exit with navigator", () => {
-    const sendBeaconSpy = jest.fn();
-    Object.defineProperty(global, "navigator", {
-      value: { sendBeacon: sendBeaconSpy },
-      writable: true,
-    });
+  it("sends logs on page exit with fetch", () => {
+    const fetchSpy = jest.fn().mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        foo: "bar",
+      }),
+    );
+    global.fetch = fetchSpy;
 
     config.update({ on: true, url: "test" });
     sendOnClose([], config);
@@ -113,21 +115,23 @@ describe("sendLogs", () => {
     sendOnClose([{ foo: "bar" }], config);
     global.window.dispatchEvent(new window.CustomEvent("pagehide"));
 
-    expect(sendBeaconSpy).toHaveBeenCalledTimes(1);
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("does not send logs on page exit when config is off", () => {
-    const sendBeaconSpy = jest.fn();
-    Object.defineProperty(global, "navigator", {
-      value: { sendBeacon: sendBeaconSpy },
-      writable: true,
-    });
+    const fetchSpy = jest.fn().mockImplementation(() =>
+      Promise.resolve({
+        ok: true,
+        foo: "bar",
+      }),
+    );
+    global.fetch = fetchSpy;
 
     config.update({ on: false, url: "test" });
     sendOnClose([{ foo: "bar" }], config);
     global.window.dispatchEvent(new window.CustomEvent("pagehide"));
 
-    expect(sendBeaconSpy).not.toHaveBeenCalled();
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 
   it("sends logs with proper auth header when using registerAuthCallback", (done) => {
