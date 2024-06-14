@@ -54,7 +54,7 @@
   },
   "homepage": "https://flagon.apache.org/",
   "engines": {
-    "node": "^18.x || ^20.x",
+    "node": ">= 18.x",
     "npm": ">= 9.x"
   },
   "devDependencies": {
@@ -72,7 +72,6 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/chai": "^4.3.16",
     "@types/chrome": "^0.0.268",
     "@types/firefox-webext-browser": "^120.0.3",
     "@types/jest": "^29.5.12",
@@ -83,8 +82,6 @@
     "@typescript/lib-dom": "npm:@types/web@^0.0.144",
     "babel-jest": "^29.7.0",
     "body-parser": "^1.20.2",
-    "chai": "^4.3.10",
-    "chai-subset": "^1.6.0",
     "cypress": "^13.6.0",
     "detect-browser": "^5.3.0",
     "dom-storage": "^2.1.0",
@@ -98,7 +95,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^24.0.0",
     "jsonschema": "^1.4.1",
-    "mocha": "^10.2.0",
     "nodemon": "^3.0.2",
     "prettier": "^3.2.5",
     "rollup": "^4.6.1",
@@ -106,7 +102,6 @@
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-license": "^3.2.0",
-    "sinon": "^17.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.8.0"
