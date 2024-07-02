@@ -33,5 +33,5 @@
         "typeRoots": ["node_modules/@types/"],
     },
     "include": ["src", "test", "src/types.d.ts"],
-    "exclude": ["cypress.config.ts", "node_modules", "build", "logs", "journey", "example"],
+    "exclude": ["node_modules", "build", "logs", "example"],
 }

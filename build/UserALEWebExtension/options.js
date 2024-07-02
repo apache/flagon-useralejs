@@ -1168,6 +1168,7 @@ function options(newConfig) {
 /* eslint-disable */
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = window.browser || chrome;
+const configKey = "useraleConfigPayload";
 function rerouteLog(log) {
     browser.runtime.sendMessage({ type: ADD_LOG, payload: log });
     return false;
@@ -1218,18 +1219,16 @@ function setConfig() {
                 .value,
         },
     };
-    // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
-    // to support chromium style MV2 callbacks
-    browser.storage.local.set(payload, () => {
-        options(config);
-        browser.runtime.sendMessage({ type: CONFIG_CHANGE, payload });
-    });
+    options(config);
+    browser.runtime.sendMessage({ type: CONFIG_CHANGE, payload });
 }
 function getConfig() {
     // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
     // to support chromium style MV2 callbacks
-    browser.storage.local.get("useraleConfig", (res) => {
-        const config = res.useraleConfig;
+    browser.storage.local.get([configKey], (res) => {
+        const payload = res[configKey];
+        console.log(payload);
+        const config = payload.useraleConfig;
         options(config);
         document.getElementById("url").value = config.url;
         document.getElementById("user").value =
@@ -1238,15 +1237,9 @@ function getConfig() {
             config.toolName;
         document.getElementById("toolVersion").value =
             config.toolVersion;
-    });
-    browser.storage.local.get("pluginConfig", 
-    // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
-    // to support chromium style MV2 callbacks
-    (res) => {
         document.getElementById("filter").value =
-            res.pluginConfig.urlWhitelist;
+            payload.pluginConfig.urlWhitelist;
     });
 }
 document.addEventListener("DOMContentLoaded", getConfig);
 document.addEventListener("submit", setConfig);
-//# sourceMappingURL=options.js.map

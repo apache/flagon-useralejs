@@ -1169,6 +1169,7 @@ function options(newConfig) {
 /* eslint-disable */
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 var browser = window.browser || chrome;
+const configKey = "useraleConfigPayload";
 function rerouteLog(log) {
     browser.runtime.sendMessage({ type: ADD_LOG, payload: log });
     return false;
@@ -1191,11 +1192,11 @@ function rerouteLog(log) {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-browser.storage.local.get("useraleConfig", 
+browser.storage.local.get([configKey], 
 // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
 // to support chromium style MV2 callbacks
 (res) => {
-    options(res.useraleConfig);
+    options(res[configKey].useraleConfig);
     addCallbacks({ rerouteLog });
     // Send httpSession to background scirpt to inject into tab events.
     const userAleHttpSessionId = window.sessionStorage.getItem("userAleHttpSessionId");
@@ -1208,8 +1209,8 @@ browser.storage.local.get("useraleConfig",
 });
 // TODO: Add types for message
 browser.runtime.onMessage.addListener(function (message) {
+    console.log(message);
     if (message.type === CONFIG_CHANGE) {
         options(message.payload);
     }
 });
-//# sourceMappingURL=content.js.map
