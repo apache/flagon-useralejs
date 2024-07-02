@@ -92,7 +92,7 @@ export default [
         output: {
             format: 'esm',
             file: buildWebExtensionDir + fileName + '.js',
-            sourcemap: true,
+            sourcemap: false,
             name: 'user-ale-ext-content',
         },
         plugins: [

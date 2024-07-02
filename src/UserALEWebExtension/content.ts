@@ -16,15 +16,14 @@
  */
 import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
-import { rerouteLog, browser } from "@/UserALEWebExtension/globals";
-import type { Settings } from "@/types";
+import { rerouteLog, browser, configKey } from "@/UserALEWebExtension/globals";
 
 browser.storage.local.get(
-  "useraleConfig",
+  [configKey],
   // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
   // to support chromium style MV2 callbacks
-  (res: { useraleConfig: Settings.Config }) => {
-    userale.options(res.useraleConfig);
+  (res) => {
+    userale.options(res[configKey].useraleConfig);
     userale.addCallbacks({ rerouteLog });
 
     // Send httpSession to background scirpt to inject into tab events.
@@ -42,6 +41,7 @@ browser.storage.local.get(
 
 // TODO: Add types for message
 browser.runtime.onMessage.addListener(function (message) {
+  console.log(message);
   if (message.type === MessageTypes.CONFIG_CHANGE) {
     userale.options(message.payload);
   }
