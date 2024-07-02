@@ -80,7 +80,10 @@ jobs:
         run: npm ci # clean install
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: |
+          npx playwright install --with-deps
+          sudo apt-get update
+          sudo apt-get install -y xvfbv
 
       - name: Build
         run: |
@@ -88,7 +91,10 @@ jobs:
           npm run build
 
       - name: Test
-        run: npm run test
+        run: run: |
+          export DISPLAY=:99
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          npm test
 
       # TODO: add automatic release notes
       # TODO: add cronjobs for automatically triggering new release candidates
