@@ -83,7 +83,7 @@ jobs:
         run: |
           npx playwright install --with-deps
           sudo apt-get update
-          sudo apt-get install -y xvfbv
+          sudo apt-get install -y xvfb
 
       - name: Build
         run: |
