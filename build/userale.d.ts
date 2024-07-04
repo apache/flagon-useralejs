@@ -154,7 +154,7 @@ declare namespace Callbacks {
 declare namespace Extension {
   export type PluginConfig = { urlWhitelist: string };
   export type ConfigPayload = {
-    useraleConfig: Settings.Config;
+    useraleConfig: Partial<Settings.Config>;
     pluginConfig: PluginConfig;
   };
 }

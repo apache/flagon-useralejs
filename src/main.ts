@@ -110,11 +110,11 @@ export function stop(): void {
 /**
  * Updates the current configuration
  * object with the provided values.
- * @param  {Settings.Config} newConfig The configuration options to use.
+ * @param  {Partial<Settings.Config>} newConfig The configuration options to use.
  * @return {Settings.Config}           Returns the updated configuration.
  */
 export function options(
-  newConfig: Settings.Config | undefined,
+  newConfig: Partial<Settings.Config> | undefined,
 ): Settings.Config {
   if (newConfig) {
     config.update(newConfig);

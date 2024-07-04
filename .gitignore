@@ -24,3 +24,8 @@ DS_store
 cypress
 tsconfig.tsbuildinfo
 .rollup.cache
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+**/chromeData/*

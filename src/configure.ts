@@ -77,9 +77,9 @@ export class Configuration {
   /**
    * Shallow merges a newConfig with the configuration class, updating it.
    * Retrieves/updates the userid if userFromParams is provided.
-   * @param  {Settings.Config} newConfig Configuration object to merge into the current config.
+   * @param  {Partial<Settings.Config>} newConfig Configuration object to merge into the current config.
    */
-  public update(newConfig: Settings.DefaultConfig): void {
+  public update(newConfig: Partial<Settings.Config>): void {
     Object.keys(newConfig).forEach((option) => {
       if (option === "userFromParams") {
         const userParamString = newConfig[option] as Settings.UserFromParams;
@@ -97,7 +97,10 @@ export class Configuration {
         return;
       }
 
-      this[option] = newConfig[option];
+      const newOption = newConfig[option];
+      if (newOption !== undefined) {
+        this[option] = newOption;
+      }
     });
   }
 

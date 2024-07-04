@@ -51,9 +51,9 @@ export declare class Configuration {
     /**
      * Shallow merges a newConfig with the configuration class, updating it.
      * Retrieves/updates the userid if userFromParams is provided.
-     * @param  {Settings.Config} newConfig Configuration object to merge into the current config.
+     * @param  {Partial<Settings.Config>} newConfig Configuration object to merge into the current config.
      */
-    update(newConfig: Settings.DefaultConfig): void;
+    update(newConfig: Partial<Settings.Config>): void;
     /**
      * Attempts to extract the userid from the query parameters of the URL.
      * @param  {string} param The name of the query parameter containing the userid.

@@ -57,11 +57,14 @@ app.use(bodyParser.text())
 app.use('/build', express.static(path.join(__dirname, '/../build')));
 app.use('/', express.static(__dirname));
 app.set('view engine', 'jade');
-app.use('/', express.static(__dirname))
-
+app.use('/', express.static(__dirname));
 
 app.get('/', function (req, res) {
   res.sendFile('index.html', { root: __dirname });
+});
+
+app.get('/no-logging', function (req, res) {
+  res.sendFile('no-logging.html', { root: __dirname });
 });
 
 app.post('/', function (req, res) {
