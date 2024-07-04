@@ -35,10 +35,10 @@ export declare function stop(): void;
 /**
  * Updates the current configuration
  * object with the provided values.
- * @param  {Settings.Config} newConfig The configuration options to use.
+ * @param  {Partial<Settings.Config>} newConfig The configuration options to use.
  * @return {Settings.Config}           Returns the updated configuration.
  */
-export declare function options(newConfig: Settings.Config | undefined): Settings.Config;
+export declare function options(newConfig: Partial<Settings.Config> | undefined): Settings.Config;
 /**
  * Appends a log to the log queue.
  * @param  {Logging.CustomLog} customLog The log to append.

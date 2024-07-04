@@ -21,6 +21,7 @@ import type { Logging } from "@/types";
 
 // browser is defined in firefox, but chrome uses the 'chrome' global.
 export var browser = window.browser || chrome;
+export const configKey = "useraleConfigPayload";
 
 export function rerouteLog(log: Logging.Log) {
   browser.runtime.sendMessage({ type: MessageTypes.ADD_LOG, payload: log });

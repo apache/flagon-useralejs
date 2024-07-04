@@ -218,7 +218,7 @@
       /**
        * Shallow merges a newConfig with the configuration class, updating it.
        * Retrieves/updates the userid if userFromParams is provided.
-       * @param  {Settings.Config} newConfig Configuration object to merge into the current config.
+       * @param  {Partial<Settings.Config>} newConfig Configuration object to merge into the current config.
        */
       update(newConfig) {
           Object.keys(newConfig).forEach((option) => {
@@ -236,7 +236,10 @@
               if (willNullifyUserId && hasNewUserFromParams) {
                   return;
               }
-              this[option] = newConfig[option];
+              const newOption = newConfig[option];
+              if (newOption !== undefined) {
+                  this[option] = newOption;
+              }
           });
       }
       /**
@@ -1276,7 +1279,7 @@
   /**
    * Updates the current configuration
    * object with the provided values.
-   * @param  {Settings.Config} newConfig The configuration options to use.
+   * @param  {Partial<Settings.Config>} newConfig The configuration options to use.
    * @return {Settings.Config}           Returns the updated configuration.
    */
   function options(newConfig) {

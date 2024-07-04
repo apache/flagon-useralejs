@@ -16,7 +16,7 @@
  */
 import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
-import { rerouteLog, browser } from "@/UserALEWebExtension/globals";
+import { rerouteLog, browser, configKey } from "@/UserALEWebExtension/globals";
 import { Configuration } from "@/configure";
 import { Extension } from "@/types";
 
@@ -53,19 +53,17 @@ function setConfig() {
     },
   };
 
-  // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
-  // to support chromium style MV2 callbacks
-  browser.storage.local.set(payload, () => {
-    userale.options(config);
-    browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload });
-  });
+  userale.options(config);
+  browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload });
 }
 
 function getConfig() {
   // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
   // to support chromium style MV2 callbacks
-  browser.storage.local.get("useraleConfig", (res: Extension.ConfigPayload) => {
-    const config = res.useraleConfig;
+  browser.storage.local.get([configKey], (res) => {
+    const payload = res[configKey];
+    console.log(payload);
+    const config = payload.useraleConfig;
 
     userale.options(config);
     (document.getElementById("url") as HTMLInputElement).value = config.url;
@@ -75,17 +73,9 @@ function getConfig() {
       config.toolName as string;
     (document.getElementById("toolVersion") as HTMLInputElement).value =
       config.toolVersion as string;
+    (document.getElementById("filter") as HTMLInputElement).value =
+      payload.pluginConfig.urlWhitelist;
   });
-
-  browser.storage.local.get(
-    "pluginConfig",
-    // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
-    // to support chromium style MV2 callbacks
-    (res: { pluginConfig: Extension.PluginConfig }) => {
-      (document.getElementById("filter") as HTMLInputElement).value =
-        res.pluginConfig.urlWhitelist;
-    },
-  );
 }
 
 document.addEventListener("DOMContentLoaded", getConfig);
