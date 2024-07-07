@@ -25,6 +25,7 @@
 ![npm](https://img.shields.io/npm/v/flagon-userale)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 ![Node.js](https://img.shields.io/badge/Node.js%20Support-16.x%2C%2018.x-orange)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 Apache UserALE is part of the [Apache Flagon Project](http://flagon.incubator.apache.org/). It is a client side instrumentation library written in JavaScript designed for easy deployment and lightweight configuration in gathering logs from your web applications for user behavioral analytics.
 
@@ -354,3 +355,4 @@ Join the conversation: tell us your needs, wishes, and interests by joining our 
 ## License
 
 Apache Flagon UserALE is provided under Apache License version 2.0. See [LICENSE](https://github.com/apache/flagon-useralejs/blob/master/LICENSE) and [NOTICE](https://github.com/apache/flagon-useralejs/blob/master/NOTICE) files at MASTER for more details.
+  

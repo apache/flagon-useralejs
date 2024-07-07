@@ -86,6 +86,7 @@
     "chai": "^4.3.10",
     "chai-subset": "^1.6.0",
     "cypress": "^13.6.0",
+    "cz-conventional-changelog": "^3.3.0",
     "detect-browser": "^5.3.0",
     "dom-storage": "^2.1.0",
     "esbuild": "^0.21.2",
@@ -110,5 +111,10 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.8.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
