@@ -20,7 +20,7 @@
     "example:run": "node example/server.js",
     "example:watch": "nodemon -w ./example example/server.js",
     "prepare": "husky",
-    "postinstall": "go install github.com/apache/skywalking-eyes/cmd/license-eye@latest"
+    "postinstall": "go install github.com/apache/skywalking-eyes/cmd/license-eye@latest && npx playwright install"
   },
   "repository": {
     "type": "git",
