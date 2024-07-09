@@ -30,6 +30,7 @@ header:
     - '**/*.mjs'
     - 'KEYS'
     - '**/*.js.map'
+    - '.czrc'
 
   comment: on-failure
 
