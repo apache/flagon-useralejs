@@ -20,3 +20,4 @@ const prefix = "USERALE_";
 export const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
 export const ADD_LOG = prefix + "ADD_LOG";
 export const HTTP_SESSION = prefix + "HTTP_SESSION";
+export const ISSUE_REPORT = prefix + "ISSUE_REPORT";

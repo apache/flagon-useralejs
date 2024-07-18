@@ -40,9 +40,18 @@ browser.storage.local.get(
 );
 
 // TODO: Add types for message
-browser.runtime.onMessage.addListener(function (message) {
-  console.log(message);
+browser.runtime.onMessage.addListener(function (message, sender) {
   if (message.type === MessageTypes.CONFIG_CHANGE) {
     userale.options(message.payload);
+  } else if (message.type === MessageTypes.ISSUE_REPORT) {
+    if (window.top === window) {
+      userale.packageCustomLog(
+        message.payload,
+        () => {
+          return {};
+        },
+        true,
+      );
+    }
   }
 });

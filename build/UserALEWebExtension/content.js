@@ -18,6 +18,7 @@ const prefix = "USERALE_";
 const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
 const ADD_LOG = prefix + "ADD_LOG";
 const HTTP_SESSION = prefix + "HTTP_SESSION";
+const ISSUE_REPORT = prefix + "ISSUE_REPORT";
 
 var version = "2.4.0";
 
@@ -1211,9 +1212,15 @@ browser.storage.local.get([configKey],
     }
 });
 // TODO: Add types for message
-browser.runtime.onMessage.addListener(function (message) {
-    console.log(message);
+browser.runtime.onMessage.addListener(function (message, sender) {
     if (message.type === CONFIG_CHANGE) {
         options(message.payload);
+    }
+    else if (message.type === ISSUE_REPORT) {
+        if (window.top === window) {
+            packageCustomLog(message.payload, () => {
+                return {};
+            }, true);
+        }
     }
 });

@@ -17,6 +17,7 @@
 const prefix = "USERALE_";
 const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
 const ADD_LOG = prefix + "ADD_LOG";
+const ISSUE_REPORT = prefix + "ISSUE_REPORT";
 
 var version = "2.4.0";
 
@@ -1230,7 +1231,6 @@ function getConfig() {
     // to support chromium style MV2 callbacks
     browser.storage.local.get([configKey], (res) => {
         const payload = res[configKey];
-        console.log(payload);
         const config = payload.useraleConfig;
         options(config);
         document.getElementById("url").value = config.url;
@@ -1243,6 +1243,26 @@ function getConfig() {
         document.getElementById("filter").value =
             payload.pluginConfig.urlWhitelist;
     });
+    document.getElementById("optionsForm").addEventListener("submit", setConfig);
+    document.getElementById("issueForm").addEventListener("submit", reportIssue);
+}
+function reportIssue() {
+    browser.runtime.sendMessage({
+        type: ISSUE_REPORT,
+        payload: {
+            issueType: document.querySelector('input[name="issueType"]:checked').value,
+            issueDescription: document.getElementById("issueDescription").value,
+            type: "issue",
+        },
+    });
 }
 document.addEventListener("DOMContentLoaded", getConfig);
-document.addEventListener("submit", setConfig);
+browser.runtime.onMessage.addListener(function (message, sender) {
+    if (message.type === ISSUE_REPORT) {
+        if (window.top === window) {
+            packageCustomLog(message.payload, () => {
+                return {};
+            }, true);
+        }
+    }
+});

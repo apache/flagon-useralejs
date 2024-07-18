@@ -71,6 +71,7 @@ const prefix = "USERALE_";
 const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
 const ADD_LOG = prefix + "ADD_LOG";
 const HTTP_SESSION = prefix + "HTTP_SESSION";
+const ISSUE_REPORT = prefix + "ISSUE_REPORT";
 
 var version$1 = "2.4.0";
 
@@ -1334,6 +1335,24 @@ function dispatchTabMessage(message) {
     });
 }
 /**
+ * Send a message to the current tab
+ * @param {any} message The message to send
+ * @return {void}
+ */
+function messageCurrentTab(message) {
+    // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
+    // to support chromium style MV2 callbacks
+    browser.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs.length > 0) {
+            const activeTab = tabs[0];
+            browser.tabs.sendMessage(activeTab.id, message);
+        }
+        else {
+            console.error("No active tab found");
+        }
+    });
+}
+/**
  * Callback for filtering out logs with urls that do not match the regex defined in extension options.
  * @param {Logging.Log} log The candidate log
  * @return {Object} The transformed log
@@ -1387,6 +1406,9 @@ browser.runtime.onMessage.addListener(function (message, sender) {
             break;
         case CONFIG_CHANGE:
             updateConfig(message.payload);
+            break;
+        case ISSUE_REPORT:
+            messageCurrentTab(message);
             break;
         default:
             console.log("got unknown message type ", message);

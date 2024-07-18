@@ -23,7 +23,7 @@
     <meta charset="utf-8" />
   </head>
   <body>
-    <h1>Options</h1>
+    <h1>Logging Options</h1>
     <form name="optionsForm" id="optionsForm">
       <label>Logging Endpoint URL:</label>
       <input name="url" id="url" />
@@ -50,7 +50,39 @@
       <br />
 
       <div align="right">
-        <button type="submit" id="submit">Save</button>
+        <button type="submit" id="submitOptions">Save Changes</button>
+      </div>
+    </form>
+    <h1>Report an Issue</h1>
+    <form name="issueForm" id="issueForm">
+      <label>Issue Type</label><br />
+      <label>
+        <input
+          type="radio"
+          id="bug"
+          name="issueType"
+          value="Bug"
+          checked="checked"
+        />
+        Bug </label
+      ><br />
+
+      <label>
+        <input type="radio" id="feat" name="issueType" value="Feature" />
+        Feature Request </label
+      ><br />
+      <br />
+      <textarea
+        id="issueDescription"
+        name="issueDescription"
+        rows="5"
+        cols="50"
+      >
+A detailed description of the issue.</textarea
+      >
+      <br />
+      <div align="right">
+        <button type="submit" id="submitIssue">Submit Report</button>
       </div>
     </form>
   </body>

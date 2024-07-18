@@ -98,6 +98,23 @@ function dispatchTabMessage(message: any) {
     });
   });
 }
+/**
+ * Send a message to the current tab
+ * @param {any} message The message to send
+ * @return {void}
+ */
+function messageCurrentTab(message: any) {
+  // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
+  // to support chromium style MV2 callbacks
+  browser.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    if (tabs.length > 0) {
+      const activeTab = tabs[0];
+      browser.tabs.sendMessage(activeTab.id, message);
+    } else {
+      console.error("No active tab found");
+    }
+  });
+}
 
 /**
  * Callback for filtering out logs with urls that do not match the regex defined in extension options.
@@ -157,6 +174,10 @@ browser.runtime.onMessage.addListener(function (message, sender) {
 
     case MessageTypes.CONFIG_CHANGE:
       updateConfig(message.payload);
+      break;
+
+    case MessageTypes.ISSUE_REPORT:
+      messageCurrentTab(message);
       break;
 
     default:
