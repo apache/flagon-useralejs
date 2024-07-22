@@ -17,7 +17,9 @@
  * under the License.
  */
 
-export declare const CONFIG_CHANGE: string;
-export declare const ADD_LOG: string;
-export declare const HTTP_SESSION: string;
-export declare const ISSUE_REPORT: string;
+export declare enum messageTypes {
+    CONFIG_CHANGE = "USERALE_CONFIG_CHANGE",
+    ADD_LOG = "USERALE_ADD_LOG",
+    HTTP_SESSION = "USERALE_HTTP_SESSION",
+    ISSUE_REPORT = "USERALE_ISSUE_REPORT"
+}

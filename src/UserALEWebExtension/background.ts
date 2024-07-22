@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
+import { messageTypes } from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
 import { browser, configKey } from "@/UserALEWebExtension/globals";
 import { Extension, Logging } from "@/types";
@@ -78,7 +78,7 @@ function updateConfig(payload: Extension.ConfigPayload) {
   userale.options(payload.useraleConfig);
   browser.storage.local.set({ [configKey]: payload });
   dispatchTabMessage({
-    type: MessageTypes.CONFIG_CHANGE,
+    type: messageTypes.CONFIG_CHANGE,
     payload: payload.useraleConfig,
   });
 }
@@ -164,19 +164,19 @@ browser.storage.local.get([configKey], (res) => {
 
 browser.runtime.onMessage.addListener(function (message, sender) {
   switch (message.type) {
-    case MessageTypes.ADD_LOG:
+    case messageTypes.ADD_LOG:
       addLog(message);
       break;
 
-    case MessageTypes.HTTP_SESSION:
+    case messageTypes.HTTP_SESSION:
       updateTabToHttpSessionMapping(message, sender);
       break;
 
-    case MessageTypes.CONFIG_CHANGE:
+    case messageTypes.CONFIG_CHANGE:
       updateConfig(message.payload);
       break;
 
-    case MessageTypes.ISSUE_REPORT:
+    case messageTypes.ISSUE_REPORT:
       messageCurrentTab(message);
       break;
 

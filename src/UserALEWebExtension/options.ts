@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
+import { messageTypes } from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
 import { rerouteLog, browser, configKey } from "@/UserALEWebExtension/globals";
 import { Configuration } from "@/configure";
@@ -54,7 +54,7 @@ function setConfig() {
   };
 
   userale.options(config);
-  browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload });
+  browser.runtime.sendMessage({ type: messageTypes.CONFIG_CHANGE, payload });
 }
 
 function getConfig() {
@@ -88,16 +88,18 @@ function getConfig() {
 
 function reportIssue() {
   browser.runtime.sendMessage({
-    type: MessageTypes.ISSUE_REPORT,
+    type: messageTypes.ISSUE_REPORT,
     payload: {
-      issueType: (
-        document.querySelector(
-          'input[name="issueType"]:checked',
-        ) as HTMLButtonElement
-      ).value,
-      issueDescription: (
-        document.getElementById("issueDescription") as HTMLTextAreaElement
-      ).value,
+      details: {
+        issueType: (
+          document.querySelector(
+            'input[name="issueType"]:checked',
+          ) as HTMLButtonElement
+        ).value,
+        issueDescription: (
+          document.getElementById("issueDescription") as HTMLTextAreaElement
+        ).value,
+      },
       type: "issue",
     },
   });
@@ -106,7 +108,7 @@ function reportIssue() {
 document.addEventListener("DOMContentLoaded", getConfig);
 
 browser.runtime.onMessage.addListener(function (message, sender) {
-  if (message.type === MessageTypes.ISSUE_REPORT) {
+  if (message.type === messageTypes.ISSUE_REPORT) {
     if (window.top === window) {
       userale.packageCustomLog(
         message.payload,

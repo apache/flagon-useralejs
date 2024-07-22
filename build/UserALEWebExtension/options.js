@@ -14,10 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const prefix = "USERALE_";
-const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
-const ADD_LOG = prefix + "ADD_LOG";
-const ISSUE_REPORT = prefix + "ISSUE_REPORT";
+var messageTypes;
+(function (messageTypes) {
+    messageTypes["CONFIG_CHANGE"] = "USERALE_CONFIG_CHANGE";
+    messageTypes["ADD_LOG"] = "USERALE_ADD_LOG";
+    messageTypes["HTTP_SESSION"] = "USERALE_HTTP_SESSION";
+    messageTypes["ISSUE_REPORT"] = "USERALE_ISSUE_REPORT";
+})(messageTypes || (messageTypes = {}));
 
 var version = "2.4.0";
 
@@ -1174,7 +1177,7 @@ function options(newConfig) {
 var browser = window.browser || chrome;
 const configKey = "useraleConfigPayload";
 function rerouteLog(log) {
-    browser.runtime.sendMessage({ type: ADD_LOG, payload: log });
+    browser.runtime.sendMessage({ type: messageTypes.ADD_LOG, payload: log });
     return false;
 }
 /* eslint-enable */
@@ -1224,7 +1227,7 @@ function setConfig() {
         },
     };
     options(config);
-    browser.runtime.sendMessage({ type: CONFIG_CHANGE, payload });
+    browser.runtime.sendMessage({ type: messageTypes.CONFIG_CHANGE, payload });
 }
 function getConfig() {
     // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
@@ -1248,17 +1251,19 @@ function getConfig() {
 }
 function reportIssue() {
     browser.runtime.sendMessage({
-        type: ISSUE_REPORT,
+        type: messageTypes.ISSUE_REPORT,
         payload: {
-            issueType: document.querySelector('input[name="issueType"]:checked').value,
-            issueDescription: document.getElementById("issueDescription").value,
+            details: {
+                issueType: document.querySelector('input[name="issueType"]:checked').value,
+                issueDescription: document.getElementById("issueDescription").value,
+            },
             type: "issue",
         },
     });
 }
 document.addEventListener("DOMContentLoaded", getConfig);
 browser.runtime.onMessage.addListener(function (message, sender) {
-    if (message.type === ISSUE_REPORT) {
+    if (message.type === messageTypes.ISSUE_REPORT) {
         if (window.top === window) {
             packageCustomLog(message.payload, () => {
                 return {};

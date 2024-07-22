@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
+import { messageTypes } from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
 import { rerouteLog, browser, configKey } from "@/UserALEWebExtension/globals";
 
@@ -32,7 +32,7 @@ browser.storage.local.get(
     );
     if (userAleHttpSessionId) {
       browser.runtime.sendMessage({
-        type: MessageTypes.HTTP_SESSION,
+        type: messageTypes.HTTP_SESSION,
         payload: JSON.parse(userAleHttpSessionId),
       });
     }
@@ -41,9 +41,9 @@ browser.storage.local.get(
 
 // TODO: Add types for message
 browser.runtime.onMessage.addListener(function (message, sender) {
-  if (message.type === MessageTypes.CONFIG_CHANGE) {
+  if (message.type === messageTypes.CONFIG_CHANGE) {
     userale.options(message.payload);
-  } else if (message.type === MessageTypes.ISSUE_REPORT) {
+  } else if (message.type === messageTypes.ISSUE_REPORT) {
     if (window.top === window) {
       userale.packageCustomLog(
         message.payload,

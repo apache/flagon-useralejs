@@ -97,15 +97,16 @@ test.describe("Userale extension", () => {
     const log: Logging.JSONObject = body.find(
       (log: Logging.JSONObject) => log.type === "issue",
     );
-
-    const expectedLog: Logging.JSONObject = {
-      issueDescription: description,
-      issueType: "Bug",
-      type: "issue",
-    };
-    for (const key of Object.keys(expectedLog)) {
-      expect(log).toHaveProperty(key);
-      expect(log[key]).toEqual(expectedLog[key]);
-    }
+    console.log(log);
+    expect(log).toEqual(
+      expect.objectContaining({
+        logType: "custom",
+        type: "issue",
+        details: {
+          issueType: "Bug",
+          issueDescription: description,
+        },
+      }),
+    );
   });
 });
