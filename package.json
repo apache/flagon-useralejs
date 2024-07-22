@@ -16,6 +16,7 @@
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "jest -c ./test/unit/jest.config.ts",
     "test:e2e": "playwright test -c ./test/e2e/playwright.config.ts",
+    "pretest:e2e": "rm -rf ./test/e2e/chromeData/*",
     "posttest:e2e": "rm -rf ./test/e2e/chromeData/*",
     "example:run": "node example/server.js",
     "example:watch": "nodemon -w ./example example/server.js",

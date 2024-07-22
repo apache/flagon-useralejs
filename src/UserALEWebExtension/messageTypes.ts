@@ -16,7 +16,9 @@
  */
 
 const prefix = "USERALE_";
-
-export const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
-export const ADD_LOG = prefix + "ADD_LOG";
-export const HTTP_SESSION = prefix + "HTTP_SESSION";
+export enum messageTypes {
+  CONFIG_CHANGE = prefix + "CONFIG_CHANGE",
+  ADD_LOG = prefix + "ADD_LOG",
+  HTTP_SESSION = prefix + "HTTP_SESSION",
+  ISSUE_REPORT = prefix + "ISSUE_REPORT",
+}

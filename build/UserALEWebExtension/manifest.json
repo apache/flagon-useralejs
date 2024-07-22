@@ -4,7 +4,7 @@
   "version": "2.4.0",
   "description": "Injects UserALE into every page for testing & user research purposes",
   "icons": {
-    "48": "icons/border-48.png"
+    "48": "icons/UserALE Logo.png"
   },
   "permissions": ["activeTab", "storage", "tabs", "<all_urls>"],
   "background": {
@@ -19,5 +19,8 @@
   ],
   "options_ui": {
     "page": "optionsPage.html"
+  },
+  "browser_action": {
+    "default_popup": "optionsPage.html"
   }
 }

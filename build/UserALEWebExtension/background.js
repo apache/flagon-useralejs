@@ -67,10 +67,13 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const prefix = "USERALE_";
-const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
-const ADD_LOG = prefix + "ADD_LOG";
-const HTTP_SESSION = prefix + "HTTP_SESSION";
+var messageTypes;
+(function (messageTypes) {
+    messageTypes["CONFIG_CHANGE"] = "USERALE_CONFIG_CHANGE";
+    messageTypes["ADD_LOG"] = "USERALE_ADD_LOG";
+    messageTypes["HTTP_SESSION"] = "USERALE_HTTP_SESSION";
+    messageTypes["ISSUE_REPORT"] = "USERALE_ISSUE_REPORT";
+})(messageTypes || (messageTypes = {}));
 
 var version$1 = "2.4.0";
 
@@ -1313,7 +1316,7 @@ function updateConfig(payload) {
     options(payload.useraleConfig);
     browser.storage.local.set({ [configKey]: payload });
     dispatchTabMessage({
-        type: CONFIG_CHANGE,
+        type: messageTypes.CONFIG_CHANGE,
         payload: payload.useraleConfig,
     });
 }
@@ -1331,6 +1334,24 @@ function dispatchTabMessage(message) {
                 return;
             browser.tabs.sendMessage(tab.id, message);
         });
+    });
+}
+/**
+ * Send a message to the current tab
+ * @param {any} message The message to send
+ * @return {void}
+ */
+function messageCurrentTab(message) {
+    // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
+    // to support chromium style MV2 callbacks
+    browser.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        if (tabs.length > 0) {
+            const activeTab = tabs[0];
+            browser.tabs.sendMessage(activeTab.id, message);
+        }
+        else {
+            console.error("No active tab found");
+        }
     });
 }
 /**
@@ -1379,14 +1400,17 @@ browser.storage.local.get([configKey], (res) => {
 });
 browser.runtime.onMessage.addListener(function (message, sender) {
     switch (message.type) {
-        case ADD_LOG:
+        case messageTypes.ADD_LOG:
             addLog(message);
             break;
-        case HTTP_SESSION:
+        case messageTypes.HTTP_SESSION:
             updateTabToHttpSessionMapping(message, sender);
             break;
-        case CONFIG_CHANGE:
+        case messageTypes.CONFIG_CHANGE:
             updateConfig(message.payload);
+            break;
+        case messageTypes.ISSUE_REPORT:
+            messageCurrentTab(message);
             break;
         default:
             console.log("got unknown message type ", message);

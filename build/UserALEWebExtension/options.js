@@ -14,9 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const prefix = "USERALE_";
-const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
-const ADD_LOG = prefix + "ADD_LOG";
+var messageTypes;
+(function (messageTypes) {
+    messageTypes["CONFIG_CHANGE"] = "USERALE_CONFIG_CHANGE";
+    messageTypes["ADD_LOG"] = "USERALE_ADD_LOG";
+    messageTypes["HTTP_SESSION"] = "USERALE_HTTP_SESSION";
+    messageTypes["ISSUE_REPORT"] = "USERALE_ISSUE_REPORT";
+})(messageTypes || (messageTypes = {}));
 
 var version = "2.4.0";
 
@@ -1173,7 +1177,7 @@ function options(newConfig) {
 var browser = window.browser || chrome;
 const configKey = "useraleConfigPayload";
 function rerouteLog(log) {
-    browser.runtime.sendMessage({ type: ADD_LOG, payload: log });
+    browser.runtime.sendMessage({ type: messageTypes.ADD_LOG, payload: log });
     return false;
 }
 /* eslint-enable */
@@ -1223,14 +1227,13 @@ function setConfig() {
         },
     };
     options(config);
-    browser.runtime.sendMessage({ type: CONFIG_CHANGE, payload });
+    browser.runtime.sendMessage({ type: messageTypes.CONFIG_CHANGE, payload });
 }
 function getConfig() {
     // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
     // to support chromium style MV2 callbacks
     browser.storage.local.get([configKey], (res) => {
         const payload = res[configKey];
-        console.log(payload);
         const config = payload.useraleConfig;
         options(config);
         document.getElementById("url").value = config.url;
@@ -1243,6 +1246,28 @@ function getConfig() {
         document.getElementById("filter").value =
             payload.pluginConfig.urlWhitelist;
     });
+    document.getElementById("optionsForm").addEventListener("submit", setConfig);
+    document.getElementById("issueForm").addEventListener("submit", reportIssue);
+}
+function reportIssue() {
+    browser.runtime.sendMessage({
+        type: messageTypes.ISSUE_REPORT,
+        payload: {
+            details: {
+                issueType: document.querySelector('input[name="issueType"]:checked').value,
+                issueDescription: document.getElementById("issueDescription").value,
+            },
+            type: "issue",
+        },
+    });
 }
 document.addEventListener("DOMContentLoaded", getConfig);
-document.addEventListener("submit", setConfig);
+browser.runtime.onMessage.addListener(function (message, sender) {
+    if (message.type === messageTypes.ISSUE_REPORT) {
+        if (window.top === window) {
+            packageCustomLog(message.payload, () => {
+                return {};
+            }, true);
+        }
+    }
+});

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
+import { messageTypes } from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
 import { browser, configKey } from "@/UserALEWebExtension/globals";
 import { Extension, Logging } from "@/types";
@@ -78,7 +78,7 @@ function updateConfig(payload: Extension.ConfigPayload) {
   userale.options(payload.useraleConfig);
   browser.storage.local.set({ [configKey]: payload });
   dispatchTabMessage({
-    type: MessageTypes.CONFIG_CHANGE,
+    type: messageTypes.CONFIG_CHANGE,
     payload: payload.useraleConfig,
   });
 }
@@ -96,6 +96,23 @@ function dispatchTabMessage(message: any) {
       if (!tab.id) return;
       browser.tabs.sendMessage(tab.id, message);
     });
+  });
+}
+/**
+ * Send a message to the current tab
+ * @param {any} message The message to send
+ * @return {void}
+ */
+function messageCurrentTab(message: any) {
+  // @ts-expect-error Typescript is not aware that firefox's broswer is overloaded
+  // to support chromium style MV2 callbacks
+  browser.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    if (tabs.length > 0) {
+      const activeTab = tabs[0];
+      browser.tabs.sendMessage(activeTab.id, message);
+    } else {
+      console.error("No active tab found");
+    }
   });
 }
 
@@ -147,16 +164,20 @@ browser.storage.local.get([configKey], (res) => {
 
 browser.runtime.onMessage.addListener(function (message, sender) {
   switch (message.type) {
-    case MessageTypes.ADD_LOG:
+    case messageTypes.ADD_LOG:
       addLog(message);
       break;
 
-    case MessageTypes.HTTP_SESSION:
+    case messageTypes.HTTP_SESSION:
       updateTabToHttpSessionMapping(message, sender);
       break;
 
-    case MessageTypes.CONFIG_CHANGE:
+    case messageTypes.CONFIG_CHANGE:
       updateConfig(message.payload);
+      break;
+
+    case messageTypes.ISSUE_REPORT:
+      messageCurrentTab(message);
       break;
 
     default:

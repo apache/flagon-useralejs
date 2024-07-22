@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as MessageTypes from "@/UserALEWebExtension/messageTypes";
+import { messageTypes } from "@/UserALEWebExtension/messageTypes";
 import * as userale from "@/main";
 import { rerouteLog, browser, configKey } from "@/UserALEWebExtension/globals";
 import { Configuration } from "@/configure";
@@ -54,7 +54,7 @@ function setConfig() {
   };
 
   userale.options(config);
-  browser.runtime.sendMessage({ type: MessageTypes.CONFIG_CHANGE, payload });
+  browser.runtime.sendMessage({ type: messageTypes.CONFIG_CHANGE, payload });
 }
 
 function getConfig() {
@@ -62,7 +62,6 @@ function getConfig() {
   // to support chromium style MV2 callbacks
   browser.storage.local.get([configKey], (res) => {
     const payload = res[configKey];
-    console.log(payload);
     const config = payload.useraleConfig;
 
     userale.options(config);
@@ -76,7 +75,48 @@ function getConfig() {
     (document.getElementById("filter") as HTMLInputElement).value =
       payload.pluginConfig.urlWhitelist;
   });
+
+  (document.getElementById("optionsForm") as HTMLFormElement).addEventListener(
+    "submit",
+    setConfig,
+  );
+  (document.getElementById("issueForm") as HTMLFormElement).addEventListener(
+    "submit",
+    reportIssue,
+  );
+}
+
+function reportIssue() {
+  browser.runtime.sendMessage({
+    type: messageTypes.ISSUE_REPORT,
+    payload: {
+      details: {
+        issueType: (
+          document.querySelector(
+            'input[name="issueType"]:checked',
+          ) as HTMLButtonElement
+        ).value,
+        issueDescription: (
+          document.getElementById("issueDescription") as HTMLTextAreaElement
+        ).value,
+      },
+      type: "issue",
+    },
+  });
 }
 
 document.addEventListener("DOMContentLoaded", getConfig);
-document.addEventListener("submit", setConfig);
+
+browser.runtime.onMessage.addListener(function (message, sender) {
+  if (message.type === messageTypes.ISSUE_REPORT) {
+    if (window.top === window) {
+      userale.packageCustomLog(
+        message.payload,
+        () => {
+          return {};
+        },
+        true,
+      );
+    }
+  }
+});

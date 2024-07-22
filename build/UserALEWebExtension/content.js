@@ -14,10 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const prefix = "USERALE_";
-const CONFIG_CHANGE = prefix + "CONFIG_CHANGE";
-const ADD_LOG = prefix + "ADD_LOG";
-const HTTP_SESSION = prefix + "HTTP_SESSION";
+var messageTypes;
+(function (messageTypes) {
+    messageTypes["CONFIG_CHANGE"] = "USERALE_CONFIG_CHANGE";
+    messageTypes["ADD_LOG"] = "USERALE_ADD_LOG";
+    messageTypes["HTTP_SESSION"] = "USERALE_HTTP_SESSION";
+    messageTypes["ISSUE_REPORT"] = "USERALE_ISSUE_REPORT";
+})(messageTypes || (messageTypes = {}));
 
 var version = "2.4.0";
 
@@ -1174,7 +1177,7 @@ function options(newConfig) {
 var browser = window.browser || chrome;
 const configKey = "useraleConfigPayload";
 function rerouteLog(log) {
-    browser.runtime.sendMessage({ type: ADD_LOG, payload: log });
+    browser.runtime.sendMessage({ type: messageTypes.ADD_LOG, payload: log });
     return false;
 }
 /* eslint-enable */
@@ -1205,15 +1208,21 @@ browser.storage.local.get([configKey],
     const userAleHttpSessionId = window.sessionStorage.getItem("userAleHttpSessionId");
     if (userAleHttpSessionId) {
         browser.runtime.sendMessage({
-            type: HTTP_SESSION,
+            type: messageTypes.HTTP_SESSION,
             payload: JSON.parse(userAleHttpSessionId),
         });
     }
 });
 // TODO: Add types for message
-browser.runtime.onMessage.addListener(function (message) {
-    console.log(message);
-    if (message.type === CONFIG_CHANGE) {
+browser.runtime.onMessage.addListener(function (message, sender) {
+    if (message.type === messageTypes.CONFIG_CHANGE) {
         options(message.payload);
+    }
+    else if (message.type === messageTypes.ISSUE_REPORT) {
+        if (window.top === window) {
+            packageCustomLog(message.payload, () => {
+                return {};
+            }, true);
+        }
     }
 });
