@@ -13,7 +13,11 @@
         "isolatedModules": true,
         "incremental": true,
         "jsx": "preserve",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
         "module": "esnext",
         "moduleResolution": "node",
         "noEmit": true,
@@ -22,7 +26,9 @@
         "noUnusedLocals": true,
         "noUnusedParameters": false,
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": [
+                "./src/*"
+            ]
         },
         "pretty": true,
         "resolveJsonModule": true,
@@ -30,8 +36,18 @@
         "sourceMap": true,
         "strict": true,
         "target": "es2015",
-        "typeRoots": ["node_modules/@types/"],
+        "typeRoots": [
+            "node_modules/@types/"
+        ],
     },
-    "include": ["src", "test", "src/types.d.ts"],
-    "exclude": ["node_modules", "build", "logs", "example"],
+    "include": [
+        "src",
+        "test",
+        "src/types.d.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "build",
+        "logs"
+    ],
 }
