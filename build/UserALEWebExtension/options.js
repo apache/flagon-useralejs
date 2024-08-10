@@ -1247,7 +1247,10 @@ function getConfig() {
             payload.pluginConfig.urlWhitelist;
     });
     document.getElementById("optionsForm").addEventListener("submit", setConfig);
-    document.getElementById("issueForm").addEventListener("submit", reportIssue);
+    const issueForm = document.getElementById("issueForm");
+    if (issueForm instanceof HTMLElement) {
+        issueForm.addEventListener("submit", reportIssue);
+    }
 }
 function reportIssue() {
     browser.runtime.sendMessage({

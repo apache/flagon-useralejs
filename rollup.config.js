@@ -100,7 +100,8 @@ export default [
                 targets: [
                     {src: srcWebExtensionDir + 'icons/**/*.*', dest: buildWebExtensionDir + 'icons'},
                     {src: srcWebExtensionDir + 'manifest.json', dest: buildWebExtensionDir},
-                    {src: srcWebExtensionDir + 'optionsPage.html', dest: buildWebExtensionDir}
+                    {src: srcWebExtensionDir + 'options.html', dest: buildWebExtensionDir},
+                    {src: srcWebExtensionDir + 'browserAction.html', dest: buildWebExtensionDir}
                 ],
                 copyOnce: true
             }),
