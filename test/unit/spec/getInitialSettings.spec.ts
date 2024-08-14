@@ -56,9 +56,7 @@ describe("getInitialSettings", () => {
       });
       const e = { timeStamp: 1 } as Event;
       const ts = timeStampScale(e);
-      expect(ts(e.timeStamp)).toBe(
-        performance.timing.navigationStart + e.timeStamp,
-      );
+      expect(ts(e.timeStamp)).toBe(performance.timeOrigin + e.timeStamp);
       global.performance = originalPerformance;
     });
   });
