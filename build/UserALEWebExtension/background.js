@@ -173,7 +173,7 @@ function timeStampScale(e) {
             };
         }
         else if (delta > e.timeStamp) {
-            const navStart = performance.timing.navigationStart;
+            const navStart = performance.timeOrigin;
             tsScaler = function (ts) {
                 return ts + navStart;
             };
