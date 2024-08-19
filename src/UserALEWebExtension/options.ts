@@ -80,10 +80,10 @@ function getConfig() {
     "submit",
     setConfig,
   );
-  (document.getElementById("issueForm") as HTMLFormElement).addEventListener(
-    "submit",
-    reportIssue,
-  );
+  const issueForm = document.getElementById("issueForm");
+  if (issueForm instanceof HTMLElement) {
+    issueForm.addEventListener("submit", reportIssue);
+  }
 }
 
 function reportIssue() {

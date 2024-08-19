@@ -40,7 +40,7 @@ test.describe("Userale extension", () => {
     const requestPromise = sender.waitForRequest(
       (request) => request.method() === "POST",
     );
-    await page.goto(`chrome-extension://${extensionId}/optionsPage.html`);
+    await page.goto(`chrome-extension://${extensionId}/options.html`);
     // Sleep so options.js can update the html with values from local storage.
     await new Promise((r) => setTimeout(r, 1000));
     await page.fill("#filter", ".*");
@@ -60,7 +60,7 @@ test.describe("Userale extension", () => {
       const postData = request.postData();
       return Boolean(postData && postData.includes("testUser"));
     });
-    await page.goto(`chrome-extension://${extensionId}/optionsPage.html`);
+    await page.goto(`chrome-extension://${extensionId}/options.html`);
     await page.waitForLoadState("load");
     await page.fill("#user", id);
     await page.click("#submitOptions");
@@ -87,7 +87,7 @@ test.describe("Userale extension", () => {
       const postData = request.postData();
       return Boolean(postData && postData.includes(description));
     });
-    await page.goto(`chrome-extension://${extensionId}/optionsPage.html`);
+    await page.goto(`chrome-extension://${extensionId}/browserAction.html`);
     await page.waitForLoadState("load");
     await page.fill("#issueDescription", description);
     await page.click("#submitIssue");
