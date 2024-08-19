@@ -43,6 +43,7 @@ describe("Userale API", () => {
         "useraleVersion",
         "userId",
         "version",
+        "websocketsEnabled",
       ]),
     );
     dom.window.close();

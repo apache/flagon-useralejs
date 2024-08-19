@@ -74,6 +74,7 @@ describe("getInitialSettings", () => {
       expect(config).toHaveProperty("logDetails", false);
       expect(config).toHaveProperty("resolution", 100);
       expect(config).toHaveProperty("toolName", "testtool");
+      expect(config).toHaveProperty("websocketsEnabled", false);
       dom.window.close();
     });
 
