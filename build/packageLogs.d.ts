@@ -113,3 +113,16 @@ export declare function detectBrowser(): {
     browser: string;
     version: string | null;
 };
+/**
+ * Builds an object containing attributes of an element.
+ * Attempts to parse all attribute values as JSON text.
+ * @param  {Event} e Event from which the target element's attributes should be extracted.
+ * @return {Record<string, any>} Object with element attributes as key-value pairs.
+ */
+export declare function buildAttrs(e: Event): Record<string, any>;
+/**
+ * Builds an object containing all CSS properties of an element.
+ * @param  {Event} e Event from which the target element's properties should be extracted.
+ * @return {Record<string, string>} Object with all CSS properties as key-value pairs.
+ */
+export declare function buildCSS(e: Event): Record<string, string>;

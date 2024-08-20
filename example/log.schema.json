@@ -76,7 +76,7 @@
           "type": "boolean"
         },
         "details": {
-          "type": "object"
+          "type": ["object", "null"]
         },
         "userId": {
           "type": "string"

@@ -577,6 +577,8 @@
           sessionId: config$1.sessionId,
           httpSessionId: config$1.httpSessionId,
           browserSessionId: config$1.browserSessionId,
+          attributes: buildAttrs(e),
+          style: buildCSS(e),
       };
       for (const func of Object.values(cbHandlers)) {
           if (typeof func === "function") {
@@ -812,6 +814,47 @@
           browser: browserInfo ? browserInfo.name : "",
           version: browserInfo ? browserInfo.version : "",
       };
+  }
+  /**
+   * Builds an object containing attributes of an element.
+   * Attempts to parse all attribute values as JSON text.
+   * @param  {Event} e Event from which the target element's attributes should be extracted.
+   * @return {Record<string, any>} Object with element attributes as key-value pairs.
+   */
+  function buildAttrs(e) {
+      const attributes = {};
+      const attributeBlackList = ["style"];
+      if (e.target && e.target instanceof Element) {
+          for (const attr of e.target.attributes) {
+              if (attributeBlackList.includes(attr.name))
+                  continue;
+              let val = attr.value;
+              try {
+                  val = JSON.parse(val);
+              }
+              catch (error) {
+                  // Ignore parsing errors, fallback to raw string value
+              }
+              attributes[attr.name] = val;
+          }
+      }
+      return attributes;
+  }
+  /**
+   * Builds an object containing all CSS properties of an element.
+   * @param  {Event} e Event from which the target element's properties should be extracted.
+   * @return {Record<string, string>} Object with all CSS properties as key-value pairs.
+   */
+  function buildCSS(e) {
+      const properties = {};
+      if (e.target && e.target instanceof HTMLElement) {
+          const styleObj = e.target.style;
+          for (let i = 0; i < styleObj.length; i++) {
+              const prop = styleObj[i];
+              properties[prop] = styleObj.getPropertyValue(prop);
+          }
+      }
+      return properties;
   }
 
   /*

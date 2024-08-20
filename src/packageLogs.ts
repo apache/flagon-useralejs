@@ -138,6 +138,8 @@ export function packageLog(
     sessionId: config.sessionId,
     httpSessionId: config.httpSessionId,
     browserSessionId: config.browserSessionId,
+    attributes: buildAttrs(e),
+    style: buildCSS(e),
   };
 
   if (typeof filterHandler === "function" && !filterHandler(log)) {
@@ -423,4 +425,47 @@ export function detectBrowser() {
     browser: browserInfo ? browserInfo.name : "",
     version: browserInfo ? browserInfo.version : "",
   };
+}
+
+/**
+ * Builds an object containing attributes of an element.
+ * Attempts to parse all attribute values as JSON text.
+ * @param  {Event} e Event from which the target element's attributes should be extracted.
+ * @return {Record<string, any>} Object with element attributes as key-value pairs.
+ */
+export function buildAttrs(e: Event): Record<string, any> {
+  const attributes: Record<string, any> = {};
+  const attributeBlackList = ["style"];
+
+  if (e.target && e.target instanceof Element) {
+    for (const attr of e.target.attributes) {
+      if (attributeBlackList.includes(attr.name)) continue;
+      let val: any = attr.value;
+      try {
+        val = JSON.parse(val);
+      } catch (error) {
+        // Ignore parsing errors, fallback to raw string value
+      }
+      attributes[attr.name] = val;
+    }
+  }
+
+  return attributes;
+}
+
+/**
+ * Builds an object containing all CSS properties of an element.
+ * @param  {Event} e Event from which the target element's properties should be extracted.
+ * @return {Record<string, string>} Object with all CSS properties as key-value pairs.
+ */
+export function buildCSS(e: Event): Record<string, string> {
+  const properties: Record<string, string> = {};
+  if (e.target && e.target instanceof HTMLElement) {
+    const styleObj = e.target.style;
+    for (let i = 0; i < styleObj.length; i++) {
+      const prop = styleObj[i];
+      properties[prop] = styleObj.getPropertyValue(prop);
+    }
+  }
+  return properties;
 }

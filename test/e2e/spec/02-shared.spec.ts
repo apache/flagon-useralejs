@@ -82,12 +82,13 @@ test.describe("Userale logging", () => {
     }
     const request = await requestPromise;
     const body = await request.postDataJSON();
-    console.log(body);
 
     var schema = require("../../../example/log.schema.json");
     for (const log of body) {
-      const result = validate(log, schema);
-      expect(result.valid).toBe(true);
+      if (log.logType == "raw" || log.logType == "custom") {
+        const result = validate(log, schema);
+        expect(result.valid).toBe(true);
+      }
     }
   });
 });

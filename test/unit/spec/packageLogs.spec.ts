@@ -29,6 +29,8 @@ import {
   packageLog,
   removeCallbacks,
   selectorizePath,
+  buildAttrs,
+  buildCSS,
 } from "@/packageLogs";
 import type { Logging } from "@/types";
 
@@ -379,6 +381,46 @@ describe("packageLogs", () => {
       ele.dispatchEvent(evt);
       const expectedPath = ["div", "body", "html", "#document", "Window"];
       expect(actualPath).toEqual(expectedPath);
+    });
+  });
+
+  test("buildAttrs", () => {
+    let result;
+    const document = window.document;
+    const ele = document.createElement("div");
+    const evt = new window.Event("CustomEvent", {
+      bubbles: true,
+      cancelable: true,
+    });
+    ele.setAttribute("data-json", '{"key": "value"}');
+    ele.setAttribute("data-string", "hello");
+    ele.setAttribute("style", "color: red;");
+    document.body.appendChild(ele);
+    ele.addEventListener("CustomEvent", (e) => (result = buildAttrs(e)));
+    ele.dispatchEvent(evt);
+    expect(result).toEqual({
+      "data-json": { key: "value" },
+      "data-string": "hello",
+    });
+    expect(result).not.toHaveProperty("style");
+  });
+
+  test("buildCSS", () => {
+    let result;
+    const document = window.document;
+    const ele = document.createElement("div");
+    const evt = new window.Event("CustomEvent", {
+      bubbles: true,
+      cancelable: true,
+    });
+    ele.style.color = "red";
+    ele.style.marginTop = "10px";
+    document.body.appendChild(ele);
+    ele.addEventListener("CustomEvent", (e) => (result = buildCSS(e)));
+    ele.dispatchEvent(evt);
+    expect(result).toEqual({
+      color: "red",
+      "margin-top": "10px",
     });
   });
 });
