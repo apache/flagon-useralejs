@@ -20,7 +20,7 @@
 /logs/*
 /.git/*
 npm-debug.log
-DS_store
+.DS_store
 cypress
 tsconfig.tsbuildinfo
 .rollup.cache

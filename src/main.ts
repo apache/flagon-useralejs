@@ -28,7 +28,7 @@ const logs: Array<Logging.Log> = [];
 
 const startLoadTimestamp = Date.now();
 let endLoadTimestamp: number;
-window.onload = function () {
+window.onload = function() {
   endLoadTimestamp = Date.now();
 };
 
@@ -61,7 +61,7 @@ if (config.autostart) {
  */
 function setup(config: Configuration) {
   if (!started) {
-    setTimeout(function () {
+    setTimeout(function() {
       const state = document.readyState;
 
       if (
@@ -91,9 +91,6 @@ function setup(config: Configuration) {
  * and updates the config accordingly
  */
 function getWebsocketsEnabled(config: Configuration) {
-  if (!window.browser) {
-    return;
-  }
   wsock = new WebSocket(config.url.replace("http://", "ws://"));
   wsock.onerror = () => {
     console.log("no websockets detected");

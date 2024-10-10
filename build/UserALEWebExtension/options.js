@@ -1205,9 +1205,6 @@ function setup(config) {
  * and updates the config accordingly
  */
 function getWebsocketsEnabled(config) {
-    if (!window.browser) {
-        return;
-    }
     wsock = new WebSocket(config.url.replace("http://", "ws://"));
     wsock.onerror = () => {
         console.log("no websockets detected");

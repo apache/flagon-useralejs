@@ -42,7 +42,7 @@ export default defineConfig({
   projects: [
     {
       name: "package-chromium",
-      testIgnore: "*extension*",
+      testIgnore: ["*extension*", "*websocket*"],
       use: {
         browserName: "chromium",
         baseURL: "http://127.0.0.1:8000/",
@@ -50,7 +50,7 @@ export default defineConfig({
     },
     {
       name: "package-firefox",
-      testIgnore: "*extension*",
+      testIgnore: ["*extension*", "*websocket*"],
       use: {
         browserName: "firefox",
         baseURL: "http://127.0.0.1:8000/",
@@ -58,18 +58,29 @@ export default defineConfig({
     },
     {
       name: "extension-chromium",
-      testIgnore: "*package*",
+      testIgnore: ["*package*", "*websocket*"],
       use: {
         browserName: "chromium",
         baseURL: "http://127.0.0.1:8000/no-logging/",
       },
     },
+    {
+      name: "websocket",
+      testMatch: "*websocket*",
+      use: {
+        browserName: "chromium",
+        headless: false,
+        baseURL: "http://127.0.0.1:8000/ws",
+      },
+    },
   ],
 
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "npm run example:run",
-    url: "http://127.0.0.1:8000",
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: [
+    {
+      command: "npm run example:run",
+      url: "http://127.0.0.1:8000",
+      reuseExistingServer: !process.env.CI,
+    },
+  ]
 });

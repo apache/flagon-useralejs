@@ -37,7 +37,9 @@ const config: Config = {
   setupFiles: ["<rootDir>/test/unit/jest.setup.js"],
 
   // The test environment that will be used for testing
-  testEnvironment: "jsdom",
+  // Turned off to avoid jsdom invoking node 'ws' module, which can't be used in browser
+  // Instead we specify jsdom environment on a per-test-file basis
+  //testEnvironment: "jsdom",
 
   // The glob patterns Jest uses to detect test files
   testMatch: ["<rootDir>/test/unit/spec/(*.)+(spec|test).[tj]s?(x)"],
