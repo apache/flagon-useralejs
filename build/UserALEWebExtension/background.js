@@ -246,6 +246,7 @@ class Configuration {
         this.useraleVersion = null;
         this.userId = null;
         this.version = null;
+        this.websocketsEnabled = false;
         // Call the initialization method only if it's the first time instantiating
         if (Configuration.instance === null) {
             this.initialize();
@@ -1137,19 +1138,25 @@ function sendOnClose(logs, config) {
             return;
         }
         if (logs.length > 0) {
-            const headers = new Headers();
-            headers.set("Content-Type", "applicaiton/json;charset=UTF-8");
-            if (config.authHeader) {
-                headers.set("Authorization", config.authHeader.toString());
+            if (config.websocketsEnabled) {
+                const data = JSON.stringify(logs);
+                wsock.send(data);
             }
-            fetch(config.url, {
-                keepalive: true,
-                method: "POST",
-                headers: headers,
-                body: JSON.stringify(logs),
-            }).catch((error) => {
-                console.error(error);
-            });
+            else {
+                const headers = new Headers();
+                headers.set("Content-Type", "applicaiton/json;charset=UTF-8");
+                if (config.authHeader) {
+                    headers.set("Authorization", config.authHeader.toString());
+                }
+                fetch(config.url, {
+                    keepalive: true,
+                    method: "POST",
+                    headers: headers,
+                    body: JSON.stringify(logs),
+                }).catch((error) => {
+                    console.error(error);
+                });
+            }
             logs.splice(0); // clear log queue
         }
     });
@@ -1163,24 +1170,29 @@ function sendOnClose(logs, config) {
  */
 // @todo expose config object to sendLogs replate url with config.url
 function sendLogs(logs, config, retries) {
-    const req = new XMLHttpRequest();
     const data = JSON.stringify(logs);
-    req.open("POST", config.url);
-    if (config.authHeader) {
-        req.setRequestHeader("Authorization", typeof config.authHeader === "function"
-            ? config.authHeader()
-            : config.authHeader);
+    if (config.websocketsEnabled) {
+        wsock.send(data);
     }
-    req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-    if (config.headers) {
-        Object.entries(config.headers).forEach(([header, value]) => {
-            req.setRequestHeader(header, value);
-        });
+    else {
+        const req = new XMLHttpRequest();
+        req.open("POST", config.url);
+        if (config.authHeader) {
+            req.setRequestHeader("Authorization", typeof config.authHeader === "function"
+                ? config.authHeader()
+                : config.authHeader);
+        }
+        req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+        if (config.headers) {
+            Object.entries(config.headers).forEach(([header, value]) => {
+                req.setRequestHeader(header, value);
+            });
+        }
+        req.onreadystatechange = function () {
+            if (req.readyState === 4 && req.status !== 200) ;
+        };
+        req.send(data);
     }
-    req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status !== 200) ;
-    };
-    req.send(data);
 }
 
 /*
@@ -1207,10 +1219,12 @@ window.onload = function () {
     endLoadTimestamp = Date.now();
 };
 let started = false;
+let wsock;
 config.update({
     useraleVersion: version$1,
 });
 initPackager(logs, config);
+getWebsocketsEnabled(config);
 if (config.autostart) {
     setup(config);
 }
@@ -1238,6 +1252,23 @@ function setup(config) {
             }
         }, 100);
     }
+}
+/**
+ * Checks to see if the specified backend URL supporsts Websockets
+ * and updates the config accordingly
+ */
+function getWebsocketsEnabled(config) {
+    wsock = new WebSocket(config.url.replace("http://", "ws://"));
+    wsock.onerror = () => {
+        console.log("no websockets detected");
+    };
+    wsock.onopen = () => {
+        console.log("connection established with websockets");
+        config.websocketsEnabled = true;
+    };
+    wsock.onclose = () => {
+        sendOnClose(logs, config);
+    };
 }
 // Export the Userale API
 const version = version$1;

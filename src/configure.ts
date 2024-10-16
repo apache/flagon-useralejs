@@ -45,6 +45,7 @@ export class Configuration {
   public useraleVersion: Settings.Version = null;
   public userId: Settings.UserId = null;
   public version: Settings.Version = null;
+  public websocketsEnabled: boolean = false;
 
   // Private constructor to prevent external instantiation
   private constructor() {

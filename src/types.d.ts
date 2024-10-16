@@ -65,6 +65,7 @@ export declare namespace Settings {
     useraleVersion: Version;
     userId: UserId;
     version?: Version;
+    websocketsEnabled?: boolean;
   }
 
   export interface IConfiguration extends Config {

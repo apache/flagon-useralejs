@@ -79,6 +79,7 @@
     "@types/jest": "^29.5.12",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.14.2",
+    "@types/ws": "^8.5.12",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "@typescript/lib-dom": "npm:@types/web@^0.0.144",
@@ -108,7 +109,8 @@
     "rollup-plugin-license": "^3.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
-    "typescript-eslint": "^7.8.0"
+    "typescript-eslint": "^7.8.0",
+    "ws": "^8.18.0"
   },
   "config": {
     "commitizen": {

@@ -19,6 +19,7 @@
 
 import type { Settings, Logging } from "@/types";
 export declare let started: boolean;
+export declare let wsock: WebSocket;
 export { defineCustomDetails as details } from "@/attachHandlers";
 export { registerAuthCallback as registerAuthCallback } from "@/utils";
 export { addCallbacks as addCallbacks, removeCallbacks as removeCallbacks, packageLog as packageLog, packageCustomLog as packageCustomLog, getSelector as getSelector, buildPath as buildPath, } from "@/packageLogs";

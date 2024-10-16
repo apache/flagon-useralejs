@@ -41,6 +41,7 @@ export declare class Configuration {
     useraleVersion: Settings.Version;
     userId: Settings.UserId;
     version: Settings.Version;
+    websocketsEnabled: boolean;
     private constructor();
     static getInstance(): Configuration;
     private initialize;

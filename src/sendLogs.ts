@@ -18,6 +18,7 @@
 import { Configuration } from "@/configure";
 import { Logging } from "@/types";
 import { updateAuthHeader, updateCustomHeaders } from "@/utils";
+import { wsock } from "./main";
 
 let sendIntervalId: string | number | NodeJS.Timeout | undefined;
 
@@ -46,7 +47,7 @@ export function sendOnInterval(
   logs: Array<Logging.Log>,
   config: Configuration,
 ): NodeJS.Timeout {
-  return setInterval(function () {
+  return setInterval(function() {
     if (!config.on) {
       return;
     }
@@ -67,28 +68,32 @@ export function sendOnClose(
   logs: Array<Logging.Log>,
   config: Configuration,
 ): void {
-  window.addEventListener("pagehide", function () {
+  window.addEventListener("pagehide", function() {
     if (!config.on) {
       return;
     }
 
     if (logs.length > 0) {
-      const headers: HeadersInit = new Headers();
-      headers.set("Content-Type", "applicaiton/json;charset=UTF-8");
+      if (config.websocketsEnabled) {
+        const data = JSON.stringify(logs);
+        wsock.send(data);
+      } else {
+        const headers: HeadersInit = new Headers();
+        headers.set("Content-Type", "applicaiton/json;charset=UTF-8");
 
-      if (config.authHeader) {
-        headers.set("Authorization", config.authHeader.toString());
+        if (config.authHeader) {
+          headers.set("Authorization", config.authHeader.toString());
+        }
+
+        fetch(config.url, {
+          keepalive: true,
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(logs),
+        }).catch((error) => {
+          console.error(error);
+        });
       }
-
-      fetch(config.url, {
-        keepalive: true,
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(logs),
-      }).catch((error) => {
-        console.error(error);
-      });
-
       logs.splice(0); // clear log queue
     }
   });
@@ -108,39 +113,44 @@ export function sendLogs(
   config: Configuration,
   retries: number,
 ) {
-  const req = new XMLHttpRequest();
   const data = JSON.stringify(logs);
 
-  req.open("POST", config.url);
+  if (config.websocketsEnabled) {
+    wsock.send(data);
+  } else {
+    const req = new XMLHttpRequest();
 
-  // Update headers
-  updateAuthHeader(config);
-  if (config.authHeader) {
-    req.setRequestHeader(
-      "Authorization",
-      typeof config.authHeader === "function"
-        ? config.authHeader()
-        : config.authHeader,
-    );
-  }
-  req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+    req.open("POST", config.url);
 
-  // Update custom headers last to allow them to over-write the defaults. This assumes
-  // the user knows what they are doing and may want to over-write the defaults.
-  updateCustomHeaders(config);
-  if (config.headers) {
-    Object.entries(config.headers).forEach(([header, value]) => {
-      req.setRequestHeader(header, value);
-    });
-  }
-
-  req.onreadystatechange = function () {
-    if (req.readyState === 4 && req.status !== 200) {
-      if (retries > 0) {
-        sendLogs(logs, config, retries--);
-      }
+    // Update headers
+    updateAuthHeader(config);
+    if (config.authHeader) {
+      req.setRequestHeader(
+        "Authorization",
+        typeof config.authHeader === "function"
+          ? config.authHeader()
+          : config.authHeader,
+      );
     }
-  };
+    req.setRequestHeader("Content-type", "application/json;charset=UTF-8");
 
-  req.send(data);
+    // Update custom headers last to allow them to over-write the defaults. This assumes
+    // the user knows what they are doing and may want to over-write the defaults.
+    updateCustomHeaders(config);
+    if (config.headers) {
+      Object.entries(config.headers).forEach(([header, value]) => {
+        req.setRequestHeader(header, value);
+      });
+    }
+
+    req.onreadystatechange = function() {
+      if (req.readyState === 4 && req.status !== 200) {
+        if (retries > 0) {
+          sendLogs(logs, config, retries--);
+        }
+      }
+    };
+
+    req.send(data);
+  }
 }
