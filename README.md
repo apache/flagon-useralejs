@@ -17,9 +17,9 @@
     under the License.
 -->
 
-# 🚨 This repository has been archived and it's contents have moved to https://github.com/apache/flagon
-
 # Apache Flagon UserALE
+
+# 🚨 This repository has been archived and it's contents have moved to https://github.com/apache/flagon
 
 ![Node.js CI](https://github.com/apache/flagon-useralejs/workflows/Node.js%20CI/badge.svg)
 [![Known Vulnerabilities](https://snyk.io/test/npm/flagon-userale/badge.svg)](https://snyk.io/test/npm/flagon-userale)
