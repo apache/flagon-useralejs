@@ -17,6 +17,8 @@
     under the License.
 -->
 
+# 🚨 This repository has been archived and it's contents have moved to https://github.com/apache/flagon
+
 # Apache Flagon UserALE
 
 ![Node.js CI](https://github.com/apache/flagon-useralejs/workflows/Node.js%20CI/badge.svg)
